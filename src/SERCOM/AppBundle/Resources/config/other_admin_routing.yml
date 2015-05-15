@@ -4,9 +4,19 @@ sercom_admin_students:
     pattern:  /admin/students/{page}
     defaults: { _controller: SERCOMAppBundle:AdminEtudiant:index, page:1 }
 
+sercom_admin_students_voir:
+    pattern:  /admin/students/voir/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminEtudiant:voir }
+
+
 sercom_admin_teachers:
     pattern:  /admin/teachers
     defaults: { _controller: SERCOMAppBundle:AdminProf:index, page:1 }
+
+sercom_admin_teachers_modifier_classe:
+    pattern:  /admin/teachers/modifier/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminProf:modifier }
+
 
 
 

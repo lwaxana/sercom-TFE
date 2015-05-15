@@ -18,6 +18,7 @@ use SERCOM\AppBundle\Form\PersonInfosType;
 use SERCOM\AppBundle\Form\PersonPictureType;
 use SERCOM\AppBundle\Form\PersonPwdType;
 use Symfony\Component\HttpFoundation\Request;
+use SERCOM\AppBundle\Image\Image;
 
 
 class StudentController extends Controller {

@@ -29,3 +29,12 @@ sercom_admin_agenda_classe_event:
     defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:event }
     requirements:
         _method: GET
+
+sercom_admin_agenda_classe_event_del:
+    pattern:  /admin/agendaclasses/events/delete
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:delEvents }
+
+sercom_admin_agenda_classe_event_del2:
+    pattern:  /admin/agendaclasses/events/del/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:deleteEvents }
+

@@ -46,6 +46,10 @@ class AdminEtudiantController extends Controller{
 
     }
 
+    public function voirAction(Student $student){
+        return $this->render('@SERCOMApp/AdminEtudiant/voir.html.twig', array('student' => $student));
+    }
+
 
 
 } 

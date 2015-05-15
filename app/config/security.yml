@@ -7,7 +7,7 @@ security:
 
     role_hierarchy:
         STUDENT: ROLE_STUDENT
-        TEACHER: TEACHER
+        TEACHER: ROLE_TEACHER
         ADMIN_INSCRIPTION: ADMIN_INSCRIPTION
         ADMIN_FORUM: ADMIN_FORUM
         ADMIN_ARTICLES: ADMIN_ARTICLES
@@ -43,7 +43,7 @@ security:
 
     access_control:
         - { path: ^/members, roles: ROLE_MEMBRE }
-        - { path: ^/teachers, roles: TEACHER }
+        - { path: ^/teachers, roles: ROLE_TEACHER }
         - { path: ^/students, roles: ROLE_STUDENT }
         - { path: ^/members/admin/inscription, roles: ADMIN_INSCRIPTION }
         - { path: ^/members/admin/forum, roles: ADMIN_FORUM }

@@ -1,0 +1,119 @@
+{% extends '@SERCOMApp/Members/index.html.twig' %}
+{% block style %}
+    <style>
+        .alignergauche {
+            text-align: left;
+            padding-left: 20px;
+        }
+        .alignerdroit {
+            text-align: right;
+            padding-left: 20px;
+        }
+
+    </style>
+
+{% endblock %}
+{% block titre %}
+    <title>Administration - Liste des membres</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> Liste des membres  </div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+
+        <div class="col-md-2">
+            {% if member.person.picture is not null %}
+                <img src="{{ asset( member.person.picture  ) }}"/>
+            {% else %}
+                <img src="{{ asset('bundles/AppBundle/images/default-user.png') }}"/>
+            {% endif %}
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Informations générales</h3>
+                </div>
+                <div class="panel-body">
+                    <table>
+                        <tr>
+                            <td class="alignerdroit" >Nom :</td>
+                            <td class="alignergauche"> {{ member.person.lastname }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" >Prenom :</td>
+                            <td class="alignergauche">{{ member.person.firstname }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > <i class="fa fa-envelope-o"></i> Email :</td>
+                            <td class="alignergauche">{{ member.person.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > <i class="fa fa-phone"></i> Tel :</td>
+                            <td class="alignergauche">{{ member.person.tel }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > <i class="fa fa-phone"></i> GSM :</td>
+                            <td class="alignergauche">{{ member.person.telgsm }}</td>
+                        </tr>
+                        {% if member.person.address is not empty %}
+                            <tr>
+                                <td class="alignerdroit" > Rue : </td>
+                                <td class="alignergauche"> {{ member.person.address.street }}</td>
+                            </tr>
+                            <tr>
+                                <td class="alignerdroit" > Numéro :</td>
+                                <td class="alignergauche">{{ member.person.address.number }}</td>
+                            </tr>
+                            <tr>
+                                <td class="alignerdroit" > Ville : </td>
+                                <td class="alignergauche"> {{ member.person.address.city }}</td>
+                            </tr>
+                            <tr>
+                                <td class="alignerdroit" > CP :</td>
+                                <td class="alignergauche"> {{  member.person.address.postcode }}</td>
+                            </tr>
+                            <tr>
+                                <td class="alignerdroit" > Pays :</td>
+                                <td class="alignergauche"> {{ member.person.address.country.name }}</td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        {% if member.asblfunctions is not empty%}
+            <div class="col-md-3">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Fonctions</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table>
+                            {% for function in member.asblfunctions %}
+                                <tr>
+                                    <td class="alignerdroit" >{{ function.fonction }}</td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+            <a href="{{ path('sercom_members_listmembres') }}" class="btn-block btn-warning btn">Retour</a>
+        </div>
+    </div>
+
+{% endblock %}

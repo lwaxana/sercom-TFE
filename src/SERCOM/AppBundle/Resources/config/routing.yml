@@ -33,7 +33,7 @@ sercom_admin_classe_routing:
     prefix: /members
 
 sercom_admin_agenda_classe_routing:
-    resource: "admin_agenda_classe_routing.yml"
+    resource: "admin_ag_classe_routing.yml"
     prefix: /members
 
 sercom_app_articles:

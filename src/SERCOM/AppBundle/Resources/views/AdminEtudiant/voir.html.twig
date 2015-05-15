@@ -1,0 +1,153 @@
+{% extends '@SERCOMApp/Members/index.html.twig' %}
+{% block style %}
+    <style>
+        .alignergauche {
+            text-align: left;
+            padding-left: 20px;
+        }
+        .alignerdroit {
+            text-align: right;
+            padding-left: 20px;
+        }
+
+    </style>
+
+{% endblock %}
+{% block titre %}
+    <title>Administration -Fiches étudiants</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_admin') }}"> Administration </a> / <a href="{{ path('sercom_admin_students') }}">Liste etudiants</a>  </div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+
+        <div class="col-md-2">
+            {% if student.person.picture is not null %}
+                <img src="{{ asset( student.person.picture  ) }}"/>
+            {% else %}
+                <img src="{{ asset('bundles/AppBundle/images/default-user.png') }}"/>
+            {% endif %}
+        </div>
+
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Informations générales</h3>
+                </div>
+                <div class="panel-body">
+                    <table>
+                        <tr>
+                            <td class="alignerdroit" >Nom :</td>
+                            <td class="alignergauche"> {{ student.person.lastname }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" >Prenom :</td>
+                            <td class="alignergauche">{{ student.person.firstname }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > <i class="fa fa-envelope-o"></i> Email :</td>
+                            <td class="alignergauche">{{ student.person.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > <i class="fa fa-phone"></i> Tel :</td>
+                            <td class="alignergauche">{{ student.person.tel }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > <i class="fa fa-phone"></i> GSM :</td>
+                            <td class="alignergauche">{{ student.person.telgsm }}</td>
+                        </tr>
+                        {% if student.person.address is not empty %}
+                        <tr>
+                            <td class="alignerdroit" > Rue : </td>
+                            <td class="alignergauche"> {{ student.person.address.street }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > Numéro :</td>
+                            <td class="alignergauche">{{ student.person.address.number }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > Ville : </td>
+                            <td class="alignergauche"> {{ student.person.address.city }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > CP :</td>
+                            <td class="alignergauche"> {{  student.person.address.postcode }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > Pays :</td>
+                            <td class="alignergauche"> {{ student.person.address.country.name }}</td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        {% if student.relatives is not empty %}
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Contacts parents</h3>
+                </div>
+                <div class="panel-body">
+                    {% for rel in student.relatives %}
+                        <table>
+                        <tr>
+                            <td class="alignerdroit" >Nom :</td>
+                            <td class="alignergauche"> {{ rel.lastname }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" >Prenom :</td>
+                            <td class="alignergauche">{{ rel.firstname }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > <i class="fa fa-envelope-o"></i> Email :</td>
+                            <td class="alignergauche">{{ rel.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > <i class="fa fa-phone"></i> Tel :</td>
+                            <td class="alignergauche">{{ rel.tel }}</td>
+                        </tr>
+                        <tr>
+                            <td class="alignerdroit" > <i class="fa fa-link"></i> </i> Lien :</td>
+                            <td class="alignergauche">{{ rel.relativetype.name }}</td>
+                        </tr>
+                        </table>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if student.classes is not empty%}
+        <div class="col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Classes</h3>
+                </div>
+                <div class="panel-body">
+                    <table>
+                        {% for classe in student.classes %}
+                        <tr>
+                            <td class="alignerdroit" >{{ classe.name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+
+    </div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+            <a href="{{ path('sercom_admin_students') }}" class="btn-block btn-warning btn">Retour</a>
+        </div>
+    </div>
+
+{% endblock %}

@@ -2,6 +2,7 @@
 
 namespace SERCOM\AppBundle\Controller;
 
+use SERCOM\AppBundle\Entity\Member;
 use SERCOM\AppBundle\Form\MemberSearchType;
 use SERCOM\AppBundle\Form\MemberType;
 use SERCOM\AppBundle\Form\AddressType;
@@ -260,9 +261,10 @@ class MembersController extends Controller {
         else{
             throw new NotFoundHttpException();
         }
+    }
 
-
-
+    public function voirAction(Member $member){
+        return $this->render('@SERCOMApp/Members/voir.html.twig', array('member' => $member));
     }
 
 } 

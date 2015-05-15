@@ -36,64 +36,58 @@
 {% block body %}
 
 
-    {% if persons is not empty %}
-    {% for person in persons|batch(3) %}
-    <div class="row">
-            <div class="col-md-1"></div>
-            <div class="col-md-10" >
-               {% for p in person %}
-                   <div class="col-md-4" >
-                       <div class="panel panel-primary" style="height: 300px;">
-                           <div class="panel-heading">
-                               <h3 class="panel-title">{{ p.person.firstname }} {{ p.person.lastname }}</h3>
-                           </div>
-                           <div class="panel-body">
-                               <div class="col-sm-6">
-                                   {% if p.person.picture is not null %}
-                                       <img src="{{ asset( p.person.picture  ) }}"/>
-                                   {% else %}
-                                       <img src="{{ asset('bundles/AppBundle/images/default-user.png') }}"/>
-                                   {% endif %}
-                               </div>
 
-                               <div class="col-sm-6">
-                                  <ul>
-                                      {% if p is not null %}
-                                          {% if p.asblfunctions is not null %}
-                                              {% if p.asblfunctions is not empty  %}
-                                                  <li>Fonction
-                                                      {% for f in p.asblfunctions %}
-                                                          <ul> {{ f.fonction }}</ul>
-                                                      {% endfor %}
-                                                  </li>
-                                              {% endif %}
-                                              {% if p.person.tel is not empty %}
-                                                    <li>{{ p.person.tel }}</li>
-                                              {% endif %}
-                                              {% if p.person.telgsm is not empty %}
-                                                  <li>{{ p.person.telgsm }}</li>
-                                              {% endif %}
-                                          {% endif %}
-                                      {% endif %}
-                                      <li> {{ p.person.email }}</li>
 
-                                  </ul>
-                               </div>
-                           </div>
-                       </div>
-                   </div>
-               {% endfor %}
-                <br/>
-            </div>
-     </div>
+        <div class="row">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <td>Nom</td>
+                    <td>Prenom</td>
+                    <td>Fonction</td>
+                    <td>Action</td>
+
+                </tr>
+                </thead>
+                <tbody>
+                     {% if persons is not empty %}
+                        {% for p in persons %}
+                            <td>{{ p.person.lastname }}</td>
+                            <td>{{ p.person.firstname }}</td>
+                            <td>
+                               {% if p.asblfunctions is not empty %}
+                                   {% for f in p.asblfunctions %}
+                                       {{ f.fonction }}
+                                    {% endfor %}
+                               {% else %}
+                                   Pas de fonction
+                               {% endif %}
+
+                            </td>
+                            <td>
+                                <a href="{{ path('sercom_members_listmembres_voir', {'id': p.personid}) }}" title="Voir infos"><i class="fa fa-eye fa-2x"></i></a>
+                            </td>
+                        {% endfor %}
+
+                    {% else %}
+                        <td> Votre recherche n'a pas retourné de résultat</td>
+                         <td></td><td></td><td></td>
+                    {% endif %}
+
+                </tbody>
+            </table>
 
 
 
-    {% endfor %}
-        {% include '@SERCOMApp/Pagination/pagination.html.twig' %}
-    {% else %}
-        Votre recherche n'a pas retourné de résultat
-    {% endif %}
+
+
+        </div>
+
+
+
+    {% include '@SERCOMApp/Pagination/pagination.html.twig' %}
+
+
 
 
 {% endblock %}

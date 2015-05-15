@@ -8,7 +8,11 @@ sercom_members_infos:
 
 sercom_members_listmembres:
     pattern:  /members/membres/{page}
-    defaults: { _controller: SERCOMAppBundle:Members:listemembres }
+    defaults: { _controller: SERCOMAppBundle:Members:listemembres, page:1 }
+
+sercom_members_listmembres_voir:
+    pattern:  /members/membres/voir/{id}
+    defaults: { _controller: SERCOMAppBundle:Members:voir }
 
 sercom_members_docs:
     pattern:  /members/docs
