@@ -44,9 +44,9 @@ class AdminClasseController extends Controller {
                     $search = $data{'search'};
                     $persons = null;
                     $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:Classe');
-                    $persons = $rep->search($search);
+                    $classes = $rep->search($search);
                     $form = $this->createForm(new MemberSearchType());
-                    return $this->render('SERCOMAppBundle:AdminEtudiant:searchresult.html.twig', array('persons' => $persons, 'form' => $form->createView()));
+                    return $this->render('SERCOMAppBundle:AdminClasse:searchresult.html.twig', array('classes' => $classes, 'form' => $form->createView()));
                 }
 
                 return $this->render('@SERCOMApp/AdminClasse/index.html.twig', array('pagination' => $pagination, 'classes' => $classes, 'form' => $form->createView()));

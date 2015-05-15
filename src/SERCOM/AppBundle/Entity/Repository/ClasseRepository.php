@@ -27,26 +27,17 @@ class ClasseRepository extends EntityRepository{
         return $query->getSingleScalarResult();
     }
 
+
     public function search($search){
-        $query1 = $this->_em->createQuery('SELECT DISTINCT p FROM SERCOMAppBundle:Student p JOIN p.person m WHERE m.lastname LIKE ?1 ')
-            ->setParameter(1, '%'.$search.'%');
 
-        $query2 = $this->_em->createQuery('SELECT DISTINCT p FROM SERCOMAppBundle:Student p JOIN p.person m WHERE  m.firstname LIKE ?1 ')
-            ->setParameter(1, '%'.$search.'%');
+        $query = $this->_em->createQueryBuilder()->select('c')
+            ->from('SERCOMAppBundle:Classe','c')
+            ->join('c.teacher','t')
+            ->join('t.person','p')
+            ->where('p.lastname LIKE ?1 OR p.firstname LIKE ?2 AND t.actif = 1 OR c.name LIKE ?3')
+            ->groupBy('p')
+            ->setParameters(array(1 => '%'.$search.'%' , 2 => '%'.$search.'%',  3 => '%'.$search.'%' ));
 
-
-        $res = array();
-        foreach ( $query1->getResult() as $p){
-            if ( !in_array($p, $res)){
-                array_push($res, $p);
-            }
-        }
-        foreach ( $query2->getResult() as $p){
-            if ( !in_array($p, $res)){
-                array_push($res, $p);
-            }
-        }
-
-        return $res;
+        return $query->getQuery()->getResult();
     }
 }

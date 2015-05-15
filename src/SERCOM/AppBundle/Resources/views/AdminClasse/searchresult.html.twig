@@ -40,20 +40,24 @@
                 <td> Professeur </td>
                 <td> Matière </td>
                 <td> Nbre étudiants </td>
-
+                <td> Actions</td>
             </tr>
             </thead>
             <tbody>
             {% for c in classes %}
                 <tr>
-                    <td></td>
-                    <td> </td>
-                    <td> </td>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.teacher.person.lastname }} {{ c.teacher.person.firstname }} </td>
+                    <td>{{ c.suject.name }} </td>
+                    <td> {{ c.students|length }}</td>
 
 
                     <td>
-                        <a href=""><i class="fa fa-gear fa-2x"></i></a>
+                        <a href="{{ path('sercom_admin_modify_classe', {'id': c.classeid}) }}"><i class="fa fa-gear fa-2x"></i></a>
+                        <a href="{{ path('sercom_admin_del_classes', {'id': c.classeid}) }}" title="Supprimer" onClick="return confirm('Confirmer suppression')"><i class="fa fa-trash fa-2x"></i></a>
                     </td>
+
+
 
                 </tr>
             {% endfor %}

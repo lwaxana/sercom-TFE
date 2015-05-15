@@ -53,7 +53,7 @@ class AdminProfController extends Controller {
         if ( $form->isValid()){
             $em = $this->getDoctrine()->getManager();
             foreach( $teacher->getSubjects() as $s){
-                $teacher->addSubject($s);
+                $s->addTeacher($teacher);
             }
             $em->persist($teacher);
             $em->flush();
