@@ -33,9 +33,10 @@ class TeacherRepository extends EntityRepository{
                             ->from('SERCOMAppBundle:Teacher','t')
                             ->join('t.person','p')
                             ->join('t.classes','c')
-                            ->where('p.lastname LIKE ?1 OR p.firstname LIKE ?2 OR c.name LIKE ?3 AND t.actif = 1')
+                            ->join('c.suject','s')
+                            ->where('p.lastname LIKE ?1 OR p.firstname LIKE ?2 OR c.name LIKE ?3 AND t.actif = 1 OR s.name LIKE ?4')
                             ->groupBy('t')
-                            ->setParameters(array(1 => '%'.$search.'%' , 2 => '%'.$search.'%', 3 => '%'.$search.'%'));
+                            ->setParameters(array(1 => '%'.$search.'%' , 2 => '%'.$search.'%', 3 => '%'.$search.'%', 4 => '%'.$search.'%' ));
 
         return $query->getQuery()->getResult();
     }
