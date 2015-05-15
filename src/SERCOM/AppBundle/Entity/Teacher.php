@@ -84,9 +84,12 @@ class Teacher
      */
     public function addSubject(\SERCOM\AppBundle\Entity\Subject $subjects)
     {
-        $this->subjects[] = $subjects;
+        if ($this->subjects->contains($subjects)) {
+            return;
+        }
 
-        return $this;
+        $this->subjects->add($subjects);
+        $subjects->addTeacher($this);
     }
 
     /**
@@ -96,7 +99,12 @@ class Teacher
      */
     public function removeSubject(\SERCOM\AppBundle\Entity\Subject $subjects)
     {
+        if (!$this->subjects->contains($subjects)) {
+            return;
+        }
+
         $this->subjects->removeElement($subjects);
+        $subjects->removeTag($this);
     }
 
     /**

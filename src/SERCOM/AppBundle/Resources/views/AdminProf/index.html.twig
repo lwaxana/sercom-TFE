@@ -60,7 +60,8 @@
                        {% endif %}
                     </td>
                     <td>
-                        <a href=""><i class="fa fa-eye fa-2x"></i></a>
+                        <a href="{{ path('sercom_admin_teachers_voir',{'id': p.person.personid}) }}" title="Voir infos"><i class="fa fa-eye fa-2x"></i></a>
+                        <a href="{{ path('sercom_admin_teachers_modifier', {'id': p.person.personid }) }}" title="Modifier"><i class="fa fa-gear fa-2x"></i></a>
                     </td>
 
                 </tr>

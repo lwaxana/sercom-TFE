@@ -9,6 +9,8 @@
 namespace SERCOM\AppBundle\Controller;
 
 
+use SERCOM\AppBundle\Entity\Teacher;
+use SERCOM\AppBundle\Form\TeacherType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use SERCOM\AppBundle\Form\MemberSearchType;
@@ -41,7 +43,24 @@ class AdminProfController extends Controller {
         return $this->render('SERCOMAppBundle:AdminProf:index.html.twig', array('persons' => $persons, 'pagination' => $pagination, 'form' => $form->createView()));
     }
 
+    public function voirAction(Teacher $teacher){
+        return $this->render('@SERCOMApp/AdminProf/voir.html.twig', array('teacher' => $teacher));
+    }
 
+    public function modifierAction(Teacher $teacher, Request $request){
+        $form = $this->createForm(new TeacherType(), $teacher)->add('save','submit');
+        $form->handleRequest($request);
+        if ( $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            foreach( $teacher->getSubjects() as $s){
+                $teacher->addSubject($s);
+            }
+            $em->persist($teacher);
+            $em->flush();
+            return $this->redirect($this->generateUrl('sercom_admin_teachers'));
+        }
+        return $this->render('@SERCOMApp/AdminProf/modify.html.twig', array('form' => $form->createView()));
+    }
 
 
 

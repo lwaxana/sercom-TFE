@@ -16,7 +16,7 @@ class TeacherType extends AbstractType
     {
         $builder
 
-            ->add('person')
+            ->remove('person')
             ->add('subjects','entity', array('class' => 'SERCOMAppBundle:Subject', 'multiple' => true, 'expanded' => true, 'property' => 'name'))
         ;
     }

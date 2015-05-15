@@ -13,9 +13,13 @@ sercom_admin_teachers:
     pattern:  /admin/teachers
     defaults: { _controller: SERCOMAppBundle:AdminProf:index, page:1 }
 
-sercom_admin_teachers_modifier_classe:
+sercom_admin_teachers_modifier:
     pattern:  /admin/teachers/modifier/{id}
     defaults: { _controller: SERCOMAppBundle:AdminProf:modifier }
+
+sercom_admin_teachers_voir:
+    pattern:  /admin/teachers/voir/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminProf:voir }
 
 
 

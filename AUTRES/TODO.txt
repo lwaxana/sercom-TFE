@@ -20,9 +20,9 @@
     -> course place
 
 
--> ADMIN PROF :  see + AJOUTER MATIERES + SEARCH MATIERE
+-> ADMIN PROF :  AJOUTER MATIERES + SEARCH MATIERE
 -> ADMIN CLASSE : -> SEARCH
--> AGENDA CLASSE: -> modifier event
+-> AGENDA CLASSE: -> modifier event -> add btn retour
 
 
 -> CSS FORMS ....
