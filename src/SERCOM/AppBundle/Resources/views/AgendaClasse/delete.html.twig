@@ -28,7 +28,9 @@
                         <td>{{ cours.classe.name }}</td>
                         <td>{{ cours.courseplace.name }} </td>
                         <td>{{ cours.datecours|date('Y-m-d H:i') }}</td>
-                        <td></td>
+                        <td>
+                            <a href="{{ path('sercom_admin_agenda_classe_event_del2', {'id':cours.planningid}) }}" title="Supprimer" onClick="return confirm('Confirmer suppression')"><i class="fa fa-trash fa-2x"></i></a>
+                        </td>
                     </tr>
                 {% endfor %}
             {% else %}

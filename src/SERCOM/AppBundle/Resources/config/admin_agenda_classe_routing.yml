@@ -1,0 +1,31 @@
+sercom_admin_agenda_classes:
+    pattern:  /admin/agendaclasses
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:index }
+
+sercom_admin_agenda_classe_places:
+    pattern:  /admin/agendaclasses/lieux
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:places }
+
+sercom_admin_agenda_classe_places_add:
+    pattern:  /admin/agendaclasses/lieux/add
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:addplaces }
+
+sercom_admin_agenda_classe_places_modify:
+    pattern:  /admin/agendaclasses/lieux/modify/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:modifyplaces }
+
+sercom_admin_agenda_classe_calendar:
+    pattern:  /admin/agendaclasses/calendar
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:calendar }
+    requirements:
+        _method: GET
+
+sercom_admin_agenda_classe_places_del:
+    pattern:  /admin/agendaclasses/lieux/delete/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:delplace }
+
+sercom_admin_agenda_classe_event:
+    pattern:  /admin/agendaclasses/event
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:event }
+    requirements:
+        _method: GET

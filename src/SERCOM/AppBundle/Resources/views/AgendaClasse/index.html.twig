@@ -227,8 +227,8 @@
 
                 var date_cal = new Date(date);
                 var now = new Date();
+                now = new Date( now.getFullYear() , now.getMonth(), now.getDate() );
                 if ( date_cal >= now ){
-
                     var d = new Date(date);
                     $('#sercom_appbundle_courseplanning_datecours_date_day').val(d.getDate());
                     $('#sercom_appbundle_courseplanning_datecours_date_month').val(d.getMonth()+1);

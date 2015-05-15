@@ -112,6 +112,13 @@ class AdminAgendaClasseController extends Controller {
         return $this->render('@SERCOMApp/AgendaClasse/delete.html.twig', array('courses' => $cours));
     }
 
+    public function deleteEventsAction(CoursePlanning $planning){
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($planning);
+        $em->flush();
+        return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_event_del'));
+    }
+
 
 
 
