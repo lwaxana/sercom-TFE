@@ -17,20 +17,29 @@ use SERCOM\AppBundle\Form\CoursePlanningType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class AdminAgendaClasseController extends Controller {
 
     public function indexAction(Request $request){
-        $planning = new CoursePlanning();
-        $form = $this->createForm(new CoursePlanningType(), $planning);
-        $form->handleRequest($request);
-        if ( $form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($planning);
-            $em->flush();
-            return $this->redirect($this->generateUrl('sercom_admin_agenda_classes'));
+        $person = $this->get('security.context')->getToken()->getUser();
+        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
+            $planning = new CoursePlanning();
+            $form = $this->createForm(new CoursePlanningType(), $planning);
+            $form->handleRequest($request);
+            if ( $form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($planning);
+                $em->flush();
+                return $this->redirect($this->generateUrl('sercom_admin_agenda_classes'));
+            }
+            return $this->render('@SERCOMApp/AgendaClasse/index.html.twig', array('form' => $form->createView()));
         }
-        return $this->render('@SERCOMApp/AgendaClasse/index.html.twig', array('form' => $form->createView()));
+        else{
+            throw new AccessDeniedException();
+        }
+
     }
 
 
@@ -51,43 +60,82 @@ class AdminAgendaClasseController extends Controller {
     }
 
     public function placesAction(){
-        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:CoursePlace');
-        $lieux = $rep->findAll();
-        return $this->render('@SERCOMApp/AgendaClasse/lieuxdecours.html.twig', array('lieux' => $lieux));
+        $person = $this->get('security.context')->getToken()->getUser();
+        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
+            $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:CoursePlace');
+            $lieux = $rep->findAll();
+            return $this->render('@SERCOMApp/AgendaClasse/lieuxdecours.html.twig', array('lieux' => $lieux));
+        }
+        else{
+            throw new AccessDeniedException();
+        }
+
     }
 
     public function addplacesAction(Request $request){
-        $lieu = new CoursePlace();
-        $form = $this->createForm( new CoursePlaceType(), $lieu);
-        $form->handleRequest($request);
-        if ( $form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($lieu);
-            $em->flush();
-            return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
+        $person = $this->get('security.context')->getToken()->getUser();
+        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
+            $lieu = new CoursePlace();
+            $form = $this->createForm( new CoursePlaceType(), $lieu);
+            $form->handleRequest($request);
+            if ( $form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($lieu);
+                $em->flush();
+                return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
 
+            }
+            return $this->render('@SERCOMApp/AgendaClasse/addlieu.html.twig', array('form' => $form->createView()));
         }
-        return $this->render('@SERCOMApp/AgendaClasse/addlieu.html.twig', array('form' => $form->createView()));
+        else{
+            throw new AccessDeniedException();
+        }
+
     }
 
     public function modifyplacesAction(CoursePlace $place, Request $request){
-        $form = $this->createForm( new CoursePlaceType(), $place);
-        $form->handleRequest($request);
-        if ( $form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($place);
-            $em->flush();
-            return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
+        $person = $this->get('security.context')->getToken()->getUser();
+        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
+            if ( !empty($place)){
+                $form = $this->createForm( new CoursePlaceType(), $place);
+                $form->handleRequest($request);
+                if ( $form->isValid()){
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($place);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
 
+                }
+                return $this->render('@SERCOMApp/AgendaClasse/addlieu.html.twig', array('form' => $form->createView()));
+            }
+            else{
+                throw new NotFoundHttpException();
+            }
         }
-        return $this->render('@SERCOMApp/AgendaClasse/addlieu.html.twig', array('form' => $form->createView()));
+        else{
+            throw new AccessDeniedException();
+        }
+
     }
 
     public function delplaceAction(CoursePlace $place){
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($place);
-        $em->flush();
-        return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
+        $person = $this->get('security.context')->getToken()->getUser();
+        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
+            if ( !empty($place)){
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($place);
+                $em->flush();
+                return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
+            }
+            else{
+                throw new NotFoundHttpException();
+            }
+        }
+        else{
+            throw new AccessDeniedException();
+        }
+
+
     }
 
     public function eventAction(Request $request){
@@ -107,28 +155,59 @@ class AdminAgendaClasseController extends Controller {
     }
 
     public function actionEventsAction(){
-        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:CoursePlanning');
-        $cours = $rep->findAll(array(), array('datecours' => 'ASC'));
-        return $this->render('@SERCOMApp/AgendaClasse/gerer.html.twig', array('courses' => $cours));
+        $person = $this->get('security.context')->getToken()->getUser();
+        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
+            $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:CoursePlanning');
+            $cours = $rep->findAll(array(), array('datecours' => 'ASC'));
+            return $this->render('@SERCOMApp/AgendaClasse/gerer.html.twig', array('courses' => $cours));
+        }
+        else{
+            throw new AccessDeniedException();
+        }
+
     }
 
     public function deleteEventsAction(CoursePlanning $planning){
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($planning);
-        $em->flush();
-        return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_event_del'));
+        $person = $this->get('security.context')->getToken()->getUser();
+        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
+            if ( !empty($planning)){
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($planning);
+                $em->flush();
+                return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_event_del'));
+            }
+            else{
+                throw new NotFoundHttpException();
+            }
+        }
+        else{
+            throw new AccessDeniedException();
+        }
+
     }
 
     public function modifyEventsAction(CoursePlanning $planning, Request $request){
-        $form = $this->createForm(new CoursePlanningType(), $planning);
-        $form->handleRequest($request);
-        if ( $form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($planning);
-            $em->flush();
-            return $this->redirect($this->generateUrl('sercom_admin_agenda_classes'));
+        $person = $this->get('security.context')->getToken()->getUser();
+        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
+            if ( !empty($planning)){
+                $form = $this->createForm(new CoursePlanningType(), $planning);
+                $form->handleRequest($request);
+                if ( $form->isValid()){
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($planning);
+                    $em->flush();
+                    return $this->redirect($this->generateUrl('sercom_admin_agenda_classes'));
+                }
+                return $this->render('@SERCOMApp/AgendaClasse/modify.html.twig', array('form' => $form->createView()));
+            }
+            else{
+                throw new NotFoundHttpException();
+            }
         }
-        return $this->render('@SERCOMApp/AgendaClasse/modify.html.twig', array('form' => $form->createView()));
+        else{
+            throw new AccessDeniedException();
+        }
+
     }
 
 
