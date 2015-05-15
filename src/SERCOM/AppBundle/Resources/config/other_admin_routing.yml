@@ -40,4 +40,8 @@ sercom_admin_agenda_classe_event:
     requirements:
         _method: GET
 
+sercom_admin_agenda_classe_event_del:
+    pattern:  /admin/agendaclasses/event/delete
+    defaults: { _controller: SERCOMAppBundle:AdminAgendaClasse:delevents }
+
 

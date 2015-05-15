@@ -1,0 +1,54 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block titre %}
+    <title>Administration - Lieux de cours</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_admin') }}"> Administration </a> / Supprimer évènements</div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <td> Nom du cours </td>
+                <td> Adresse </td>
+                <td> Date</td>
+                <td> Actions </td>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% if courses is not empty  %}
+                {% for cours in courses %}
+
+                    <tr>
+                        <td>{{ cours.classe.name }}</td>
+                        <td>{{ cours.courseplace.name }} </td>
+                        <td>{{ cours.datecours|date('Y-m-d H:i') }}</td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <td> Pas de cours enregistrés</td>
+                <td></td>
+                <td></td>
+            {% endif %}
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-3">
+                <a href="{{ path('sercom_admin_agenda_classes') }}" class="btn-block btn-warning btn">Retour</a>
+            </div>
+        </div>
+
+
+
+    </div>
+
+{% endblock %}
+

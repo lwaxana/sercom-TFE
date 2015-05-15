@@ -93,7 +93,6 @@ class AdminAgendaClasseController extends Controller {
     public function eventAction(Request $request){
 
         if (  $request->isXmlHttpRequest()){
-
             $title = $request->query->get('title');
             $time = $request->query->get('time');
             $d = new \DateTime($time);
@@ -105,6 +104,12 @@ class AdminAgendaClasseController extends Controller {
                 'prof' => $data->getClasse()->getTeacher()->getPerson()->getLastname()." ".$data->getClasse()->getTeacher()->getPerson()->getFirstname() );
            return new JsonResponse($datas2);
         }
+    }
+
+    public function delEventsAction(){
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:CoursePlanning');
+        $cours = $rep->findAll(array(), array('datecours' => 'ASC'));
+        return $this->render('@SERCOMApp/AgendaClasse/delete.html.twig', array('courses' => $cours));
     }
 
 
