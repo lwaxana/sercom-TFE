@@ -1,0 +1,137 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/jquery.datetimepicker.css') }}"/>
+    <script type="text/javascript" src="{{ asset('bundles/AppBundle/js/jquery.datetimepicker.js') }}"></script>
+{% endblock%}
+{% block titre %}
+    <title> Ajouter un évenement</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_members_agenda') }}">Agenda</a> / Ajouter un évènement</div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Nouvel évènement</div>
+                <div class="panel-body">
+                    {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.name, "Nom de l'évènement :", {'label_attr': {'class': 'col-sm-3 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.name) }}
+                        <div class="col-sm-8">
+                            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.description, "Description de l'évènement :", {'label_attr': {'class': 'col-sm-3 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.description) }}
+                        <div class="col-sm-8">
+                            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.dateproposals, "Dates :", {'label_attr': {'class': 'col-sm-3 control-label', 'require':'true'}}) }}
+
+                        <div class="col-sm-6">
+
+                            <ul class="tags" data-prototype="{{ form_widget(form.dateproposals.vars.prototype)|e }}" style="list-style-type: none;">
+                                {{ form_row(form.dateproposals) }}
+                            </ul>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-sm btn-block'}, 'label':'Enregistrer' }) }}
+        </div>
+        <div class="col-md-3">
+            <a href="{{ path('sercom_members_agenda') }}" class="btn btn-warning btn-sm btn-block">Retour sans sauver </a>
+        </div>
+
+    </div>
+
+
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+
+
+        var collectionHolder = $('ul.tags');
+
+        // ajoute un lien « add a tag »
+        var $addTagLink = $('<a href="#" class="add_tag_link btn-sm btn-primary">Ajouter une date</a>');
+        var $newLinkLi = $('<li></li>').append($addTagLink);
+
+
+
+        $(document).ready(function() {
+            // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+            collectionHolder.find('li').each(function() {
+                addTagFormDeleteLink($(this));
+            });
+
+            collectionHolder.append($newLinkLi);
+
+            $addTagLink.on('click', function(e) {
+                // empêche le lien de créer un « # » dans l'URL
+                e.preventDefault();
+                // ajoute un nouveau formulaire tag (voir le prochain bloc de code)
+                addTagForm(collectionHolder, $newLinkLi);
+
+                $("#sercom_appbundle_event2_dateproposals_"+ (collectionHolder.children().length -1 ) +"_datehour").datetimepicker();
+
+            });
+
+            function addTagForm(collectionHolder, $newLinkLi) {
+                // Récupère l'élément ayant l'attribut data-prototype comme expliqué plus tôt
+                var prototype = collectionHolder.attr('data-prototype');
+
+                // Remplace '__name__' dans le HTML du prototype par un nombre basé sur
+                // la longueur de la collection courante
+                var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
+
+                console.log(newForm);
+                // Affiche le formulaire dans la page dans un li, avant le lien "ajouter un tag"
+                var $newFormLi = $('<li></li>').append(newForm);
+
+                $newLinkLi.before($newFormLi);
+                addTagFormDeleteLink($newFormLi);
+
+
+            }
+
+            function addTagFormDeleteLink($tagFormLi) {
+                var $removeFormA = $('<a href="#" class="btn btn-sm btn-danger">Supprimer cette date</a>');
+                $tagFormLi.append($removeFormA);
+                $removeFormA.on('click', function(e) {
+                    // empêche le lien de créer un « # » dans l'URL
+                    e.preventDefault();
+                    // supprime l'élément li pour le formulaire de tag
+                    $tagFormLi.remove();
+                });}
+        });
+
+
+
+    </script>
+{% endblock %}

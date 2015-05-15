@@ -1,0 +1,116 @@
+{% extends 'SERCOMAppBundle:Forum:forumtopics.html.twig' %}
+
+{% block titre %}
+    {% set moderator = false %}
+    {% for group in  app.user.sitegroups %}
+        {% if group.name == 'MODERATION_FORUM' %}
+            {% set moderator = true %}
+        {% endif %}
+    {% endfor %}
+
+    {% if moderator and app.user.personid != post.member.person.personid %}
+        <title> Moderation post </title>
+    {% else %}
+        <title> Edition post </title>
+    {% endif %}
+{% endblock %}
+
+{% block style %}
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+    <script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+
+{% endblock %}
+
+{% block well %}
+    {% set moderator = false %}
+    {% for group in  app.user.sitegroups %}
+        {% if group.name == 'MODERATION_FORUM' %}
+            {% set moderator = true %}
+        {% endif %}
+    {% endfor %}
+    {% if moderator and app.user.personid != post.member.person.personid %}
+        <div class="well">Moderation du post</div>
+    {% else %}
+        <div class="well">Edition du post</div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+
+    <br/>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Editer la réponse</div>
+        <div class="panel-body">
+            {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+            {{ form_errors(form) }}
+            <div class="form-group">
+                {{ form_widget(form.post_content, {'attr': {'class': 'form-control'}}) }}
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-2"></div>
+                <div class="col-sm-4">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}, 'label':'Enregistrer'}) }}
+                </div>
+                <div class="col-sm-4">
+                    <a href="{{ path('sercom_members_forum_posts', {'forum':post.forumtopic.forum.forumid, 'topic':post.forumtopic.topicid} ) }}" class="btn btn-warning btn-md btn-block"> Retour </a>
+                </div>
+            </div>
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+
+        </div></div>
+    <script>
+        tinymce.init({
+            menubar : false,
+            selector: 'textarea',
+            theme: "modern",
+
+            height: 200,
+            theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
+            font_size_style_values: "12px,13px,14px,16px,18px,20px",
+            plugins: [
+                "emoticons textcolor"
+            ],
+
+            toolbar: "bold italic underline |  forecolor  emoticons sizeselect | fontsizeselect" ,
+            style_formats: [
+                {title: 'Bold text', inline: 'b'},
+                {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                {title: 'Example 1', inline: 'span', classes: 'example1'},
+                {title: 'Example 2', inline: 'span', classes: 'example2'},
+                {title: 'Table styles'},
+                {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+            ]
+        });
+
+    </script>
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $("#topbar-container").dropdown();
+
+        });
+
+        $("body").bind("click", function (e) {
+            $('.dropdown-toggle, .menu').parent("li").removeClass("open");
+        });
+
+        $(".dropdown-toggle, .menu").click(function (e) {
+            var $li = $(this).parent("li").toggleClass('open');
+            return false;
+        });
+
+        $(window).load(function() {
+            tinymce.activeEditor.setContent("{{ post.postcontent|raw }}");
+        });
+    </script>
+{% endblock %}

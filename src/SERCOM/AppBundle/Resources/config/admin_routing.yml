@@ -1,0 +1,56 @@
+sercom_app_members_admin_forum:
+    resource: "admin_forum_routing.yml"
+    prefix: /admin/forum
+
+sercom_app_members_admin_users:
+    resource: "admin_users_routing.yml"
+    prefix: /admin/users
+
+sercom_app_members_admin_docs:
+    resource: "admin_docs_routing.yml"
+    prefix: /admin/documents
+
+sercom_app_members_admin_article:
+    resource: "admin_article_routing.yml"
+    prefix: /admin/articles
+
+sercom_admin:
+    pattern:  /admin
+    defaults: { _controller: SERCOMAppBundle:Admin:index }
+
+sercom_admin_valider_inscription:
+    pattern:  /admin/inscription/valider/{page}
+    defaults: { _controller: SERCOMAppBundle:Admin:validerinscription, page:1 }
+
+sercom_admin_valider_actions:
+     pattern:  /admin/inscription/valider/voir/{id}
+     defaults: { _controller: SERCOMAppBundle:Admin:voir }
+
+
+sercom_admin_valider_actions_supprimer:
+     pattern:  /admin/inscription/valider/delete/{id}
+     defaults: { _controller: SERCOMAppBundle:Admin:delete }
+     requirements:
+         id: \d+
+
+sercom_admin_valider_actions_valider:
+     pattern:  /admin/inscription/valider/valid/{id}
+     defaults: { _controller: SERCOMAppBundle:Admin:valider }
+     requirements:
+         id: \d+
+
+sercom_admin_valider_actions_modify:
+     pattern:  /admin/inscription/valider/modify/{id}
+     defaults: { _controller: SERCOMAppBundle:Admin:modify }
+     requirements:
+         id: \d+
+
+sercom_admin_agenda_voir:
+     pattern:  /admin/agenda
+     defaults: { _controller: SERCOMAppBundle:AdminAgenda:adminAgenda }
+
+sercom_admin_agenda_delete:
+     pattern:  /admin/agenda/delete/{id}
+     defaults: { _controller: SERCOMAppBundle:AdminAgenda:adminAgendadelete }
+     requirements:
+         id: \d+

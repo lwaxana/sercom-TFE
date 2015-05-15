@@ -1,0 +1,100 @@
+{% extends '@SERCOMApp/Members/index.html.twig' %}
+
+
+{% block titre %}
+   <title>Messages  </title>
+{% endblock %}
+
+
+
+{% block well %}
+    <div class="well"> Messages </div>
+{% endblock %}
+
+{% block body %}
+
+        <div class="row">
+            <div class="col-sm-4 col-md-2 sidebar">
+                <div class="list-group">
+                    <a href="{{ path('sercom_member_mail_index') }}" class="list-group-item active">Messages reçus </a>
+                    <a href="{{ path('sercom_member_mail_receive') }}" class="list-group-item">Messages envoyés </a>
+                    <a href="{{ path('sercom_member_mail_new_mail') }}" class="list-group-item ">Nouveau message </a>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="panel panel-primary" style="height: 500px;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Messages reçus</h3>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-condensed" >
+                            <thead>
+                                <tr >
+                                    <th class="col-md-1"><i class="fa fa-paperclip"></i></th>
+                                    <th class="col-md-7">Sujet</th>
+                                    <th class="col-md-2">Expéditeur</th>
+                                    <th class="col-md-2">Date</th>
+                                    <th class="col-md-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                 {% if msg is not empty  %}
+                                    {% for m in msg %}
+                                            <tr onclick="nav('{{ path('sercom_member_mail_voir_mail', {'id': m.receiveid}) }}');" style="cursor: pointer; cursor: hand;">
+                                                {% if m.privatemessages.attachements is not empty %}
+                                                    <td><i class="fa fa-paperclip" style="color: blue;"></i> </td>
+                                                {% else %}
+                                                    <td></td>
+                                                {% endif %}
+                                                {% if not m.readmessage %}
+                                                    <td><b>{{ m.privatemessages.subject }}</b></td>
+                                                    <td><b>{{ m.privatemessages.sender.person.lastname }} {{ m.privatemessages.sender.person.firstname }}</b></td>
+                                                    <td><b>{{ m.privatemessages.datemessage|date('d-m-Y') }} {{ m.privatemessages.datemessage|date('H:i') }}</b></td>
+                                                {% else %}
+                                                    <td>{{ m.privatemessages.subject }}</td>
+                                                    <td>{{ m.privatemessages.sender.person.lastname }} {{ m.privatemessages.sender.person.firstname }}</td>
+                                                    <td>{{ m.privatemessages.datemessage|date('d-m-Y') }} {{ m.privatemessages.datemessage|date('H:i') }}</td>
+                                                {% endif %}
+                                                 <td><a href="{{ path('sercom_member_mail_delete_mail', {'id':m.receiveid}) }}" onClick="return confirm('Effacer ce message ?')"><i class="fa fa-trash"></i></a></td>
+                                            </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td></td>
+                                        <td>Pas de messages</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                                {% endif %}
+                                    <tr>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        function nav(theUrl)
+        {
+            document.location.href = theUrl;
+        }
+
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+    </script>
+
+{% endblock %}

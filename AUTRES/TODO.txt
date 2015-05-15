@@ -1,0 +1,36 @@
+
+-> Calendrier event
+-> PASSWORD LOST ( REGEN ACTIV CODE + ENVOI MAIL + PAGE CHANGEEMENT PWD )
+
+-> REFAIRE TRY/CATCH
+
+-> ZONE STUDENT
+-> ZONE PROF
+-> HOME MEMBRE
+
+
+-> TEST DROITS ADMIN ETUDIANTS, PROF, CLASSE, PLANNING CLASSE ( FIREWALLS OK )
+
+-> 11) FRONT WEB
+-> 13) GERER LES ERREURS( mail controller + admin prof/stu/class)
+
+-> ANNOTATIONS ASSERT à FAIRE :
+    -> ATTACHEMENT ( FILE )
+    -> CHAMP TEL PERSON
+    -> course place
+
+-> ADMIN STUDENT : see
+-> ADMIN PROF :  see + AJOUTER MATIERES + SEARCH MATIERE
+-> ADMIN CLASSE : -> SEARCH
+-> AGENDA CLASSE: -> modifier event
+
+
+-> CSS FORMS ....
+-> WELLS
+-> FOOTER
+
+
+
+
+
+

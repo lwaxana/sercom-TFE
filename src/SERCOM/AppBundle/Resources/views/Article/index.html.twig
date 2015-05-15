@@ -1,0 +1,102 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+
+{% block titre %}
+    <title>Article</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> Articles </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Ajouter un article</div>
+        <div class="panel-body">
+            <a href="{{ path('sercom_members_article_add') }}" class="btn btn-primary">Créer un article</a>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Articles non-soumis</div>
+        <div class="panel-body">
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td> Titre</td>
+                        <td> Section </td>
+                        <td> Actions</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if articles is not empty %}
+                        {% for article in articles %}
+                            <tr>
+                                <td>{{ article.title }}</td>
+                                <td>{{ article.sitesection.name }}</td>
+                                <td>
+                                    <a href="{{ path('sercom_members_article_view', {'id':article.articleid}) }}" target="_blank"><i class="fa fa-eye fa-2x" title="Aperçu"></i></a>
+                                    <a href="{{ path('sercom_members_article_modify', {'id':article.articleid}) }}"><i class="fa fa-pencil-square-o fa-2x" title="Modifier"></i></a>
+                                    <a href="{{ path('sercom_members_article_submit', {'id':article.articleid}) }}"><i class="fa fa-check-square-o fa-2x" title="Soumettre"></i></a>
+                                    <a href="{{ path('sercom_members_article_delete', {'id':article.articleid}) }}" onClick="return confirm('Effacer cet article ?')"><i class="fa fa-trash fa-2x" title="Effacer"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td>Pas d'articles</td><td></td><td></td><td></td>
+                        </tr>
+                    {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Articles soumis</div>
+        <div class="panel-body">
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <td> Titre</td>
+                        <td> Section </td>
+                        <td> Date soumission</td>
+                        <td> Publié </td>
+                        <td> Date publication</td>
+                        <td> Actions</td>
+                    </tr>
+
+                </thead>
+                <tbody>
+                     {% if articlesoumis is not empty %}
+                        {% for article in articlesoumis %}
+                            <tr>
+                                <td>{{ article.title }}</td>
+                                <td>{{ article.sitesection.name }}</td>
+                                <td>{{ article.submitDate|date('d-m-Y') }}</td>
+                                {% if article.publish == false %}
+                                    <td> <input type="checkbox" disabled /></td>
+                                    <td></td>
+                                {% else %}
+                                    <td> <input type="checkbox" disabled checked/> </td>
+                                    <td> {{ article.publishDate|date('d-m-Y') }}</td>
+                                {% endif %}
+
+                                <td></td>
+                            </tr>
+                        {% endfor %}
+                     {% else %}
+                         <td> Pas d'articles</td>
+                         <td></td><td></td><td></td><td></td><td></td>
+                     {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+

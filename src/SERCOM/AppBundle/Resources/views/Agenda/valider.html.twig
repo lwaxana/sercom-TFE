@@ -1,0 +1,84 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block titre %}
+    <title>Agenda</title>
+{% endblock %}
+
+{% block well %}
+    <br/>
+    <div class="well"> <a href="{{ path('sercom_members_agenda') }}">Agenda</a> / {{ event.name }} / Choisir mes dates</div>
+    <br/>
+{% endblock %}
+
+{% block body %}
+<br/>
+
+    <table class="table table-hover">
+    <thead>
+        <tr>
+            <td>  </td>
+            {% for date in dates %}
+                <td>
+                    {{ date.getDateHour|date('d-m') }}
+                    <br/>
+                    {{ date.getDateHour|date('H:i') }}
+                </td>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for member in members %}
+            <tr>
+                <td>{{ member.person.firstname }} {{ member.person.lastname }}</td>
+                {% for date in dates %}
+                    {% if date in member.dateproposals %}
+                        <td><input type="checkbox" checked disabled/></td>
+                    {% else %}
+                        <td><input type="checkbox" disabled/></td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Valider évènement</div>
+                <div class="panel-body">
+                    {{ form_start(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.datehour, "Choisir une date :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.datehour) }}
+                        <div class="col-sm-4">
+                            {{ form_widget(form.datehour, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.valid, "Valider  :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.valid) }}
+                        <div class="col-sm-1">
+                            {{ form_widget(form.valid, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-3">
+            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-sm btn-block'}, 'label':'Enregistrer' }) }}
+        </div>
+        <div class="col-md-3">
+            <a href="{{ path('sercom_members_agenda') }}" class="btn btn-warning btn-sm btn-block">Retour sans sauver </a>
+        </div>
+
+    </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}

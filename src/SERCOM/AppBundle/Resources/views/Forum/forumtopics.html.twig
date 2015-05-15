@@ -1,0 +1,245 @@
+{% extends 'SERCOMAppBundle:Forum:index.html.twig' %}
+
+{% block titre %}
+    <title> {{  forum.name }} </title>
+{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+{% endblock %}
+
+{% block well %}
+    <br/>
+    <div class="well"><i class="fa fa-home fa-lg"></i>&nbsp;<a href="{{ path('sercom_members_forum') }}"> Index du forum</a> </div>
+    <br/>
+{% endblock %}
+
+{% block body %}
+
+    {% set moderator = false %}
+    {% for group in  app.user.sitegroups %}
+        {% if group.name == 'MODERATION_FORUM' or group.name == "ROLE_PRESIDENT" or group.name=="ADMIN_FORUM" %}
+            {% set moderator = true %}
+        {% endif %}
+    {% endfor %}
+
+        <div class="page-header">
+        <h1>{{  forum.name }} <small>{{ forum.description }}</small></h1>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <a href="{{ path('sercom_members_forum_add_topic', {'forum':forum.forumid }) }}" class="btn btn-primary btn-sm">Nouveau sujet &nbsp;<i class="fa fa-plus fa-lg"></i></a>
+        </div>
+    </div>
+    <br/>
+    <table class="table">
+        <thead class="primary">
+        <tr>
+            <th class='col-md-2 success'> Annonces</th>
+            <th class='col-md-2 success'>Réponses</th>
+            <th class='col-md-6 success'>Dernier message</th>
+            {% if moderator %}
+            <th class='col-md-1 success'>Actions</th>
+            {% endif %}
+        </tr>
+        </thead>
+
+            {% if posts_p1 is not empty %}
+            {% for post in posts_p1 %}
+                    <tbody>
+                    <tr>
+                        <td class='col-md-7' >
+                            <i class="fa fa-bullhorn fa-lg"></i> &nbsp;&nbsp;&nbsp;
+                            {% if post.forumtopic.locked %}
+                                <i class="fa fa-lock fa-lg" style="color: red;"></i>
+                            {% endif %}
+                            <a href="{{ path('sercom_members_forum_posts', {'forum':forum.forumid, 'topic':post.forumtopic.topicid, 'page':1 })  }}">
+                                {{ post.forumtopic.title|length > 50 ? post.forumtopic.title|slice(0,50) ~ '...' : post.forumtopic.title}} </a>
+                            <br/>
+                            par  {{post.forumtopic.member.person.firstname }}&nbsp;{{post.forumtopic.member.person.lastname }} &gt;&gt; {{post.forumtopic.datetopic|date('d-m-Y')}} à
+                            {{post.forumtopic.datetopic|date('H:i:s')}}
+                        </td>
+                        <td class='col-md-1'>
+                            {{ post.forumtopic.forumposts|length -1 }}
+                        </td>
+                        <td class='col-md-3'>
+                           par {{ post.forumtopic.member.person.firstname }}&nbsp;{{ post.forumtopic.member.person.lastname }}
+                           <br/>
+                            {{post.datepost|date('d-m-Y')}}&nbsp;à&nbsp;{{post.datepost|date('H:i:s')}}
+                        </td>
+                        {% if moderator %}
+                            <td class='col-md-1'>
+                                {% if post.forumtopic.locked %}
+                                    <a href="{{ path('sercom_members_forum_topics_locks', {'topic': post.forumtopic.topicid }) }}"><i class="fa fa-lock fa-2x" style="color: red;" title="Deverouiller"></i></a>
+                                {% else %}
+                                    <a href="{{ path('sercom_members_forum_topics_locks', {'topic': post.forumtopic.topicid }) }}"><i class="fa fa-lock fa-2x" title="Verouiller"></i></a>
+                                {% endif %}
+                                <a href="{{ path('sercom_members_forum_topics_delete', {'topic': post.forumtopic.topicid }) }}" onClick="return confirm('Effacer ce sujet ?')"><i class="fa fa-trash fa-2x" title="Supprimer"></i></a>
+                            </td>
+                        {% endif %}
+
+                    </tr>
+                    </tbody>
+
+
+            {% endfor %}
+            {% else %}
+                <tbody>
+                <tr>
+                    <td class='col-md-5'> Pas d'annonces trouvées </td>
+                    <td class='col-md-1'>  </td>
+                    <td class='col-md-6'>  </td>
+
+                </tr>
+                </tbody>
+            {%endif%}
+    </table>
+
+
+    <table class="table">
+        <thead class="primary">
+        <tr>
+            <th class='col-md-2 success'>Post-it</th>
+            <th class='col-md-2 success'>Réponses</th>
+            <th class='col-md-6 success'>Dernier message</th>
+            {% if moderator %}
+                <th class='col-md-1 success'>Actions</th>
+            {% endif %}
+        </tr>
+        </thead>
+        {% if postss_p2 is not empty %}
+            {% for post in postss_p2 %}
+
+                <tbody>
+                <tr>
+                    <td class='col-md-7'>
+                        <i class="fa fa-exclamation fa-lg"></i> &nbsp;&nbsp;&nbsp;
+                        {% if post.forumtopic.locked %}
+                            <i class="fa fa-lock fa-lg" style="color: red;"></i>
+                        {% endif %}
+                        <a href="{{ path('sercom_members_forum_posts', {'forum':forum.forumid, 'topic':post.forumtopic.topicid, 'page':1 })  }}">
+                            {{ post.forumtopic.title|length > 50 ? post.forumtopic.title|slice(0,50) ~ '...' : post.forumtopic.title}} </a>
+                        <br/>
+                        par  {{post.forumtopic.member.person.firstname }}&nbsp;{{post.forumtopic.member.person.lastname }} &gt;&gt; {{post.forumtopic.datetopic|date('d-m-Y')}} à
+                        {{post.forumtopic.datetopic|date('H:i:s')}}
+                    </td>
+                    <td class='col-md-1'>
+                        {{ post.forumtopic.forumposts|length -1 }}
+                    </td>
+                    <td class='col-md-3'>
+                        par {{ post.forumtopic.member.person.firstname }}&nbsp;{{ post.forumtopic.member.person.lastname }}
+                        <br/>
+                        {{post.forumtopic.datetopic|date('d-m-Y')}}&nbsp;à&nbsp;{{post.forumtopic.datetopic|date('H:i:s')}}
+                    </td>
+                    {% if moderator %}
+
+                        <td class='col-md-1'>
+                            {% if post.forumtopic.locked %}
+                                <a href="{{ path('sercom_members_forum_topics_locks', {'topic': post.forumtopic.topicid }) }}"><i class="fa fa-lock fa-2x" style="color: red;" title="Deverouiller"></i></a>
+                            {% else %}
+                                <a href="{{ path('sercom_members_forum_topics_locks', {'topic': post.forumtopic.topicid }) }}"><i class="fa fa-lock fa-2x" title="Verouiller"></i></a>
+                            {% endif %}
+                            <a href="{{ path('sercom_members_forum_topics_delete', {'topic': post.forumtopic.topicid }) }}"><i class="fa fa-trash fa-2x" title="Supprimer"></i></a>
+                        </td>
+
+                    {% endif %}
+
+
+                </tr>
+                </tbody>
+
+
+            {% endfor %}
+        {% else %}
+            <tbody>
+            <tr>
+                <td class='col-md-5'> Pas de post-it trouvés </td>
+                <td class='col-md-1'>  </td>
+                <td class='col-md-6'>  </td>
+
+            </tr>
+            </tbody>
+        {%endif%}
+    </table>
+
+    <table class="table">
+        <thead class="primary">
+        <tr>
+            <th class='col-md-2 success'>Sujets</th>
+            <th class='col-md-2 success'>Réponses</th>
+            <th class='col-md-6 success'>Dernier message</th>
+            {% if moderator %}
+                <th class='col-md-1 success'>Actions</th>
+            {% endif %}
+        </tr>
+        </thead>
+
+        {% if posts_p3 is not empty %}
+            {% for post in posts_p3 %}
+
+                <tbody>
+                <tr>
+                    <td class='col-md-7'>
+                        <i class="fa fa-comment-o fa-lg"></i> &nbsp;&nbsp;&nbsp;
+                        {% if post.forumtopic.locked %}
+                            <i class="fa fa-lock fa-lg" style="color: red;"></i>
+                        {% endif %}
+                        <a href="{{ path('sercom_members_forum_posts', {'forum':forum.forumid, 'topic': post.forumtopic.topicid, 'page':1 })  }}">
+                            {{ post.forumtopic.title|length > 50 ? post.forumtopic.title|slice(0,50) ~ '...' : post.forumtopic.title}} </a>
+                        <br/>
+                        par  {{post.forumtopic.member.person.firstname }}&nbsp;{{post.forumtopic.member.person.lastname }} &gt;&gt; {{post.forumtopic.datetopic|date('d-m-Y')}} à
+                        {{post.forumtopic.datetopic|date('H:i:s')}}
+                    </td>
+                    <td class='col-md-1'>
+                        {{ post.forumtopic.forumposts|length -1 }}
+                    </td>
+                    <td class='col-md-3'>
+                        par {{ post.member.person.firstname }}&nbsp;{{ post.member.person.lastname }}
+                        <br/>
+                        {{post.datepost|date('d-m-Y')}}&nbsp;à&nbsp;{{post.datepost|date('H:i:s')}}
+                    </td>
+                    {% if moderator %}
+
+                        <td class='col-md-1'>
+                            {% if post.forumtopic.locked %}
+                                <a href="{{ path('sercom_members_forum_topics_locks', {'topic': post.forumtopic.topicid }) }}"><i class="fa fa-lock fa-2x" style="color: red;" title="Deverouiller"></i></a>
+                            {% else %}
+                                <a href="{{ path('sercom_members_forum_topics_locks', {'topic': post.forumtopic.topicid }) }}"><i class="fa fa-lock fa-2x" title="Verouiller"></i></a>
+                            {% endif %}
+                            <a href="{{ path('sercom_members_forum_topics_delete', {'topic': post.forumtopic.topicid }) }}"><i class="fa fa-trash fa-2x" title="Supprimer"></i></a>
+                        </td>
+
+                    {% endif %}
+                </tr>
+                </tbody>
+
+
+            {% endfor %}
+        {% else %}
+            <tbody>
+            <tr>
+                <td class='col-md-5'> Pas de sujets trouvés </td>
+                <td class='col-md-1'>  </td>
+                <td class='col-md-6'>  </td>
+
+            </tr>
+            </tbody>
+        {%endif%}
+    </table>
+    <hr/>
+    {% include '@SERCOMApp/Pagination/pagination.html.twig' %}
+    <hr/>
+    <div class="row">
+        <div class="col-md-8">
+            <a href="{{ path('sercom_members_forum_add_topic', {'forum':forum.forumid }) }}" class="btn btn-primary btn-sm">Nouveau sujet &nbsp;<i class="fa fa-plus fa-lg"></i></a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+    </script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'SERCOMAppBundle:Home:base.html.twig' %}
+
+{% block titre %}
+    <title> Confirmation email effectuée </title>
+{% endblock %}
+
+{% block body %}
+    {{ message }}
+{% endblock %}
+
+{% block link %}
+    <a href="{{ path('sercom_home') }}">Retour à l'accueil</a>
+{% endblock %}

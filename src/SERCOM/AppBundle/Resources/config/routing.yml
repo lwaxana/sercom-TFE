@@ -1,0 +1,72 @@
+sercom_app_forum:
+    resource: "forum_routing.yml"
+    prefix: /members
+
+sercom_app_register:
+    resource: "register.yml"
+
+sercom_app_tests:
+    resource: "tests.yml"
+
+sercom_app_members:
+    resource: "members.yml"
+    prefix: /
+
+sercom_app_student:
+    resource: "student_routing.yml"
+    prefix: /students
+
+sercom_app_members_admin:
+    resource: "admin_routing.yml"
+    prefix: /members
+
+sercom_home_pages:
+    resource: "home_routing.yml"
+    prefix: /
+
+sercom_other_routing:
+    resource: "other_admin_routing.yml"
+    prefix: /members
+
+sercom_admin_classe_routing:
+    resource: "admin_classe_routing.yml"
+    prefix: /members
+
+sercom_app_articles:
+    resource: "article_routing.yml"
+    prefix: /members
+
+sercom_home_agenda:
+    resource: "agenda_routing.yml"
+    prefix: /members
+
+sercom_home_mail:
+    resource: "mail_routing.yml"
+    prefix: /members/mail
+
+sercom_home:
+    pattern:  /
+    defaults: { _controller: SERCOMAppBundle:Home:index }
+
+login:
+    pattern:  /login
+    defaults: { _controller: SERCOMAppBundle:Security:login }
+
+login_check:
+    pattern:  /login_check
+
+logout:
+    pattern:  /logout
+
+
+
+
+
+
+
+
+
+
+
+
+

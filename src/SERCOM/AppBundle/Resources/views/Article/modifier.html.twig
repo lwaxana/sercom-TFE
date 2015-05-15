@@ -1,0 +1,212 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+
+{% block style %}
+    <script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/bootstrap-tagsinput.css') }}"/>
+    <script src="{{ asset('bundles/AppBundle/js/bootstrap-tagsinput.js') }}"></script>
+{% endblock %}
+
+{% block titre %}
+    <title>Article - Modifier</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_members_article') }}">Articles</a> / Modifier Article / {{ article.title }}</div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Modifier article</div>
+        <div class="panel-body">
+            {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+            {{ form_errors(form) }}
+            <div class="form-group">
+                {{ form_label(form.title, "Titre :", {'label_attr': {'class': 'col-md-1 control-label', 'require':'true'}}) }}
+                {{ form_errors(form.title) }}
+                <div class="col-md-8">
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+            <div class="form-group">
+
+                    {{ form_label(form.tags, 'Tags :' , {'label_attr': {'class': 'col-md-1 control-label', 'require':'true' }}) }}
+                    {{ form_errors(form.tags) }}
+
+                <div class="col-md-8">
+                    {{ form_widget(form.tags, {'attr': {'class': 'form-control', 'data-role':'tagsinput'}}) }}
+
+                 </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-1 control-label">
+                    {{ form_label(form.content, 'Contenu Article :') }}
+                    {{ form_errors(form.content) }}
+                </div>
+                <div class="col-md-8">
+                    {{ form_widget(form.content) }}
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-1 control-label">
+                    {{ form_label(form.sitesection, 'Section :') }}
+                    {{ form_errors(form.sitesection) }}
+                </div>
+                <div class="col-md-8">
+                    {{ form_widget(form.sitesection) }}
+
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_label(form.documents, "Images :", {'label_attr': {'class': 'col-sm-3 control-label', 'require':'true'}}) }}
+                <div class="col-sm-6">
+                    <ul class="tags" data-prototype="{{ form_widget(form.documents.vars.prototype)|e }}">
+                        {{ form_row(form.documents) }}
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                </div>
+                <div class="col-sm-3">
+                    <a href="{{ path('sercom_members_article') }}" class="btn btn-warning btn-block">Retour</a>
+                </div>
+            </div>
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+
+            <script>
+                tinymce.init({
+                    menubar : false,
+                    selector: 'textarea',
+                    theme: "modern",
+
+                    height: 200,
+                    theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
+                    font_size_style_values: "12px,13px,14px,16px,18px,20px",
+                    plugins: [
+                        "emoticons textcolor"
+                    ],
+
+                    toolbar: "bold italic underline |  forecolor  emoticons sizeselect | fontsizeselect" ,
+                    style_formats: [
+                        {title: 'Bold text', inline: 'b'},
+                        {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                        {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                        {title: 'Example 1', inline: 'span', classes: 'example1'},
+                        {title: 'Example 2', inline: 'span', classes: 'example2'},
+                        {title: 'Table styles'},
+                        {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                    ]
+                });
+
+            </script>
+
+        </div>
+    </div>
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Photos actuelles</div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead class="primary">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in docs %}
+                            <tr>
+                                <td>{{ doc.name }}</td>
+                                <td>
+                                    <a href="{{ path('sercom_members_article_modify_delete', {'id':doc.articledocid}) }}" title="Effacer"><i class="fa fa-trash fa-2x"></i> </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+    $('#succes').delay( 5000).toggle("slow");
+    $('#alert').delay( 5000).toggle("slow")
+
+
+
+
+
+
+
+    var collectionHolder = $('ul.tags');
+
+    // ajoute un lien « add a tag »
+    var $addTagLink = $('<a href="#" class="add_tag_link btn btn-primary">Ajouter photo</a>');
+    var $newLinkLi = $('<li></li>').append($addTagLink);
+
+
+
+    $(document).ready(function() {
+        // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
+        collectionHolder.find('li').each(function() {
+            addTagFormDeleteLink($(this));
+        });
+
+        collectionHolder.append($newLinkLi);
+
+        $addTagLink.on('click', function(e) {
+            // empêche le lien de créer un « # » dans l'URL
+            e.preventDefault();
+
+            // ajoute un nouveau formulaire tag (voir le prochain bloc de code)
+            addTagForm(collectionHolder, $newLinkLi);
+
+
+        });
+
+        function addTagForm(collectionHolder, $newLinkLi) {
+            // Récupère l'élément ayant l'attribut data-prototype comme expliqué plus tôt
+            var prototype = collectionHolder.attr('data-prototype');
+
+            // Remplace '__name__' dans le HTML du prototype par un nombre basé sur
+            // la longueur de la collection courante
+            var newForm = prototype.replace(/__name__/g, collectionHolder.children().length);
+
+            // Affiche le formulaire dans la page dans un li, avant le lien "ajouter un tag"
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+            addTagFormDeleteLink($newFormLi);
+
+        }
+
+        function addTagFormDeleteLink($tagFormLi) {
+            var $removeFormA = $('<a href="#" class="btn btn-danger">Supprimer photo</a>');
+            $tagFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // empêche le lien de créer un « # » dans l'URL
+                e.preventDefault();
+
+                // supprime l'élément li pour le formulaire de tag
+                $tagFormLi.remove();
+            });}
+
+
+    });
+</script>
+{% endblock %}
+
+

@@ -1,0 +1,184 @@
+{% extends 'SERCOMAppBundle:Admin:index.html.twig' %}
+
+{% block titre %}
+<title> Administration - Valider Inscriptions </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_admin') }}"> Administration </a> / Valider Inscriptions</div>
+{% endblock %}
+
+{% block body %}
+
+        <br/>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td> Nom </td>
+                    <td> Prenom </td>
+                    <td> Adresse email </td>
+                    <td> Adresse validée</td>
+                    <td> Username </td>
+                    <td> Date d'inscription</td>
+                    <td> Time </td>
+                    <td> Actions</td>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% if users is empty %}
+                    <h3> Pas d'inscriptions en attente</h3>
+                    <tr>
+                        <td> </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% else %}
+                    {% for user in users %}
+                    <tr>
+                    <td>{{ user.lastname }}</td>
+                    <td>{{ user.firstname }}</td>
+                    <td>{{ user.email }}</td>
+                    {% if user.emailvalid == 1 %}
+                        <td> OUI </td>
+                    {% else %}
+                        <td> NON </td>
+                    {% endif %}
+                        <td>{{ user.username }}</td>
+                    <td> {{user.dateinscription|date('d-m-Y')}} {{user.dateinscription|date('H:i:s')}} </td>
+                    <td> {{ user.dateinscription|time_diff }}</td>
+                    <td>
+                         <a onclick="show({{ user.personid }})" ><i class="fa fa-eye fa-2x" title="Voir"></i></a>
+                        <a href="{{ path('sercom_admin_valider_actions_modify', {'id':user.personid }) }}"><i class="fa fa-gear fa-2x" title="Modifier"></i></a>
+                         <a href="{{ path('sercom_admin_valider_actions_valider', {'id':user.personid }) }}"><i class="fa fa-check-circle fa-2x" title="Valider"></i></a>
+                         <a href="{{ path('sercom_admin_valider_actions_supprimer', {'id':user.personid }) }}" onClick="return confirm('Confirmer suppression')"><i class="fa fa-trash fa-2x" title="Supprimer"></i></a>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+
+
+    {% include '@SERCOMApp/Pagination/pagination.html.twig' %}
+
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+            <a href="{{ path('sercom_admin') }}" class="btn btn-warning btn-block"> Retour </a>
+        </div>
+    </div>
+
+
+
+
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel"> </h4>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <div class="col-sm-3"><label>Prenom :</label></div>
+                                <div class="col-sm-7" id="prenom"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label>Nom :</label></div>
+                                <div class="col-sm-7" id="nom"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label>Email :</label></div>
+                                <div class="col-sm-7" id="email"></div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-3"><label>Date inscription :</label></div>
+                                <div class="col-sm-7" id="dateinscr"></div>
+                            </div>
+                            <div class="form-group" >
+                                <div class="col-sm-3"></div>
+                                <div class="col-sm-7" id="access"></div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+
+    function show(id){
+
+            var url = "{{ path('sercom_admin_valider_actions', {'id':'text' })  }}";
+            var url2 = "{{ path('sercom_admin_valider_actions', {'id':'text' })  }}";
+            url = url.replace("text", id);
+            $.ajax({
+                type:'POST',
+                url: url,
+                success: function(data){
+                    console.log(data);
+
+                    $( '<span> Inscription de ' + data.prenom + ' ' + data.nom + '</span>' ).appendTo(('#myModalLabel'));
+                    $( '<input disabled value="' +data.prenom + '"/>' ).appendTo(('#prenom'));
+                    $( '<input disabled value="' +data.nom + '"/>' ).appendTo(('#nom'));
+                    $( '<input disabled value="' +data.mail + '"/>' ).appendTo(('#email'));
+                    $( '<input disabled value="' +data.date_inscription.date + '"/>' ).appendTo(('#dateinscr'));
+
+                    if ( data.member ){
+                        $('<label> Acces membre </label> <input type="checkbox" disabled checked /><br/>' ).appendTo(('#access'));
+                    }
+                    else{
+                        $('<label> Acces membre </label> <input type="checkbox" disabled /><br/>' ).appendTo(('#access'));
+                    }
+                    if ( data.teacher  ){
+                        $('<label> Acces professeur </label> <input type="checkbox" disabled checked /><br/>' ).appendTo(('#access'));
+                    }
+                    else{
+                        $('<label> Acces professeur </label> <input type="checkbox" disabled /><br/>' ).appendTo(('#access'));
+                    }
+                    if ( data.student ){
+                        $('<label> Acces étudiant </label> <input type="checkbox" disabled checked /><br/>' ).appendTo(('#access'));
+                    }
+                    else{
+                        $('<label> Acces étudiant </label> <input type="checkbox" disabled /><br/>' ).appendTo(('#access'));
+                    }
+                    url = url2;
+                    $('#myModal').modal('show');
+                }
+            });
+
+
+
+    }
+
+    $('#myModal').on('hidden.bs.modal', function () {
+        $('#prenom').empty();
+        $('#nom').empty();
+        $('#dateinscr').empty();
+        $('#email').empty();
+        $('#myModalLabel').empty();
+        $('#access').empty();
+    });
+
+    $('#succes').delay( 5000).hide(0);
+    $('#alert').delay( 5000).hide(0);
+</script>
+{% endblock %}

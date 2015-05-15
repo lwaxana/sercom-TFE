@@ -1,0 +1,13 @@
+{% extends 'SERCOMAppBundle:Members:index.hmtl' %}
+
+{% block titre %}
+    <title> Modification terminées </title>
+{% endblock %}
+
+{% block body %}
+    {{ message }}
+{% endblock %}
+
+{% block link %}
+    <a href="{{ path('sercom_members') }}">Retour à l'accueil membres</a>
+{% endblock %}

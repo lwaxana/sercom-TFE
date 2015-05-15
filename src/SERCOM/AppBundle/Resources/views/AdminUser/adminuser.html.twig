@@ -1,0 +1,160 @@
+{% extends 'SERCOMAppBundle:Admin:index.html.twig' %}
+
+{% block titre %}
+    <title> Administration - Utilisateurs </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"><a href="{{ path('sercom_admin') }}">Administration</a> / Utilisateurs </div>
+{% endblock %}
+
+{% block body %}
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td> Nom </td>
+            <td> Prenom </td>
+            <td> Membre </td>
+            <td> Professeur </td>
+            <td> Etudiant </td>
+            <td> Actions </td>
+            <td> Note </td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.lastname }}</td>
+                <td>{{ user.firstname }}</td>
+
+                {% if user.member is empty %}
+                    <td><input type="checkbox" disabled /></td>
+                 {% else %}
+                     {%  if user.member.actif %}
+                         <td><input type="checkbox" checked disabled /></td>
+                     {% else %}
+                         <td><input type="checkbox" disabled /></td>
+                     {% endif %}
+
+                {% endif %}
+                {% if user.teacher is empty %}
+                    <td><input type="checkbox" disabled /></td>
+                {% else %}
+                    {%  if user.teacher.actif %}
+                        <td><input type="checkbox" checked disabled /></td>
+                    {% else %}
+                        <td><input type="checkbox" disabled /></td>
+                    {% endif %}
+                {% endif %}
+                {% if user.student is empty %}
+                    <td><input type="checkbox" disabled /></td>
+                {% else %}
+                    {%  if user.student.actif %}
+                        <td><input type="checkbox" checked disabled /></td>
+                    {% else %}
+                        <td><input type="checkbox" disabled /></td>
+                    {% endif %}
+                {% endif %}
+
+                <td>
+                    {% if not user.ban %}
+
+                    <a href="{{ path('sercom_admin_users_modify', {'id': user.personid}) }}"><i class="fa fa-gear fa-2x" title="Modifier accès site"></i></a>
+                        {% if user.member is not empty and user.member.actif %}
+                        <a href="{{ path('sercom_admin_users_modify_params', {'id': user.personid}) }}"><i class="fa fa-wrench fa-2x" title="Modifier autres parametres"></i></a>
+                        {% endif %}
+                    <a href="{{ path('sercom_admin_users_ban', {'id': user.personid}) }}" onClick="return confirm('Confirmer bannissement')"><i class="fa fa-lock fa-2x" title="Bannir le compte"></i></a>
+
+                    {% else %}
+                    <a href="{{ path('sercom_admin_users_unban', {'id': user.personid}) }}" onClick="return confirm('Confirmer débannissement')"><i class="fa fa-lock fa-2x" style="color: red;" title="Débannir le compte"></i></a>
+
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not user.ban %}
+                        {% if user.sitegroups is empty %}
+                            {% if user.member is not empty and user.member.actif %}
+                                <i class="fa fa-warning fa-2x" style="color: red;" title="Membre sans accès"></i>
+                            {% endif %}
+                            {% if user.teacher is not empty and user.teacher.actif %}
+                                <i class="fa fa-warning fa-2x" style="color: red;" title="Professeur sans accès"></i>
+                            {% endif %}
+                            {% if user.student is not empty and user.student.actif %}
+                                <i class="fa fa-warning fa-2x" style="color: red;" title="Etudiant sans accès"></i>
+                            {% endif %}
+                        {% else %}
+                            {% set membre = 0 %}
+                            {% set prof = 0 %}
+                            {% set etudiant = 0 %}
+                            {% for sitegroup in user.sitegroups %}
+                                {% if sitegroup.name == "ROLE_PRESIDENT" %}
+                                    {% if user.member.actif %}
+                                        {% set membre = 1 %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if sitegroup.name == "ROLE_ANIMATEUR" %}
+                                    {% if user.member is not empty and user.member.actif %}
+                                        {% set membre = 1 %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if sitegroup.name == "ROLE_COMITE" %}
+                                    {% if user.member is not empty and user.member.actif %}
+                                        {% set membre = 1 %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if sitegroup.name == "ROLE_MEMBRE" %}
+                                    {% if user.member is not empty and user.member.actif %}
+                                        {% set membre = 1 %}
+                                    {% endif %}
+                                {% endif %}
+                                {% if sitegroup.name == "ROLE_TEACHER" %}
+                                        {% set prof = 1 %}
+                                {% endif %}
+                                {% if sitegroup.name == "ROLE_STUDENT" %}
+                                        {% set etudiant = 1 %}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if membre == 0 and user.member is not empty and user.member.actif  %}
+                                <i class="fa fa-warning fa-2x" style="color: red;" title="Membre sans accès"></i>
+                            {% endif %}
+                            {% if prof == 0 and user.teacher is not empty and user.teacher.actif%}
+                                <i class="fa fa-warning fa-2x" style="color: red;" title="Professeur sans accès"></i>
+                            {% endif %}
+                            {% if etudiant == 0 and user.student is not empty  and user.student.actif %}
+                                <i class="fa fa-warning fa-2x" style="color: red;" title="Etudiant sans accès"></i>
+                            {% endif %}
+                        {% endif %}
+                        {% if user.member is not empty and user.member.forumgroups is empty and user.member.actif %}
+                            <i class="fa fa-warning fa-2x" style="color: red;" title="Membre sans forum"></i>
+                        {% endif %}
+                    {% else %}
+                        <i class="fa fa-lock fa-2x" style="color: red;" title="Compte banni"></i>
+                    {% endif %}
+
+
+
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {% include '@SERCOMApp/Pagination/pagination.html.twig' %}
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+            <a href="{{ path('sercom_admin') }}" class="btn btn-warning btn-block">Retour</a>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block script %}
+    <script>
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+    </script>
+{% endblock %}

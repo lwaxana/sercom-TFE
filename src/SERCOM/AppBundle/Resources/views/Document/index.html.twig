@@ -1,0 +1,95 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% form_theme form _self %}
+
+{%- block button_widget -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}><i class="fa fa-search"></i></button>
+{%- endblock button_widget -%}
+
+{% block well %}
+    <div class="well">Documents
+        <div class="navbar-right col-sm-3">
+            {{ form_start(form , {'attr':{'class':'form-horizontal'}}) }}
+            <div class="input-group">
+                {{ form_widget(form.search, {'attr': {'class': 'form-control','placeholder':'Recherche nom, tags' }} ) }}
+                <div class="input-group-btn">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                </div>
+            </div>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    {% if docs is not empty %}
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th> &nbsp; </th>
+                    <th> Catégorie </th>
+                    <th> Description </th>
+                    <td> Groupe </td>
+
+                </tr>
+            </thead>
+            <tbody>
+
+            {% for doc in docs %}
+                    <tr data-toggle="collapse" data-target="#demo{{ loop.index }}" class="accordion-toggle">
+
+                        <td><button class="btn btn-default btn-xs"><i class="fa fa-folder-o fa-lg"></i></button></td>
+                        <td> {{ doc.name }}</td>
+                        <td> {{ doc.description }} </td>
+                        <td> {{  doc.sitegroup.description }}</td>
+                    </tr>
+                    <tr>
+                        <!-- http://www.bootply.com/chipbaker/fdTMNTiLis -->
+                        <td colspan="12" class="hiddenRow"><div class="accordian-body collapse" id="demo{{ loop.index }}">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <th> &nbsp;</th>
+                                        <th> &nbsp;</th>
+                                        <th> Sous catégorie </th>
+                                        <th> Fichiers</th>
+
+                                    </thead>
+                                    <tbody>
+                                        {% if doc.souscats is not empty %}
+                                        {% for souscat in doc.souscats %}
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>{{ souscat.name }}</td>
+                                                <td> {{ souscat.asbldocuments|length  }} </td>
+                                                <td><a href="{{ path('sercom_members_docs_files', {'id': souscat.souscatid, 'page':1 }) }}" title="voir les documents"><i class="fa fa-folder-open-o fa-2x"></i></a></td>
+                                            </tr>
+                                        {% endfor %}
+                                        {% else %}
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td>Pas de sous catégories</td>
+                                            <td>  </td>
+                                            <td></td>
+                                        </tr>
+                                        {% endif %}
+
+                                    </tbody>
+                                </table>
+
+                            </div> </td>
+                    </tr>
+
+
+                 {% endfor %}
+            </tbody>
+        </table>
+
+    {% else %}
+        <h3>Pas de documents</h3>
+    {% endif %}
+
+{% endblock %}

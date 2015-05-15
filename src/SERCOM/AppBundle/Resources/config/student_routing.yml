@@ -1,0 +1,11 @@
+student_index:
+    pattern:  /
+    defaults: { _controller: SERCOMAppBundle:Student:index }
+
+student_infos:
+    pattern:  /mesinfos
+    defaults: { _controller: SERCOMAppBundle:Student:infos }
+
+student_classes:
+    pattern:  /mesclasses
+    defaults: { _controller: SERCOMAppBundle:Student:classes }

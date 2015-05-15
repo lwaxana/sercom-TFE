@@ -1,0 +1,22 @@
+# /members/admin/users
+
+sercom_admin_users:
+    pattern:  /{page}
+    defaults: { _controller: SERCOMAppBundle:AdminUser:adminusers, page:1 }
+
+sercom_admin_users_modify:
+    pattern:  /modifier/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminUser:modify }
+
+sercom_admin_users_modify_params:
+    pattern:  /modifierparams/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminUser:modifyparams }
+
+sercom_admin_users_ban:
+    pattern:  /ban/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminUser:ban }
+
+sercom_admin_users_unban:
+    pattern:  /unban/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminUser:unban }
+

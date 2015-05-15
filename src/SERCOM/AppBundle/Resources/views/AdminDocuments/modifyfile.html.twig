@@ -1,0 +1,104 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/bootstrap-tagsinput.css') }}"/>
+    <script src="{{ asset('bundles/AppBundle/js/bootstrap-tagsinput.js') }}"></script>
+{% endblock %}
+
+{% block title %}
+    Modification fichier
+{% endblock %}
+
+{% block well %}
+    <div class="well"><a href="{{ path('sercom_admin') }}">Administration</a> / <a href="{{ path('sercom_admin_docs') }}">Documents </a>/ Modifier un document </div>
+{% endblock %}
+
+{% block body %}
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Modifier document</div>
+        <div class="panel-body">
+            {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+            {{ form_errors(form) }}
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label"> Nom du document : </label>
+                    <div class="col-md-5">
+                        <input class="form-control" disabled="disabled" value="{{ doc.name }}" />
+                    </div>
+                </div>
+
+            <div class="form-group">
+                {{ form_label(form.tags, 'Tags :', {'label_attr': {'class': 'control-label col-md-2', 'require':'true'}}) }}
+                <div class="col-md-5">
+                    {{ form_widget(form.tags, {'attr': {'class': 'form-control', 'data-role':'tagsinput'}}) }}
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                {{ form_label(form.cat, 'Catégorie :', {'label_attr': {'class': 'col-md-2 control-label', 'require':'true'}}) }}
+                <div class="col-md-5">
+                    {{ form_widget(form.cat, {'attr': {'class': 'form-control' }}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                {{ form_label(form.souscat, 'Sous-Catégorie :', {'label_attr': {'class': 'control-label col-md-2', 'require':'true'}}) }}
+                <div class="col-md-5">
+                    {{ form_widget(form.souscat, {'attr': {'class': 'form-control'}}) }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-4"></div>
+                <div class="col-md-2">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                </div>
+                <div class="col-md-2">
+                    <a href="{{ path('sercom_admin_docs') }}" class="btn btn-warning btn-block">Retour</a>
+                </div>
+
+            </div>
+
+
+
+
+
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('#sercom_appbundle_asbldocument_2_cat').change(function(){
+            var data = { cat_id: $(this).val() };
+
+            $.ajax({
+            type: 'post',
+            url: '{{ path('sercom_admin_docs_modify2') }}',
+            data: data,
+            success: function(data) {
+            console.log(data);
+            var $city_selector = $('#sercom_appbundle_asbldocument_2_souscat');
+
+            $city_selector.html('<option>Sous catégorie</option>');
+
+            for (var i=0, total = data.length; i < total; i++) {
+            $city_selector.append('<option value="' + data[i].souscat_id + '">' + data[i].name + '</option>');
+            }
+         }
+        });
+
+        });
+        </script>
+{% endblock %}

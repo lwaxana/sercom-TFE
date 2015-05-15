@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>-->
+    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>-->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/bootstrap.min.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/font-awesome.min.css') }}"/>
+    <script type="text/javascript" src="{{ asset('bundles/AppBundle/js/jquery-1.11.2.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/AppBundle/js/bootstrap.js') }}"></script>
+
+
+
+    {% block titre %}{% endblock %}
+    {% block style %}{% endblock %}
+</head>
+<body style="margin: 70px;">
+<div class="container-fluid">
+
+
+{% block header %}
+    {{ include('SERCOMAppBundle:Home:header.html.twig') }}
+{% endblock %}
+
+{% block nav %}
+    {{ include('SERCOMAppBundle:Home:nav.html.twig') }}
+{% endblock %}
+
+
+{% block well %}{% endblock %}
+{% block flash %}{% endblock %}
+{% block body %}
+
+{% endblock %}
+{% block link %}{% endblock %}
+
+{% block footer %}
+    {{ include('@SERCOMApp/Home/footer.html.twig') }}
+{% endblock %}
+</div>
+
+
+</body>
+
+{% block script %}
+<script>
+    $(document).ready(function () {
+        $("#topbar-container").dropdown();
+    });
+    $("body").bind("click", function (e) {
+        $('.dropdown-toggle, .menu').parent("li").removeClass("open");
+    });
+    $(".dropdown-toggle, .menu").click(function (e) {
+        var $li = $(this).parent("li").toggleClass('open');
+        return false;
+    });
+</script>
+{% endblock %}
+</html>

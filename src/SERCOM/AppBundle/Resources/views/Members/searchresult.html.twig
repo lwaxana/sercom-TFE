@@ -1,0 +1,107 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% form_theme form _self %}
+
+{%- block button_widget -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}><i class="fa fa-search"></i></button>
+{%- endblock button_widget -%}
+
+{% block titre %}
+    <title>Liste des utilisateurs</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well">
+        Liste des membres
+
+        <div class="navbar-right col-sm-3">
+            {{ form_start(form , {'attr':{'class':'form-horizontal'}}) }}
+            <div class="input-group">
+                {{ form_widget(form.search, {'attr': {'class': 'form-control','placeholder':'Recherche Nom, prénom, fonction' }} ) }}
+                <div class="input-group-btn">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                </div>
+            </div>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+
+
+        </div>
+
+
+
+    </div>
+{% endblock %}
+
+{% block body %}
+
+
+    {% if persons is not empty %}
+        {% for person in persons|batch(3) %}
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10" >
+                    {% for p in person %}
+                        <div class="col-md-4" >
+                            <div class="panel panel-primary" style="height: 300px;">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">{{ p.firstname }} {{ p.lastname }}</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-sm-6">
+                                        {% if p.picture is not null %}
+                                            <img src="{{ asset( p.picture  ) }}"/>
+                                        {% else %}
+                                            <img src="{{ asset('bundles/AppBundle/images/default-user.png') }}"/>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <ul>
+                                            {% if p is not null %}
+                                                {% if p.member.asblfunctions is not null %}
+                                                    {% if p.member.asblfunctions is not empty  %}
+                                                        <li>Fonction
+                                                            {% for f in p.member.asblfunctions %}
+                                                                <ul> {{ f.fonction }}</ul>
+                                                            {% endfor %}
+                                                        </li>
+                                                    {% endif %}
+                                                    {% if p.tel is not empty %}
+                                                        <li>{{ p.tel }}</li>
+                                                    {% endif %}
+                                                    {% if p.telgsm is not empty %}
+                                                        <li>{{ p.telgsm }}</li>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+                                            <li> {{ p.email }}</li>
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <br/>
+                </div>
+            </div>
+
+
+
+        {% endfor %}
+
+    {% else %}
+        Votre recherche n'a pas retourné de résultat
+    {% endif %}
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+
+
+    </script>
+{% endblock %}

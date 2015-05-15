@@ -1,0 +1,131 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block style %}
+
+    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/bootstrap-tagsinput.css') }}"/>
+    <script src="{{ asset('bundles/AppBundle/js/bootstrap-tagsinput.js') }}"></script>
+{% endblock %}
+
+{% block titre %}
+    <title> Administration - Documents </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"><a href="{{ path('sercom_admin') }}">Administration</a> / <a href="{{ path('sercom_admin_docs') }}">Documents </a> /
+        <a href="{{ path('sercom_admin_docs_sscat', {'id': cat.category.doccatid}) }}">{{ cat.category.name }} </a> / {{ cat.name }}  </div>
+{% endblock %}
+
+{% block body %}
+
+
+<br/>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td> Nom du fichier </td>
+            <td> Tags </td>
+            <td> Actions</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for file in cat.asbldocuments %}
+            <tr>
+                <td>{{ file.name }}</td>
+                {% if file.tags is not empty %}
+                    <td>
+                        {% for tag in file.tags %}
+                            <i class="fa fa-tag fa-rotate-90"></i>{{ tag.tagname }}
+                        {% endfor %}
+                    </td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+                <td>
+                    <a href="{{ path('sercom_members_download_file', {'id':file.asbldocid}) }}" title="Telecharger"><span class="fa fa-download fa-2x"></span></a>
+                    <a href="{{ path('sercom_admin_docs_modify_file', {'id':file.asbldocid}) }}" title="modifier"><i class="fa fa-gear fa-2x"></i></a>
+                    <a href="{{ path('sercom_admin_docs_file_delete', {'id':file.asbldocid}) }}" title="supprimer" onClick="return confirm('Confirmer suppression')"><span class="fa fa-trash fa-2x"></span></a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        <tr>
+            <td>
+                <a id="plusfile" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter fichier  </a>
+            </td>
+            <td></td>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <div id="add_file">
+        <div class="col-md-5">
+            <div class="panel panel-primary" style="height: 300px;">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ajouter un fichier</h3>
+                </div>
+
+                <div class="panel-body">
+                    {{  form_start(form) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+
+                        {{ form_label(form.tags, 'Tags :' , {'label_attr': {'class': 'col-md-2 control-label', 'require':'true' }}) }}
+                        {{ form_errors(form.tags) }}
+
+                        <div class="col-md-8">
+                            {{ form_widget(form.tags, {'attr': {'class': 'form-control', 'data-role':'tagsinput'}}) }}
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-9">
+                            {{ form_widget(form.file, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.file) }}
+                        </div>
+                    </div>
+                    <br/><br/>
+                    <div class="form-group">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+
+                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'},'label':'Sauver'}) }}
+                        </div>
+                    </div>
+
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <a href="{{ path('sercom_admin_docs_sscat',{'id': cat.category.doccatid}) }}" class="btn btn-warning btn-block">Retour</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $('#plusfile').click(function(){
+            $('#add_file').toggle();
+        });
+
+        $('#succes').delay( 5000).toggle('RIGHT');
+        $('#alert').delay( 5000).toggle();
+
+        $(document).ready(function(){
+
+                $('#add_file').toggle();
+
+        });
+
+    </script>
+{% endblock %}

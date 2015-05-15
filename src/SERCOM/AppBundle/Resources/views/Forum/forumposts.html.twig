@@ -1,0 +1,145 @@
+{% extends 'SERCOMAppBundle:Forum:index.html.twig' %}
+
+{% block titre %}
+    <title> {{  topic.title }} </title>
+{% endblock %}
+
+{% block style %}
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+    <script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+
+{% endblock %}
+
+{% block well %}
+<div class="well"><i class="fa fa-home fa-lg"></i>&nbsp;<a href="{{ path('sercom_members_forum') }}">Index du forum</a> /
+    <a href="{{ path('sercom_members_forum_topics', {'forum':forum.forumid, 'page':1 })  }}">  {{ forum.name }} </a>/ topic.title</div>
+{% endblock %}
+
+{% block body %}
+
+    <br/>
+    {% set moderator = false %}
+    {% for group in  app.user.sitegroups %}
+        {% if group.name == 'MODERATION_FORUM' or group.name == "ROLE_PRESIDENT" %}
+            {% set moderator = true %}
+        {% endif %}
+    {% endfor %}
+
+        <div class="page-header">
+            {% if topic.locked %}
+            <h3><span class="label label-danger"> Sujet verouillé </span></h3>
+            {% endif %}
+            <h1>   {{ topic.title }}
+                <h5> le {{topic.datetopic|date('d-m-Y')}} à {{topic.datetopic|date('H:i:s')}} </h5>
+            </h1>
+        </div>
+            {% if not topic.locked %}
+            <div><a id="repondre" class="btn btn-danger btn-sm"> Répondre <i class="fa fa-reply fa-lg"></i></a></div>
+            <br/>
+            {% endif %}
+            {% for post in posts %}
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-10">
+                        par  {{topic.member.person.firstname }}&nbsp;{{topic.member.person.lastname }} &gt;&gt; {{post.datepost|date('d-m-Y')}} à
+                        {{post.datepost|date('H:i:s')}}
+                        <br/><br/>
+                        {{ post.postcontent|raw }}
+                        <br/>
+                        <br/>
+                    </div>
+                    <div class="col-md-2" style="border-left: solid 1px; color: rgb(0, 0, 0);"> {{ post.member.person.firstname }}<br/>{{ post.member.person.lastname }} </div>
+
+
+                    {% if app.user.personid == post.member.person.personid and not topic.locked and not post.moderated %}
+                        <a href="{{ path('sercom_members_forum_editpost', {'post':post.postid })  }}"><span class="label label-primary">Editer</span></a>
+                    {% endif %}
+                    {% if moderator and app.user.personid != post.member.person.personid  %}
+                        <a href="{{ path('sercom_members_forum_editpost', {'post':post.postid })  }}"><span class="label label-danger">Moderer</span></a>
+                    {% endif %}
+
+
+                </div>
+            </div>
+
+
+            {% endfor %}
+
+
+        {% if not topic.locked %}
+        <div><a id="repondre" class="btn btn-danger btn-sm"> Répondre <i class="fa fa-reply fa-lg"></i></a></div>
+        <br/>
+        <a name="answer"></a>
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Ajouter une réponse</div>
+         <div class="panel-body">
+            {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+            {{ form_errors(form) }}
+            <div class="form-group">
+                {{ form_widget(form.post_content, {'attr': {'class': 'form-control'}}) }}
+                <script>
+                    tinymce.init({
+                        menubar : false,
+                        selector: 'textarea',
+                        theme: "modern",
+
+                        height: 200,
+                        theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
+                        font_size_style_values: "12px,13px,14px,16px,18px,20px",
+                        plugins: [
+                            "emoticons textcolor"
+                        ],
+
+                        toolbar: "bold italic underline |  forecolor  emoticons sizeselect | fontsizeselect" ,
+                        style_formats: [
+                            {title: 'Bold text', inline: 'b'},
+                            {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                            {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                            {title: 'Example 1', inline: 'span', classes: 'example1'},
+                            {title: 'Example 2', inline: 'span', classes: 'example2'},
+                            {title: 'Table styles'},
+                            {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                        ]
+                    });
+
+                </script>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-4"></div>
+                <div class="col-sm-4">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'},'label':'Ajouter une réponse'}) }}
+                </div>
+            </div>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+        {% endif %}
+    {% include '@SERCOMApp/Pagination/pagination.html.twig' %}
+{% endblock %}
+{% block script %}
+
+    <script>
+
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+        //http://stackoverflow.com/questions/8579643/simple-jquery-scroll-to-anchor-up-or-down-the-page
+
+        function scrollToAnchor(aid){
+            var aTag = $("a[name='"+ aid +"']");
+            $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+
+        }
+
+        $("#repondre").click(function() {
+            scrollToAnchor('answer');
+        });
+
+
+
+    </script>
+{% endblock %}

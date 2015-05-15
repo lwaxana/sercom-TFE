@@ -1,0 +1,86 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% form_theme form _self %}
+
+{%- block button_widget -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}><i class="fa fa-search"></i></button>
+{%- endblock button_widget -%}
+
+{% block titre %}
+    <title>Liste des classes</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well">
+        Liste des classes
+        <div class="navbar-right col-sm-3">
+            {{ form_start(form , {'attr':{'class':'form-horizontal'}}) }}
+            <div class="input-group">
+                {{ form_widget(form.search, {'attr': {'class': 'form-control','placeholder':'Recherche Nom, prénom' }} ) }}
+                <div class="input-group-btn">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                </div>
+            </div>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+
+
+    {% if classes is not empty %}
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <td> Nom </td>
+                <td> Professeur </td>
+                <td> Matière </td>
+                <td> Nbre étudiants </td>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for c in classes %}
+                <tr>
+                    <td></td>
+                    <td> </td>
+                    <td> </td>
+
+
+                    <td>
+                        <a href=""><i class="fa fa-gear fa-2x"></i></a>
+                    </td>
+
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-3">
+                <a href="{{ path('sercom_admin') }}" class="btn-block btn-warning btn">Retour</a>
+            </div>
+        </div>
+
+
+    {% else %}
+        Votre recherche n'a pas retourné de résultat
+    {% endif %}
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+
+
+    </script>
+{% endblock %}
+

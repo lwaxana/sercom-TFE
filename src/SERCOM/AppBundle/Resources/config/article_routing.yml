@@ -1,0 +1,32 @@
+sercom_members_article:
+    pattern:  /article
+    defaults: { _controller: SERCOMAppBundle:Article:index }
+
+sercom_members_article_add:
+    pattern:  /article/creer
+    defaults: { _controller: SERCOMAppBundle:Article:creerArticle }
+
+sercom_members_article_modify:
+    pattern:  /article/modifier/{id}
+    defaults: { _controller: SERCOMAppBundle:Article:modifierArticle }
+
+sercom_members_article_delete:
+    pattern:  /article/delete/{id}
+    defaults: { _controller: SERCOMAppBundle:Article:deleteArticle }
+
+sercom_members_article_submit:
+    pattern:  /article/submit/{id}
+    defaults: { _controller: SERCOMAppBundle:Article:submitArticle }
+
+sercom_members_article_view:
+    pattern:  /article/view/{id}
+    defaults: { _controller: SERCOMAppBundle:Article:viewArticle }
+
+sercom_members_article_modify_delete:
+    pattern:  /article/delete/doc/{id}
+    defaults: { _controller: SERCOMAppBundle:Article:deletedocArticle }
+
+sercom_members_article_tags:
+    pattern: /article/tags
+    defaults: {_controller: SERCOMAppBundle:Article:tags}
+

@@ -1,0 +1,136 @@
+{% extends '@SERCOMApp/Members/index.html.twig' %}
+{% block style %}
+    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/chosen.css') }}"/>
+    <script type="text/javascript" src="{{ asset('bundles/AppBundle/js/chosen.jquery.min.js') }}"></script>
+    <script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+{% endblock %}
+
+{% block titre %}
+    <title>Messages  </title>
+{% endblock %}
+
+
+
+{% block well %}
+    <div class="well"> Messages </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-sm-4 col-md-2 sidebar">
+            <div class="list-group">
+                <a href="{{ path('sercom_member_mail_index') }}" class="list-group-item active">Messages reçus </a>
+                <a href="{{ path('sercom_member_mail_receive') }}" class="list-group-item">Messages envoyés </a>
+                <a href="{{ path('sercom_member_mail_new_mail') }}" class="list-group-item ">Nouveau message </a>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="panel panel-primary" style="height: 500px;">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Répondre message</h3>
+                </div>
+                <div class="panel-body" >
+                    <div class="container-fluid" >
+                        {{ form_start(form , {'attr':{'class':'form-horizontal'}})}}
+                        {{ form_errors(form) }}
+                        <div class="well" style="height: 375px; overflow: auto;">
+
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    {{ form_label(form.subject , "Sujet :", {'label_attr': {'class': 'control-label', 'require':'true'}}) }}
+                                </div>
+                                <div class="col-sm-10">
+                                    {{ form_widget(form.subject, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label>Pour :</label>
+                                </div>
+                                <div class="col-sm-10">
+
+                                    {{ form_widget(form.persons, {'attr':{'data-placeholder':'Destinataires', 'class':'form-control'}}) }}
+
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-10">
+                                    {{ form_widget(form.messagecontent, {'attr':{'class':'form-control', 'rows':8}}) }}
+
+                                    <script>
+                                        tinymce.init({
+                                            menubar : false,
+                                            selector: 'textarea',
+                                            theme: "modern",
+
+                                            height: 150,
+                                            theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
+                                            font_size_style_values: "12px,13px,14px,16px,18px,20px",
+                                            plugins: [
+                                                "emoticons textcolor"
+                                            ],
+
+                                            toolbar: "bold italic underline |  forecolor  emoticons sizeselect | fontsizeselect" ,
+                                            style_formats: [
+                                                {title: 'Bold text', inline: 'b'},
+                                                {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                                                {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                                                {title: 'Example 1', inline: 'span', classes: 'example1'},
+                                                {title: 'Example 2', inline: 'span', classes: 'example2'},
+                                                {title: 'Table styles'},
+                                                {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+                                            ]
+                                        });
+
+                                    </script>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-3"></div>
+                        <div class="col-sm-3">
+                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}, 'label':'Envoyer'}) }}
+                        </div>
+                        <div class="col-sm-3">
+                            <a href="{{ path('sercom_member_mail_index') }}" class="btn btn-warning btn-md btn-block">Retour</a>
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+
+
+        $(document).ready(function(){
+            $("#sercom_appbundle_privatemessage_2_persons").chosen({allow_single_deselect: true});
+        });
+
+
+
+
+    </script>
+
+{% endblock %}
+

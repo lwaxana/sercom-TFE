@@ -1,0 +1,9 @@
+{% if person.picture is defined %}
+    {% image '@SERCOMAppBundle/Resources/data/profil.jpg'  output="images/profil/your-image.jpg" %}
+    <img src="{{ asset_url }}"  alt="my alt of image" class="pull-left">
+    {% endimage %}
+{% else %}
+    pas de photo
+    <img src="{{ asset('bundles/AppBundle/images/default-user.png') }}"/>
+ {% endif %}
+

@@ -1,0 +1,41 @@
+{% extends 'SERCOMAppBundle:Home:base.html.twig' %}
+
+{% block header %}
+    {% include 'SERCOMAppBundle:Student:header.html.twig' %}
+{% endblock %}
+
+{% block nav %}
+{% endblock %}
+
+{% block titre %}
+    <title>Espace Etudiants</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well">Accueil Etudiants</div>
+{% endblock %}
+
+{% block flash %}
+    {% for flashMessage in app.session.flashbag.get('succes') %}
+        <div class="alert alert-success" role="alert" id="succes" > {{ flashMessage }}</div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger" role="alert" id="alert"> {{ flashMessage }}</div>
+    {% endfor %}
+{% endblock %}
+
+
+{% block body %}
+
+
+
+   TEST
+
+
+{% endblock %}
+{% block script %}
+    <script>
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+    </script>
+{% endblock %}

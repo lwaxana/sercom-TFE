@@ -1,0 +1,25 @@
+sercom_register:
+    pattern:  /register
+    defaults: { _controller: SERCOMAppBundle:Register:register }
+
+sercom_register_validemail:
+    pattern:  /register/validate
+    defaults: { _controller: SERCOMAppBundle:Register:validate }
+    requirements:
+        _method: GET
+
+sercom_register_checklogin:
+    pattern: /register/checklogin/{login}
+    defaults: { _controller: SERCOMAppBundle:Register:testlogin }
+
+sercom_register_checkemail:
+    pattern: /register/checkemail/{email}
+    defaults: { _controller: SERCOMAppBundle:Register:testemail }
+    requirements:
+         _method: POST
+
+sercom_register_access:
+    pattern: /register/checkaccess
+    defaults: {_controller: SERCOMAppBundle:Register:access}
+    requirements:
+        _method: POST

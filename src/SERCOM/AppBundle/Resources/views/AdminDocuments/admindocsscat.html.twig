@@ -1,0 +1,56 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig'%}
+
+{% block titre %}
+    <title> Administration - Documents </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"><a href="{{ path('sercom_admin') }}">Administration</a> / <a href="{{ path('sercom_admin_docs') }}">Documents</a> / {{ cat.name }}</div>
+{% endblock %}
+
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td> Sous-Catégorie </td>
+            <td> Fichiers</td>
+            <td> Actions</td>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for souscat in cat.souscats %}
+            <tr>
+                <td>{{ souscat.name }}</td>
+                <td> {{ souscat.asbldocuments|length }}</td>
+                <td>
+                    <a href="{{ path('sercom_admin_docs_files', {'id': souscat.souscatid}) }}" title="Voir les fichiers de la catégorie"><span class="fa fa-folder-open-o fa-2x"></span></a>
+                    <a href="{{ path('sercom_admin_doc_modify_sscat', {'id': souscat.souscatid}) }}" title="Modifier"><span class="fa fa-wrench fa-2x"></span></a>
+                    <a href="{{ path('sercom_admin_doc_del_sscat',{'id':souscat.souscatid}) }}" title="supprimer" onClick="return confirm('Confirmer suppression')"><span class="fa fa-trash fa-2x"></span></a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        <tr>
+            <td>
+                <a href="{{ path('sercom_admin_docs_add_sscat', {'id':cat.doccatid}) }}" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter sous catégorie  </a>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <a href="{{ path('sercom_admin_docs') }}" class="btn btn-warning btn-block">Retour</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('#succes').delay( 5000).toggle('RIGHT');
+        $('#alert').delay( 5000).toggle();
+    </script>
+{% endblock %}

@@ -1,0 +1,27 @@
+sercom_admin_classes:
+    pattern:  /admin/classes
+    defaults: { _controller: SERCOMAppBundle:AdminClasse:index, page:1 }
+
+sercom_admin_add_classes:
+    pattern:  /admin/classes/addclasse
+    defaults: { _controller: SERCOMAppBundle:AdminClasse:addclasse }
+
+sercom_admin_del_classes:
+    pattern:  /admin/classes/del/classe/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminClasse:deleteClasse }
+
+sercom_admin_add_subject:
+     pattern:  /admin/classes/addsubject
+     defaults: { _controller: SERCOMAppBundle:AdminClasse:addSubject }
+
+sercom_admin_modify_classe:
+      pattern:  /admin/classes/modify/{id}
+      defaults: { _controller: SERCOMAppBundle:AdminClasse:modifyClasse }
+
+sercom_admin_del_subject:
+      pattern:  /admin/classes/del/subject/{id}
+      defaults: { _controller: SERCOMAppBundle:AdminClasse:delSubject }
+
+sercom_admin_del_subject_page:
+      pattern:  /admin/classes/del/subject_page/
+      defaults: { _controller: SERCOMAppBundle:AdminClasse:delSubjectPage }

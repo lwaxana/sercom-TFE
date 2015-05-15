@@ -1,0 +1,43 @@
+sercom_members_forum:
+    pattern:  /forum
+    defaults: { _controller: SERCOMAppBundle:Forum:index }
+
+sercom_members_forum_topics:
+    pattern:  /forum/{forum}/{page}
+    defaults: { _controller: SERCOMAppBundle:Forum:topic }
+    requirements:
+        forum: \d+
+        page: \d+
+
+
+sercom_members_forum_posts:
+    pattern:  /forum/topic/{forum}/{topic}/{page}
+    defaults: { _controller: SERCOMAppBundle:Forum:post }
+    requirements:
+        forum: \d+
+        topic: \d+
+        page: \d+
+
+sercom_members_forum_editpost:
+    pattern: /forum/editpost/{post}
+    defaults: { _controller: SERCOMAppBundle:Forum:editpost }
+    requirements:
+        post: \d+
+
+sercom_members_forum_add_topic:
+    pattern:  /forum/addtopic/{forum}
+    defaults: { _controller: SERCOMAppBundle:Forum:addtopic }
+    requirements:
+        post: \d+
+
+sercom_members_forum_topics_locks:
+    pattern:  /forum/locks/{topic}
+    defaults: { _controller: SERCOMAppBundle:Forum:locks }
+    requirements:
+        topic: \d+
+
+sercom_members_forum_topics_delete:
+    pattern:  /forum/delete/{topic}
+    defaults: { _controller: SERCOMAppBundle:Forum:deleteTopic }
+    requirements:
+        topic: \d+

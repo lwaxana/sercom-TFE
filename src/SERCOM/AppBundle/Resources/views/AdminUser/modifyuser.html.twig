@@ -1,0 +1,215 @@
+{% extends 'SERCOMAppBundle:Admin:index.html.twig' %}
+
+{% block titre %}
+    <title> Administration  </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_admin') }}">Administration</a> / <a href="{{ path('sercom_admin_users') }}">Utilisateurs</a> / {{ person.lastname }} {{ person.firstname }} </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div></div>
+        <div>
+            <div class="panel panel-primary">
+                <div class="panel-heading">Modifier accès</div>
+                <div class="panel-body">
+                    {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+                        <div class="col-sm-1">
+                            {{ form_label(form.membre, 'Membre :') }}
+                        </div>
+                        <div class="col-sm-1">
+                            {{ form_widget(form.membre) }}
+                            {{ form_errors(form.membre) }}
+                        </div>
+                        <div class="col-sm-3">
+                            {{ form_widget(form.accesmembre) }}
+                            {{ form_errors(form.accesmembre) }}
+                        </div>
+                        <div class="col-sm-2" id="warning-membre"><i class="fa fa-warning fa-2x" style="color: red;"></i><span style="color: red;"> Membre sans accès</span> </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-1">
+                            {{ form_label(form.teacher, 'Professeur :') }}
+                        </div>
+                        <div class="col-sm-1">
+                            {{ form_widget(form.teacher) }}
+                            {{ form_errors(form.teacher) }}
+                        </div>
+                        <div class="col-sm-3">
+                            {{ form_widget(form.accesprof) }}
+                            {{ form_errors(form.accesprof) }}
+                        </div>
+                        <div class="col-sm-2" id="warning-prof"><i class="fa fa-warning fa-2x" style="color: red;"></i><span style="color: red;"> Professeur sans accès</span> </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-1">
+                            {{ form_label(form.student, 'Etudiant :') }}
+                        </div>
+                        <div class="col-sm-1">
+                            {{ form_widget(form.student) }}
+                            {{ form_errors(form.student) }}
+                        </div>
+                        <div class="col-sm-3">
+                            {{ form_widget(form.accesetudiant) }}
+                            {{ form_errors(form.accesetudiant) }}
+                        </div>
+                        <div class="col-sm-2" id="warning-etudiant"><i class="fa fa-warning fa-2x" style="color: red;"></i><span style="color: red;"> Etudiant sans accès</span> </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-2">
+                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}, 'label':'Enregister'} ) }}
+                        </div>
+                        <div class="col-sm-2">
+                            <a href="{{ path('sercom_admin_users') }}" class="btn btn-warning btn-block">Retour</a>
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+             </div>
+
+
+        </div>
+
+    </div>
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $(document).ready(function(){
+
+            if ( !$('#sercom_appbundle_person_modif_rights_membre_0').is(':checked')){
+                $('#sercom_appbundle_person_modif_rights_accesmembre').hide();
+                $('#sercom_appbundle_person_modif_rights_accesmembre').removeAttr('required');
+                $('#warning-membre').hide();
+            }
+            else {
+                {% if d2 == "" %}
+                var d = 0;
+                {% else %}
+                var d = {{ d2 }};
+                {% endif %}
+                if (d != 0) {
+
+                    $('#sercom_appbundle_person_modif_rights_accesmembre').val(d);
+                    $('#warning-membre').hide();
+                }
+            }
+                var stu = {{ stu }};
+                var tea = {{ tea }};
+
+                if ( stu == 1){
+                    $('#sercom_appbundle_person_modif_rights_accesetudiant').val(6);
+                    $('#warning-etudiant').hide();
+
+                }
+
+                if ( tea == 1){
+                    $('#sercom_appbundle_person_modif_rights_accesprof').val(5);
+                    $('#warning-prof').hide();
+                }
+
+
+
+
+            if ( !$('#sercom_appbundle_person_modif_rights_teacher_0').is(':checked')){
+                $('#sercom_appbundle_person_modif_rights_accesprof').hide();
+                $('#warning-prof').hide();
+                $('#sercom_appbundle_person_modif_rights_accesprof').removeAttr('required');
+            }
+            if ( !$('#sercom_appbundle_person_modif_rights_student_0').is(':checked')){
+                $('#sercom_appbundle_person_modif_rights_accesetudiant').hide();
+                $('#warning-etudiant').hide();
+                $('#sercom_appbundle_person_modif_rights_accesetudiant').removeAttr('required');
+            }
+
+        });
+
+        $('#sercom_appbundle_person_modif_rights_membre_0').click(function(){
+            membre = $(this);
+            if ( membre.is(':checked')){
+                $('#sercom_appbundle_person_modif_rights_accesmembre').show();
+                $('#sercom_appbundle_person_modif_rights_accesmembre').attr('required','true');
+                $('#warning-membre').show();
+
+            }
+            else{
+                $('#sercom_appbundle_person_modif_rights_accesmembre').hide();
+                $('#sercom_appbundle_person_modif_rights_accesmembre').removeAttr('required');
+                $('#warning-membre').hide();
+            }
+        });
+
+        $('#sercom_appbundle_person_modif_rights_teacher_0').click(function(){
+            teacher = $(this);
+            if ( teacher.is(':checked')){
+                $('#sercom_appbundle_person_modif_rights_accesprof').show();
+                $('#sercom_appbundle_person_modif_rights_accesprof').attr('required','true');
+                $('#warning-prof').show();
+
+            }
+            else{
+                $('#sercom_appbundle_person_modif_rights_accesprof').hide();
+                $('#sercom_appbundle_person_modif_rights_accesprof').removeAttr('required');
+                $('#warning-prof').hide();
+            }
+        });
+
+        $('#sercom_appbundle_person_modif_rights_student_0').click(function(){
+            student = $(this);
+            if ( student.is(':checked')){
+                $('#sercom_appbundle_person_modif_rights_accesetudiant').show();
+                $('#sercom_appbundle_person_modif_rights_accesetudiant').attr('required','true');
+                $('#warning-etudiant').show();
+
+            }
+            else{
+                $('#sercom_appbundle_person_modif_rights_accesetudiant').hide();
+                $('#sercom_appbundle_person_modif_rights_accesetudiant').removeAttr('required');
+                $('#warning-etudiant').hide();
+            }
+        })
+
+        $('#sercom_appbundle_person_modif_rights_accesmembre').change(function(){
+            var val = $("#sercom_appbundle_person_modif_rights_accesmembre option:selected").text();
+            if (val == "Choisir un access"){
+                $('#warning-membre').show();
+            }
+            else{
+                $('#warning-membre').hide();
+            }
+        });
+
+        $('#sercom_appbundle_person_modif_rights_accesprof').change(function(){
+            var val = $("#sercom_appbundle_person_modif_rights_accesprof option:selected").text();
+            if (val == "Choisir un access"){
+                $('#warning-prof').show();
+            }
+            else{
+                $('#warning-prof').hide();
+            }
+        });
+
+        $('#sercom_appbundle_person_modif_rights_accesetudiant').change(function(){
+            var val = $("#sercom_appbundle_person_modif_rights_accesetudiant option:selected").text();
+            if (val == "Choisir un access"){
+                $('#warning-etudiant').show();
+            }
+            else{
+                $('#warning-etudiant').hide();
+            }
+        });
+
+
+    </script>
+{% endblock %}

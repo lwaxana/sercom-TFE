@@ -1,0 +1,119 @@
+{% extends 'SERCOMAppBundle:Admin:index.html.twig' %}
+
+{% block titre %}
+    <title> Mofification Droits </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_admin') }}">Administration</a> / <a href="{{ path('sercom_admin_users') }}">Utilisateurs</a> / Groupes forums / {{ person.firstname }} {{ person.lastname }} </div>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+            <div class="panel-heading">Groupes forums</div>
+             <div class="panel-body">
+            {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+            {{ form_errors(form) }}
+            <ul class="list-group">
+                {% for group in form.forumgroups %}
+                    <li class="list-group-item">
+                        {{ form_row(group) }}
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="form-group">
+                <div class="col-md-4"></div>
+                <div class="col-md-2">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                </div>
+                <div class="col-md-2">
+                    <a href="{{ path('sercom_admin_users') }}" class="btn btn-warning btn-block">Retour</a>
+                </div>
+            </div>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Droits administration</div>
+                <div class="panel-body">
+                    {{ form_start(form2, {'attr':{'class':'form-horizontal'}}) }}
+                    {{ form_errors(form2) }}
+                    <ul class="list-group">
+                        {% for group in form2.sitegroups %}
+                            <li class="list-group-item">
+                                {{ form_row(group) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="form-group">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-2">
+                            {{ form_widget(form2.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                        </div>
+                        <div class="col-md-2">
+                            <a href="{{ path('sercom_admin_users') }}" class="btn btn-warning btn-block">Retour</a>
+                        </div>
+                    </div>
+                    {{ form_rest(form2) }}
+                    {{ form_end(form2) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Fonction ASBL</div>
+                <div class="panel-body">
+                    {{ form_start(form3, {'attr':{'class':'form-horizontal'}}) }}
+                    {{ form_errors(form3) }}
+                    <ul class="list-group">
+                        {% for group in form3.asblfunctions %}
+                            <li class="list-group-item">
+                                {{ form_row(group) }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="form-group">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-2">
+                            {{ form_widget(form3.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                        </div>
+                        <div class="col-md-2">
+                            <a href="{{ path('sercom_admin_users') }}" class="btn btn-warning btn-block">Retour</a>
+                        </div>
+                    </div>
+                    {{ form_rest(form3) }}
+                    {{ form_end(form3) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $('#succes').delay( 5000).hide(0);
+        $('#alert').delay( 5000).hide(0);
+
+
+    </script>
+{% endblock %}

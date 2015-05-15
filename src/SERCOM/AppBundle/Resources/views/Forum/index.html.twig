@@ -1,0 +1,51 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block titre %}
+    <title> Forums </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"><i class="fa fa-home fa-lg"></i> &nbsp;<a href="{{ path('sercom_members_forum') }}">Index du forum</a></div>
+{% endblock %}
+
+{% block body %}
+    <br/>
+
+
+    {% for forum in forums %}
+        <table class="table">
+            <thead class="primary">
+            <tr>
+                <th class='col-md-2 success'> <a href="{{ path('sercom_members_forum_topics', {'forum':forum.forum.forumid, 'page':1 })  }}"> {{ forum.forum.name }} </a></th>
+                <th class='col-md-2 success'>Sujets</th>
+                <th class='col-md-2 success'>Messages</th>
+                <th class='col-md-6 success'>Dernier message</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class='col-md-4'> {{ forum.forum.description }} </td>
+                <td class='col-md-1'> {{ forum.nbretopics  }} </td>
+                <td class='col-md-1'> {{ forum.nbreposts }} </td>
+                <td class='col-md-6'>
+                    {% if (forum.topic is not empty) and (forum.lastpost is not empty) and (forum.member.person is not empty) %}
+                        <a href="{{ path('sercom_members_forum_posts', {'forum':forum.forum.forumid, 'topic':forum.topic.topicid, 'page':1 })  }}"> {{ forum.topic.title }} </a>
+                        <br/> par {{ forum.member.person.lastname }} {{ forum.member.person.firstname }}
+                        <br/> {{ forum.lastpost.datepost|date('Y-m-d H:i:s') }}
+                    {% endif %}</td>
+            </tr>
+            </tbody>
+        </table>
+    {% endfor %}
+
+
+{% endblock %}
+
+
+
+
+
+
+
+

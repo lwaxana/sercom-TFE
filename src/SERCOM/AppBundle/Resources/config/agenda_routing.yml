@@ -1,0 +1,43 @@
+sercom_members_agenda:
+    pattern:  /agenda
+    defaults: { _controller: SERCOMAppBundle:Agenda:index }
+
+sercom_members_agenda_voir:
+    pattern:  /agenda/event/{id}
+    defaults: { _controller: SERCOMAppBundle:Agenda:eventvoir }
+    requirements:
+        id: \d+
+
+sercom_members_agenda_choisir:
+    pattern:  /agenda/choose/{id}
+    defaults: { _controller: SERCOMAppBundle:Agenda:eventchoisir }
+    requirements:
+        id: \d+
+
+sercom_members_agenda_modify:
+    pattern:  /agenda/modify/{id}
+    defaults: { _controller: SERCOMAppBundle:Agenda:eventmodifier }
+    requirements:
+        id: \d+
+
+sercom_members_agenda_valider:
+    pattern:  /agenda/valider/{id}
+    defaults: { _controller: SERCOMAppBundle:Agenda:validerEvent }
+    requirements:
+        id: \d+
+
+sercom_members_agenda_delete:
+    pattern:  /agenda/delete/{id}
+    defaults: { _controller: SERCOMAppBundle:Agenda:deleteevent }
+    requirements:
+        id: \d+
+
+sercom_members_agenda_add:
+    pattern:  /agenda/add
+    defaults: { _controller: SERCOMAppBundle:Agenda:addevent }
+
+sercom_members_agenda_calendar:
+    pattern:  /agenda/calendar
+    defaults: { _controller: SERCOMAppBundle:Agenda:calendar }
+    requirements:
+        _method: GET

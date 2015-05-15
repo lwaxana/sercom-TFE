@@ -1,0 +1,100 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+
+{% block style %}
+    <script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+{% endblock %}
+
+{% block titre %}
+    <title>Article - Modifier texte</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_members_article') }}">Articles</a> / Modifier Article / </div>
+{% endblock %}
+
+{% block body %}
+<br/>
+<div class="panel panel-primary">
+    <div class="panel-heading">Edition article</div>
+    <div class="panel-body">
+        {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+        {{ form_errors(form) }}
+        <div class="form-group">
+            {{ form_label(form.article.title, "Titre :", {'label_attr': {'class': 'col-md-1 control-label', 'require':'true'}}) }}
+            {{ form_errors(form.article.title) }}
+            <div class="col-md-8">
+                {{ form_widget(form.article.title, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-1 control-label">
+                {{ form_label(form.article.sitesection, 'Section :') }}
+                {{ form_errors(form.article.sitesection) }}
+            </div>
+            <div class="col-md-8">
+                {{ form_widget(form.article.sitesection) }}
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-1 control-label">
+                {{ form_label(form.content, 'Contenu Article :') }}
+                {{ form_errors(form.content) }}
+            </div>
+            <div class="col-md-10">
+                {{ form_widget(form.content) }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3">
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+            </div>
+            <div class="col-sm-3">
+                <a href="{{ path('sercom_members_article') }}" class="btn btn-warning btn-block">Retour</a>
+            </div>
+        </div>
+
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+        </div>
+    </div>
+
+
+    <script>
+        tinymce.init({
+            menubar : false,
+            selector: 'textarea',
+            theme: "modern",
+
+            height: 200,
+            theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
+            font_size_style_values: "12px,13px,14px,16px,18px,20px",
+            plugins: [
+                "emoticons textcolor"
+            ],
+
+            toolbar: "bold italic underline |  forecolor  emoticons sizeselect | fontsizeselect" ,
+            style_formats: [
+                {title: 'Bold text', inline: 'b'},
+                {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                {title: 'Example 1', inline: 'span', classes: 'example1'},
+                {title: 'Example 2', inline: 'span', classes: 'example2'},
+                {title: 'Table styles'},
+                {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+            ]
+        });
+
+    </script>
+{% endblock %}
+
+
+{% block script %}
+    <script>
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+    </script>
+{% endblock %}
+

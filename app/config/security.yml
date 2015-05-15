@@ -1,0 +1,59 @@
+security:
+    encoders:
+        SERCOM\AppBundle\Entity\Person:
+            algorithm: sha512
+            encode_as_base64: true
+            iterations: 2000
+
+    role_hierarchy:
+        STUDENT: ROLE_STUDENT
+        TEACHER: TEACHER
+        ADMIN_INSCRIPTION: ADMIN_INSCRIPTION
+        ADMIN_FORUM: ADMIN_FORUM
+        ADMIN_ARTICLES: ADMIN_ARTICLES
+        ADMIN_DOCS: ADMIN_DOCS
+        ADMIN_USER: ADMIN_USER
+        ADMIN_AGENDA: ADMIN_AGENDA
+        MODERATION_FORUM: MODERATION_FORUM
+        ADMIN_STUDENTS: ADMIN_STUDENTS
+        ADMIN_PROFS: ADMIN_PROFS
+        ADMIN_CLASSES: ADMIN_CLASSES
+        ADMIN_AGENDA_CLASSE: ADMIN_AGENDA_CLASSE
+        ROLE_MEMBRE: ROLE_MEMBRE
+        ROLE_COMITE: [ROLE_MEMBRE, ROLE_COMITE]
+        ROLE_ANIMATEUR: [ROLE_MEMBRE, ROLE_COMITE, ROLE_ANIMATEUR]
+        ROLE_PRESIDENT: [ROLE_STUDENT, TEACHER, ROLE_ANIMATEUR, ADMIN_INSCRIPTION, ADMIN_FORUM, ADMIN_ARTICLES, ADMIN_DOCS, ADMIN_USER, ADMIN_AGENDA, MODERATION_FORUM, ADMIN_STUDENTS, ADMIN_PROFS, ADMIN_CLASSES, ADMIN_AGENDA_CLASSE]
+        ROLE_SUPER_ADMIN: [ROLE_PRESIDENT]
+
+    providers:
+        person:
+            entity: { class:SERCOMAppBundle:Person, property: username }
+
+    firewalls:
+        main:
+            pattern: ^/
+            anonymous: true
+            provider: person
+            form_login:
+                login_path: login
+                check_path: login_check
+            logout:
+                path: /logout
+                target: /
+
+    access_control:
+        - { path: ^/members, roles: ROLE_MEMBRE }
+        - { path: ^/teachers, roles: TEACHER }
+        - { path: ^/students, roles: ROLE_STUDENT }
+        - { path: ^/members/admin/inscription, roles: ADMIN_INSCRIPTION }
+        - { path: ^/members/admin/forum, roles: ADMIN_FORUM }
+        - { path: ^/members/admin/users, roles: ADMIN_USER }
+        - { path: ^/members/admin/documents, roles: ADMIN_DOCS }
+        - { path: ^/members/admin/agenda, roles: ADMIN_AGENDA }
+        - { path: ^/members/admin/students, roles: ADMIN_STUDENTS }
+        - { path: ^/members/admin/teachers, roles: ADMIN_PROFS }
+        - { path: ^/members/admin/classes, roles: ADMIN_CLASSES }
+        - { path: ^/members/admin/agendaclasses, roles: ADMIN_AGENDA_CLASSE }
+
+
+

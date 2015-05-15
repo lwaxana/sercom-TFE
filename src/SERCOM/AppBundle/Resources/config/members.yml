@@ -1,0 +1,23 @@
+sercom_members:
+    pattern:  /members
+    defaults: { _controller: SERCOMAppBundle:Members:index }
+
+sercom_members_infos:
+    pattern:  /members/infos
+    defaults: { _controller: SERCOMAppBundle:Members:infos }
+
+sercom_members_listmembres:
+    pattern:  /members/membres/{page}
+    defaults: { _controller: SERCOMAppBundle:Members:listemembres }
+
+sercom_members_docs:
+    pattern:  /members/docs
+    defaults: { _controller: SERCOMAppBundle:Document:index }
+
+sercom_members_docs_files:
+    pattern:  /members/files/{id}/{page}
+    defaults: { _controller: SERCOMAppBundle:Document:files }
+
+sercom_members_download_file:
+    pattern : /members/download/{id}
+    defaults: { _controller: SERCOMAppBundle:Members:files }

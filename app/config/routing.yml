@@ -1,0 +1,4 @@
+sercom_app:
+    resource: "@SERCOMAppBundle/Resources/config/routing.yml"
+    prefix:   /
+

@@ -1,0 +1,57 @@
+# /members/admin/documents
+
+sercom_admin_docs:
+    pattern:  /
+    defaults: { _controller: SERCOMAppBundle:AdminDocuments:admindocs }
+
+sercom_admin_docs_sscat:
+    pattern:  /souscat/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminDocuments:adminDocumentsSousCat }
+
+sercom_admin_doc_del_cat:
+     pattern:  /delcat/{id}
+     defaults: { _controller: SERCOMAppBundle:AdminDocuments:deleteDocumentCat }
+
+sercom_admin_doc_modify_cat:
+     pattern:  /modifycat/{id}
+     defaults: { _controller: SERCOMAppBundle:AdminDocuments:modifyDocumentCat }
+
+sercom_admin_doc_del_sscat:
+     pattern:  /delsscat/{id}
+     defaults: { _controller: SERCOMAppBundle:AdminDocuments:deleteDocumentssCat }
+
+sercom_admin_doc_modify_sscat:
+     pattern:  /modifysscat/{id}
+     defaults: { _controller: SERCOMAppBundle:AdminDocuments:modifyDocumentssCat }
+
+sercom_admin_docs_files:
+    pattern:  /files/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminDocuments:admindocumentsfiles }
+
+sercom_admin_docs_file_delete:
+    pattern:  /deletefiles/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminDocuments:admindocdeletefile }
+
+sercom_admin_docs_add_cat:
+    pattern:  /addcat
+    defaults: { _controller: SERCOMAppBundle:AdminDocuments:addcategory }
+
+sercom_admin_docs_add_sscat:
+    pattern:  /addsscat/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminDocuments:addsscategory }
+    requirements:
+        id: \d+
+
+
+sercom_admin_docs_modify2:
+    pattern:  /modifydoc
+    defaults: { _controller: SERCOMAppBundle:AdminDocuments:sousCat }
+
+sercom_admin_docs_add_file2:
+    pattern:  /addfile
+    defaults: { _controller: SERCOMAppBundle:AdminDocuments:addfile }
+
+sercom_admin_docs_modify_file:
+    pattern:  /modify-file/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminDocuments:modifyfile }
+

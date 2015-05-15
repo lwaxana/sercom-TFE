@@ -1,0 +1,240 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block style %}
+<link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/fullcalendar.min.css') }}"/>
+<script type="text/javascript" src="{{ asset('bundles/AppBundle/js/moment.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/AppBundle/js/fullcalendar.min.js') }}"></script>
+<style>
+    .fc-time{
+        display : none;
+    }
+</style>
+{% endblock %}
+
+{% block titre %}
+    <title>Administration - Agenda Classes</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_admin') }}"> Administration </a> / Agenda Classes</div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6">
+            <div id="calendar"></div>
+        </div>
+
+            <div class="col-md-1"></div>
+
+            <div class="col-md-2">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-home fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Lieux de cours</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_agenda_classe_places') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Lieux de cours</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-calendar fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Ajouter évènement</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" id="formshow">
+                        <div class="panel-footer">
+                            <span class="pull-left">Ajouter évènement</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+    </div>
+
+
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Ajouter un cours </h4>
+                </div>
+                <div class="modal-body">
+                    {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group ">
+                        {{ form_label(form.datecours.date, "Date :", {'label_attr': {'class': 'col-sm-3 control-label', 'require':'true'}} ) }}
+                        {{ form_errors(form.datecours) }}
+                        <div class="col-sm-8">
+                                <div class="col-sm-4">
+                                    {{ form_widget(form.datecours.date.day , {'attr': {'class': 'form-control'}}) }}
+                                </div>
+
+                            <div class="col-sm-4">
+                                {{ form_widget(form.datecours.date.month , {'attr': {'class': 'form-control'}}) }}
+                            </div>
+
+                            <div class="col-sm-4">
+                                {{ form_widget(form.datecours.date.year , {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        {{ form_label(form.datecours.time, "Heure :", {'label_attr': {'class': 'col-sm-3 control-label', 'require':'true'}} ) }}
+                        {{ form_errors(form.datecours) }}
+                        <div class="col-sm-8">
+                            <div class="col-sm-4">
+                                {{ form_widget(form.datecours.time.hour , {'attr': {'class': 'form-control'}}) }}
+                            </div>
+
+                            <div class="col-sm-4">
+                                {{ form_widget(form.datecours.time.minute , {'attr': {'class': 'form-control'}}) }}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.courseplace, "Lieu :", {'label_attr': {'class': 'col-sm-3 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.courseplace) }}
+                        <div class="col-sm-8">
+                            {{ form_widget(form.courseplace, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.classe, "Classe :", {'label_attr': {'class': 'col-sm-3 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.classe) }}
+                        <div class="col-sm-8">
+                            {{ form_widget(form.classe, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}, 'label':'Enregistrer' }) }}
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fullCalModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
+                    <h4 id="modalTitle" class="modal-title"></h4>
+                </div>
+                <div id="modalBody" class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+
+        $('#formshow').click(function(e){
+            e.preventDefault();
+            $('#myModal').modal();
+
+
+
+        });
+
+
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+
+
+        $('#calendar').fullCalendar({
+            events: {
+                url: '{{ path('sercom_admin_agenda_classe_calendar') }}',
+                type: 'GET',
+
+                error: function() {
+                    alert('Une erreur s\'est produite sur le calendrier');
+                },
+                color: 'yellow',   // a non-ajax option
+                textColor: 'black' // a non-ajax option
+            },
+            timeFormat: '',
+
+
+            dayClick: function(date, jsEvent, view) {
+
+                var date_cal = new Date(date);
+                var now = new Date();
+                if ( date_cal >= now ){
+
+                    var d = new Date(date);
+                    $('#sercom_appbundle_courseplanning_datecours_date_day').val(d.getDate());
+                    $('#sercom_appbundle_courseplanning_datecours_date_month').val(d.getMonth()+1);
+                    $('#sercom_appbundle_courseplanning_datecours_date_year').val(d.getYear()+1900);
+                    $('#myModal').modal();
+                }
+
+
+
+            },
+            eventClick: function(calEvent, jsEvent, view) {
+
+                var t = calEvent['start'];
+                datas = { title: calEvent.title, time: t['_i']};
+
+                $.ajax({
+                    url: '{{ path('sercom_admin_agenda_classe_event') }}',
+                    data: datas,
+                    method: 'GET',
+                    success: function(data){
+                        var b = "Matière : "+data['subject']+"<br/>"+"Professeur :"+data['prof']+"<br/>"+"Lieu : "+data['place']+"<br/>Date :"+t['_i'];
+
+                        $('#modalTitle').html(data['name']);
+                        $('#modalBody').html(b);
+                        $('#fullCalModal').modal();
+
+                    },
+                    error: function(data){
+                        alert(data);
+                    }
+            });
+
+
+            }
+
+
+        });
+
+
+    </script>
+{% endblock %}

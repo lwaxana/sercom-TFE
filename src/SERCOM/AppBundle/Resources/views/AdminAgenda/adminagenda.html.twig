@@ -1,0 +1,72 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig'%}
+
+{% block titre %}
+    <title> Administration - Agenda </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well"><a href="{{ path('sercom_admin') }}">Administration</a> / Agenda </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">Events passés</div>
+        <div class="panel-body">
+
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <td> Nom Evenement </td>
+                    <td> Organisateur</td>
+                    <td> Confirmé </td>
+                    <td> Date & heure </td>
+                    <td> Action </td>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% if eventsc is not empty %}
+
+                    {% for eventc in eventsc %}
+                        {% if eventc.dateHourEvent < datenow %}
+                            <tr>
+                                <td>{{ eventc.name }}</td>
+
+                                <td>{{ eventc.member.person.lastname }} {{ eventc.member.person.firstname }}</td>
+                                {% if eventc.validate == 1 %}
+                                    <td> OUI </td>
+                                {% endif %}
+                                {% if eventc.validate == 1 %}
+                                    <td> {{ eventc.dateHourEvent|date('d-m-Y') }} {{ eventc.dateHourEvent|date('H:i') }} </td>
+                                {% endif %}
+                                <td>
+                                    <a href="{{ path('sercom_admin_agenda_delete', {'id':eventc.eventid}) }}" onClick="return confirm('Confirmer suppression')"><i class="fa fa-trash fa-2x" title="Effacer"></i></a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+
+                {% else %}
+                    <td>Pas d'évènements</td><td></td><td></td><td></td><td></td>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+            <a href="{{ path('sercom_admin') }}" class="btn-block btn-warning btn">Retour</a>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('#succes').delay( 5000).toggle('RIGHT');
+        $('#alert').delay( 5000).toggle();
+    </script>
+{% endblock %}

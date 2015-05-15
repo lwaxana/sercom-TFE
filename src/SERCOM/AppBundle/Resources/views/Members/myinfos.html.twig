@@ -1,0 +1,313 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block style %}
+    <link rel="stylesheet" href="http://localhost/sercom/web/bundles/AppBundle/css/flag-icon.css"/>
+    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/chosen.css') }}"/>
+    <script type="text/javascript" src="{{ asset('bundles/AppBundle/js/chosen.jquery.min.js') }}"></script>
+{% endblock %}
+
+{% block well %}
+    <div class="well">Mes infos</div>
+{% endblock %}
+
+{% block body %}
+
+<br/>
+<br/>
+
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Mes infos</div>
+                <div class="panel-body">
+                    {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.firstname, "Prénom :", {'label_attr': {'class': 'col-sm-3 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.firstname) }}
+                        <div class="col-sm-8">
+                            {{ form_widget(form.firstname, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.lastname, "Nom :", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                        {{ form_errors(form.lastname) }}
+                        <div class="col-sm-8">
+                            {{ form_widget(form.lastname, {'attr': {'class': 'form-control'}}) }}
+                                        </div>
+                    </div>
+                    <div id="divemail" class="form-group">
+                        {{ form_label(form.email, "Email :", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                        {{ form_errors(form.email) }}
+                        <div class="col-sm-8">
+                            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                            <span id="alertmail"> </span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.tel, "Tel :", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                        {{ form_errors(form.tel) }}
+                        <div class="col-sm-8">
+                            {{ form_widget(form.tel, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.telgsm, "GSM :", {'label_attr': {'class': 'col-sm-3 control-label'}}) }}
+                        {{ form_errors(form.telgsm) }}
+                        <div class="col-sm-8">
+                            {{ form_widget(form.telgsm, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+            <div class="panel-heading">Changer mon mot de passe</div>
+            <div class="panel-body">
+                {{ form_start(form2, {'attr':{'class':'form-horizontal'}}) }}
+                {{ form_errors(form2) }}
+                <div class="form-group">
+                    {{ form_label(form2.password.password, "Mot de passe :", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
+                    {{ form_errors(form2.password.password) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form2.password.password, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                    <br/>
+                </div>
+                <div class="form-group">
+                    {{ form_label(form2.password.confirm, "Confirmer :", {'label_attr': {'class': 'col-sm-4 control-label'}}) }}
+                    {{ form_errors(form2.password.confirm) }}
+                    <div class="col-sm-7">
+                        {{ form_widget(form2.password.confirm, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-4">
+                        {{ form_widget(form2.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                    </div>
+                </div>
+                {{ form_rest(form2) }}
+                {{ form_end(form2) }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Mon adresse</div>
+                <div class="panel-body">
+                    {{ form_start(form3, {'attr':{'class':'form-horizontal'}}) }}
+                    {{ form_errors(form3) }}
+                    <div class="form-group">
+                        {{ form_label(form3.street, "Rue :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form3.street) }}
+                        <div class="col-sm-9">
+                            {{ form_widget(form3.street, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form3.number, "Numéro :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form3.number) }}
+                        <div class="col-sm-9">
+                            {{ form_widget(form3.number, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form3.city, "Ville :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form3.city) }}
+                        <div class="col-sm-9">
+                            {{ form_widget(form3.city, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form3.postcode, "CP :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form3.postcode) }}
+                        <div class="col-sm-9">
+                            {{ form_widget(form3.postcode, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form3.country, "Pays :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form3.country) }}
+                        <div class="col-sm-9">
+                            {{ form_widget(form3.country, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            {{ form_widget(form3.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                        </div>
+                    </div>
+                    {{ form_rest(form3) }}
+                    {{ form_end(form3) }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Mes nationalités</div>
+                <div class="panel-body">
+                    <div class="row">
+                            {% for country in countries|batch(3) %}
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                {% for c in country %}
+                                    <div class="col-md-3">
+                                        <h3><span class="flag-icon flag-icon-{{ c.isocode|lower }}"></span> {{ c.name }}</h3>
+                                    </div>
+                                {% endfor %}
+                                </div>
+                            {% endfor %}
+
+
+                    </div>
+                    <br/>
+                    <div class="row">
+                        {{ form_start(form4, {'attr':{'class':'form-horizontal'}}) }}
+                        {{ form_errors(form4) }}
+                        <div class="form-group">
+                            <div class="col-md-1"></div>
+                            <div class="col-md-10">
+                                {{ form_widget(form4.countries, {'attr':{'class':'form-control'}}) }}
+                                </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-4">
+                            {{ form_widget(form4.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}, 'label':'Ajouter/Supprimer pays'}) }}
+                            {{ form_rest(form4) }}
+                            {{ form_end(form4) }}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class = "row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Ma photo de profil</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-3">
+                            {% if pic is not null %}
+                                <img src="{{ asset( pic  ) }}"/>
+                            {% else %}
+                                <img src="{{ asset('bundles/AppBundle/images/default-user.png') }}"/>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <br/>
+                        {{ form_start(form5, {'attr':{'class':'form-horizontal'}}) }}
+                        {{ form_errors(form5) }}
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-3">
+                                {{ form_widget(form5.file) }}
+                                {{ form_errors(form5.file) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-3">
+                                {{ form_widget(form5.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_rest(form5) }}
+                        {{ form_end(form5) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Ma bio</div>
+                    <div class="panel-body">
+                        {{ form_start(form6, {'attr':{'class':'form-horizontal'}}) }}
+                        {{ form_errors(form6) }}
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                {{ form_label(form6.profstatus, "Ma life :" , {'label_attr': {'class': 'control-label'} } ) }}
+                                {{ form_errors(form6.profstatus) }}
+                            </div>
+                            <div class="col-sm-10">
+                                {{ form_widget(form6.profstatus, {'attr':{'class':'form-control'}}) }}
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-4"></div>
+                            <div class="col-sm-4">
+                                {{ form_widget(form6.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
+                            </div>
+                        </div>
+                        {{ form_rest(form6) }}
+                        {{ form_end(form6) }}
+
+                    </div>
+                </div>
+            </div>
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $("#sercom_appbundle_person_country_countries").chosen();
+        });
+
+
+
+    $('#succes').delay( 5000).toggle("slow");
+    $('#alert').delay( 5000).toggle("slow")
+    </script>
+{% endblock %}

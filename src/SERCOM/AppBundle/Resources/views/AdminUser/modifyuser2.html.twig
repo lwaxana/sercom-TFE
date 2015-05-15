@@ -1,0 +1,354 @@
+{% extends 'SERCOMAppBundle:Admin:index.html.twig' %}
+
+{% block titre %}
+    <title> Administration - {{ person.firstname }} {{ person.lastname }} </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well">Administration / Utilisateurs / {{ person.lastname }} {{ person.firstname }} </div>
+{% endblock %}
+
+{% block body %}
+
+    <h3> Autorisations actuelles de l'utilisateur : </h3>
+    <form action="{{ path('sercom_admin_users_savemodify', {'id':person.personid}) }}" method="post">
+            <label>Membre</label>
+        {% if person.member is not empty %}
+            <input type="checkbox"  checked name="membre" id="membre"/>
+            {% if person.member.actif %}
+                <label id="actif2"> Actif : </label> <input type="checkbox" checked name="actif" id="actif"/><br/>
+            {% else %}
+                <label id="actif2"> Actif : </label> <input type="checkbox" name="actif" id="actif"/><br/>
+            {% endif %}
+        {% else %}
+            <input type="checkbox" name="membre" id="membre"/> <label id="actif2"> Actif : </label> <input type="checkbox" name="actif" id="actif"/><br/>
+        {% endif %}
+        <label>Professeur</label>
+        {% if person.teacher is not empty %}
+                <input type="checkbox" checked name="prof" id="prof"/><br/>
+        {% else %}
+            <input type="checkbox" name="prof" id="prof"/> <br/>
+        {% endif %}
+        <label>Etudiant</label>
+        {% if person.student is not empty %}
+             <input type="checkbox" checked name="etudiant" id="etudiant" />   <br/>
+        {% else %}
+            <input type="checkbox" name="etudiant" id="etudiant"/> <br/>
+        {% endif %}
+
+        {% if person.sitegroups is empty %}
+            <div id="acces_membre">
+                <label> Acces membre : </label>
+                {% if person.member is not empty %}
+                    <select required name="access_membre" id="select_membre" >
+                        <option value="" selected>Choisir un access</option>
+                        <option value="ROLE_PRESIDENT">Président</option>
+                        <option value="ROLE_ANIMATEUR">Animateur</option>
+                        <option value="ROLE_COMITE">Comité</option>
+                        <option value="ROLE_MEMBRE">Membre</option>
+                    </select>
+                    <span class="label label-danger" id="warning_membre"> Access non selectioné</span>
+                {% else %}
+                    <select required name="access_membre" id="select_membre" >
+                        <option value="" selected>Choisir un access</option>
+                        <option value="ROLE_PRESIDENT">Président</option>
+                        <option value="ROLE_ANIMATEUR">Animateur</option>
+                        <option value="ROLE_COMITE">Comité</option>
+                        <option value="ROLE_MEMBRE">Membre</option>
+                    </select>
+                    <span class="label label-danger" id="warning_membre"> Access non selectioné</span>
+                {% endif %}
+
+            </div>
+            <div id="acces_prof">
+                <label>Access professeur :</label>
+                {% if person.teacher is not empty %}
+                    <select required name="access_prof" id="select_prof" >
+                        <option value="" selected>Choisir un access</option>
+                        <option value="TEACHER">Professeur</option>
+                    </select>
+                    <span class="label label-danger" id="warning_prof"> Access non selectioné</span>
+                {% else %}
+                    <select required name="access_prof" id="select_prof" >
+                        <option value="" selected>Choisir un access</option>
+                        <option value="TEACHER">Professeur</option>
+                    </select>
+                    <span class="label label-danger" id="warning_prof"> Access non selectioné</span>
+                {% endif %}
+            </div>
+            <div id="acces_etudiant">
+                <label>Access étudiant :</label>
+                {% if person.student is not empty %}
+                    <select required name="access_etudiant" id="select_etudiant" >
+                        <option value="" selected>Choisir un access</option>
+                        <option value="STUDENT">Etudiant</option>
+                    </select>
+                    <span class="label label-danger" id="warning_etudiant"> Access non selectioné</span>
+                {% else %}
+                    <select required name="access_etudiant" id="select_etudiant" >
+                        <option value="" selected>Choisir un access</option>
+                        <option value="STUDENT">Etudiant</option>
+                    </select>
+                    <span class="label label-danger" id="warning_etudiant"> Access non selectioné</span>
+                {% endif %}
+            </div>
+
+        {% else %}
+
+            {% set membre = 0 %}
+            {% set grp_membre = "" %}
+            {% set prof = 0 %}
+            {% set etudiant = 0 %}
+            {% for group in person.sitegroups %}
+                {% if group.name == "ROLE_PRESIDENT" or group.name == "ROLE_ANIMATEUR" or group.name == "ROLE_COMITE" or group.name == "ROLE_MEMBRE" %}
+                    {% set membre = 1 %}
+                    {% set grp_membre = group.name %}
+                {% endif %}
+                {% if group.name == "ROLE_TEACHER" %}
+                    {% set prof = 1 %}
+                {% endif %}
+                {% if group.name == "ROLE_STUDENT" %}
+                    {% set etudiant = 1 %}
+                {% endif %}
+            {% endfor %}
+                {% if person.member is not empty %}
+                    {% if membre == 0 %}
+                    <div id="acces_membre">
+                        <label> Acces membre : </label>
+                            <select required name="access_membre" id="select_membre" >
+                                <option value="" selected>Choisir un access</option>
+                                <option value="ROLE_PRESIDENT">Président</option>
+                                <option value="ROLE_ANIMATEUR">Animateur</option>
+                                <option value="ROLE_COMITE">Comité</option>
+                                <option value="ROLE_MEMBRE">Membre</option>
+                            </select>
+                            <span class="label label-danger" id="warning_membre"> Access non selectioné</span>
+                    </div>
+
+                    {% endif %}
+                    {% if membre == 1 %}
+                        <div id="acces_membre">
+                            <label> Acces membre : </label>
+
+                            <select required name="access_membre" id="select_membre" >
+                                {% if grp_membre == "ROLE_PRESIDENT" %}
+                                    <option value="ROLE_PRESIDENT" selected >Président</option>
+                                {% else %}
+                                    <option value="ROLE_PRESIDENT">Président</option>
+                                {% endif %}
+                                {% if grp_membre == "ROLE_ANIMATEUR" %}
+                                    <option value="ROLE_ANIMATEUR" selected>Animateur</option>
+                                {% else %}
+                                    <option value="ROLE_ANIMATEUR">Animateur</option>
+                                {% endif %}
+                                {% if grp_membre == "ROLE_COMITE" %}
+                                    <option value="ROLE_COMITE" selected >Comité</option>
+                                {% else %}
+                                    <option value="ROLE_COMITE">Comité</option>
+                                {% endif %}
+                                {% if grp_membre == "ROLE_MEMBRE" %}
+                                    <option value="ROLE_MEMBRE" selected>Membre</option>
+                                {% else %}
+                                    <option value="ROLE_MEMBRE">Membre</option>
+                                {% endif %}
+                            </select>
+                        </div>
+
+                    {% endif %}
+                {% else  %}
+
+                    <div id="acces_membre">
+                        <label> Acces membre : </label>
+                        <select name="access_membre" id="select_membre" >
+                            <option value="" selected>Choisir un access</option>
+                            <option value="ROLE_PRESIDENT">Président</option>
+                            <option value="ROLE_ANIMATEUR">Animateur</option>
+                            <option value="ROLE_COMITE">Comité</option>
+                            <option value="ROLE_MEMBRE">Membre</option>
+                        </select>
+                        <span class="label label-danger" id="warning_membre"> Access non selectioné</span>
+                    </div>
+
+                {% endif %}
+
+
+                {% if person.teacher is not empty %}
+                    {% if prof == 0 %}
+                        <div id="acces_prof">
+                            <label>Access professeur :</label>
+                                <select required name="access_prof" id="select_prof">
+                                    <option value="" selected>Choisir un access</option>
+                                    <option value="TEACHER">Professeur</option>
+                                </select>
+                                <span class="label label-danger" id="warning_prof"> Access non selectioné</span>
+                        </div>
+                    {% else %}
+                        <div id="acces_prof">
+                            <label>Access professeur :</label>
+                                <select require name="access_prof" id="select_prof">
+                                    <option value="">Choisir un access</option>
+                                    <option value="TEACHER" selected >Professeur</option>
+                                </select>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div id="acces_prof">
+                        <label>Access professeur :</label>
+                        <select name="access_prof" id="select_prof">
+                            <option value="" selected>Choisir un access</option>
+                            <option value="TEACHER">Professeur</option>
+                        </select>
+                        <span class="label label-danger" id="warning_prof"> Access non selectioné</span>
+                    </div>
+                {% endif %}
+
+
+                {% if person.student is not empty %}
+                    {% if etudiant == 0 %}
+                        <div id="acces_etudiant">
+                            <label>Access étudiant :</label>
+                                <select required name="access_etudiant" id="select_etudiant">
+                                    <option value="" selected>Choisir un access</option>
+                                    <option value="STUDENT">Etudiant</option>
+                                </select>
+                                <span class="label label-danger" id="warning_etudiant"> Access non selectioné</span>
+                        </div>
+                    {% else %}
+                        <div id="acces_etudiant">
+                            <label>Access étudiant :</label>
+                                <select required name="access_etudiant" id="select_etudiant">
+                                    <option value="">Choisir un access</option>
+                                    <option value="STUDENT" selected >Etudiant</option>
+                                </select>
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <div id="acces_etudiant">
+                        <label>Access étudiant :</label>
+                        <select name="access_etudiant" id="select_etudiant">
+                            <option value="" selected>Choisir un access</option>
+                            <option value="STUDENT">Etudiant</option>
+                        </select>
+                        <span class="label label-danger" id="warning_etudiant"> Access non selectioné</span>
+                    </div>
+                {% endif %}
+
+        {% endif %}
+        <br/>
+        <input type="submit" value="Enregistrer modifications">
+    </form>
+
+
+
+
+{% endblock %}
+{% block script %}
+    <script>
+        var membre;
+        var prof;
+        var student;
+        var groups = [];
+
+        $(document).ready(function(){
+            if ( !$('#membre').is(':checked')){
+                $('#acces_membre').hide();
+                $('#select_membre').removeAttr('required');
+                $('#actif').hide();
+                $('#actif2').hide();
+
+            }
+            if ( !$('#prof').is(':checked')){
+                $('#acces_prof').hide();
+                $('#select_prof').removeAttr('required');
+            }
+            if ( !$('#etudiant').is(':checked')){
+                $('#acces_etudiant').hide();
+                $('#select_etudiant').removeAttr('required');
+            }
+
+
+        });
+
+        $('#membre').click(function(){
+            membre = $(this);
+            if ( membre.is(':checked')){
+                $('#acces_membre').show();
+                $('#select_membre').attr('required','true');
+                $('#actif').show();
+                $('#actif2').show();
+
+            }
+            else{
+                $('#acces_membre').hide();
+                $('#select_membre').removeAttr('required');
+                $('#actif').hide();
+                $('#actif2').hide();
+
+            }
+        });
+
+        $('#prof').click(function(){
+            prof = $(this);
+            if ( prof.is(':checked')){
+                    $('#acces_prof').show();
+                    $('#select_prof').attr('required','true');
+
+            }
+            else{
+                $('#acces_prof').hide();
+                $('#select_prof').removeAttr('required');
+            }
+        });
+
+        $('#etudiant').click(function(){
+            student = $(this);
+            if ( student.is(':checked')){
+                $('#acces_etudiant').show();
+                $('#select_etudiant').attr('required','true');
+            }
+            else{
+                $('#acces_etudiant').hide();
+                $('#select_etudiant').removeAttr('required');
+            }
+        });
+
+        $('#acces_membre').change(function(){
+            var val = $("#acces_membre option:selected").text();
+            console.log(val);
+            if (val == "Choisir un access"){
+                $('#warning_membre').show();
+            }
+            else{
+                $('#warning_membre').hide();
+            }
+        });
+
+        $('#acces_prof').change(function(){
+            var val = $("#acces_prof option:selected").text();
+            console.log(val);
+            if (val == "Choisir un access"){
+                $('#warning_prof').show();
+            }
+            else{
+                $('#warning_prof').hide();
+            }
+        });
+
+        $('#acces_etudiant').change(function(){
+            var val = $("#acces_etudiant option:selected").text();
+            console.log(val);
+            if (val == "Choisir un access"){
+                $('#warning_etudiant').show();
+            }
+            else{
+                $('#warning_etudiant').hide();
+            }
+        });
+
+
+
+
+
+
+    </script>
+{% endblock %}

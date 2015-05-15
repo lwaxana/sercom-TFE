@@ -1,0 +1,71 @@
+{% extends 'SERCOMAppBundle:Home:base.html.twig' %}
+
+{% block header %}
+    {{ include('SERCOMAppBundle:Members:header.html.twig') }}
+{% endblock %}
+{% block nav %}{% endblock %}
+
+{% block titre %}
+    <title>Espace Membres</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well">Accueil membres</div>
+{% endblock %}
+
+{% block flash %}
+    {% for flashMessage in app.session.flashbag.get('succes') %}
+        <div class="alert alert-success" role="alert" id="succes" > {{ flashMessage }}</div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger" role="alert" id="alert"> {{ flashMessage }}</div>
+    {% endfor %}
+{% endblock %}
+
+
+{% block body %}
+
+
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Dernier messages sur le forum</div>
+        <div class="panel-body">
+            Contenu
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Dernier article écrit</div>
+        <div class="panel-body">
+            Contenu
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Derniers documents uploadés</div>
+        <div class="panel-body">
+            Contenu
+        </div>
+    </div>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Agenda</div>
+        <div class="panel-body">
+            Contenu
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">Mails</div>
+        <div class="panel-body">
+            Contenu
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block script %}
+    <script>
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+    </script>
+{% endblock %}

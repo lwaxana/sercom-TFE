@@ -1,0 +1,20 @@
+{% extends 'SERCOMAppBundle:Home:base.html.twig' %}
+
+{% block titre %}
+    <title> Confirmation email effectuée </title>
+{% endblock %}
+
+{% block body %}
+    {{ message }}
+
+    <form action="{{ path('sercom_register_access') }}" method="post">
+        <label>Acces membre : </label><input type="checkbox" name="member" value="member"/><br/>
+        <label>Access Professeur :</label><input type="checkbox" name="teacher" value="teacher"/>
+        <label>Access Etudiant :</label><input type="checkbox" name="student" value="student"/>
+        <input type="submit" value="Envoyer"/>
+    </form>
+
+
+{% endblock %}
+
+

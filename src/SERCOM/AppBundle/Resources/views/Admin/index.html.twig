@@ -1,0 +1,304 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+
+{% block titre %}
+    <title> Administration </title>
+{% endblock %}
+
+{% block well %}
+    <div class="well">Administration</div>
+{% endblock %}
+
+{% block body %}
+
+        {% for role in app.user.roles %}
+            {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_INSCRIPTION' %}
+                    <div class="col-md-3">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-key fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div style="font-size: 30px; font-weight: bold;"></div>
+                                        <div>Inscriptions en attente</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="{{ path('sercom_admin_valider_inscription', {'page':1}) }}">
+                                <div class="panel-footer">
+                                    <span class="pull-left">Inscriptions</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+
+            {% endif %}
+        {% endfor %}
+
+        {% for role in app.user.roles %}
+            {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_FORUM' %}
+                <div class="col-md-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-comments fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Forum</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_forum') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Administration forum</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+                </div>
+
+
+            {% endif %}
+        {% endfor %}
+
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_USER' %}
+            <div class="col-md-3">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-users fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Utilisateurs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_users') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Utilisateurs</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endfor %}
+
+
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_DOCS' %}
+            <div class="col-md-3">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-file-o fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Documents</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_docs') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Documents</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endfor %}
+
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_ARTICLES' %}
+            <div class="col-md-3">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-pencil-square-o fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Articles</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_article_index') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Articles</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endfor %}
+
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_AGENDA' %}
+            <div class="col-md-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-calendar fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Agenda</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_agenda_voir') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Agenda</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endfor %}
+
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_STUDENTS' %}
+            <div class="col-md-3">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-graduation-cap fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Etudiants</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_students') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Etudiants</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endfor %}
+
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_PROFS' %}
+            <div class="col-md-3">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-briefcase fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Professeurs</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_teachers') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Professeurs</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endfor %}
+
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_CLASSES' %}
+            <div class="col-md-3">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-university fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Classes</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_classes') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Classes</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endfor %}
+
+    {% for role in app.user.roles %}
+        {% if role == 'ROLE_PRESIDENT' or role == 'ADMIN_AGENDA_CLASSES' %}
+            <div class="col-md-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-calendar fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge"></div>
+                                <div>Agenda classes</div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="{{ path('sercom_admin_agenda_classes') }}">
+                        <div class="panel-footer">
+                            <span class="pull-left">Agenda classes</span>
+                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                            <div class="clearfix"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        {% endif %}
+    {% endfor %}
+        </div>
+
+
+
+
+
+
+
+{% endblock %}

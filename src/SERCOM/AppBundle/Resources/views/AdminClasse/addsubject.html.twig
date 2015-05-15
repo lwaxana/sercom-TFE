@@ -1,0 +1,60 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block titre %}
+    <title>Ajouter une classe</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well">     Ajouter une matière    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Ajouter une matière</div>
+                <div class="panel-body">
+                    {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+                        <div class="col-md-3 control-label">
+                            {{ form_label(form.name, 'Nom de la maitère :') }}
+                        </div>
+                        <div class="col-md-8">
+                            {{ form_widget(form.name , {'attr':{'class':'form-control'}} ) }}
+                            {{ form_errors(form.name) }}
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-4">
+                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}, 'label':'Enregister' }) }}
+                        </div>
+                        <div class="col-md-4">
+                            <a href="{{ path('sercom_admin_classes') }}" class="btn btn-warning btn-block">Retour</a>
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+
+
+    </script>
+{% endblock %}
+

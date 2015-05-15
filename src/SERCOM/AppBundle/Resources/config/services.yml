@@ -1,0 +1,6 @@
+services:
+    sercom.type.tags_text:
+        class: SERCOM\AppBundle\Form\TagsTextType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+            - { name: form.type, alias: tags_text }

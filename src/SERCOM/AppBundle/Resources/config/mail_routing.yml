@@ -1,0 +1,52 @@
+#/members/mail
+
+sercom_member_mail_index:
+    pattern: /inbox
+    defaults: { _controller: SERCOMAppBundle:Mail:mailInbox }
+
+sercom_member_mail_receive:
+    pattern: /outbox
+    defaults: { _controller: SERCOMAppBundle:Mail:mailOutbox }
+
+sercom_member_mail_new_mail:
+    pattern: /newmail
+    defaults: { _controller: SERCOMAppBundle:Mail:newmail }
+
+sercom_member_mail_delete_mail:
+    pattern: /inbox/delete/{id}
+    defaults: { _controller: SERCOMAppBundle:Mail:loschenmail }
+    requirements:
+        id: \d+
+
+sercom_member_mail_voir_mail:
+    pattern: /inbox/voir/{id}
+    defaults: { _controller: SERCOMAppBundle:Mail:sehenmail }
+    requirements:
+        id: \d+
+
+sercom_member_mail_voir_mail_envoye:
+    pattern: /outbox/voir/{id}/{member}
+    defaults: { _controller: SERCOMAppBundle:Mail:sehengeschiktmail }
+    requirements:
+        id: \d+
+        member: \d+
+
+sercom_member_mail_delete_mail_envoye:
+    pattern: /outbox/delete/{id}
+    defaults: { _controller: SERCOMAppBundle:Mail:loschengeschiktmail }
+    requirements:
+        id: \d+
+
+sercom_member_mail_repondre_mail:
+    pattern: /inbox/answer/{id}
+    defaults: { _controller: SERCOMAppBundle:Mail:antwoordmail }
+    requirements:
+        id: \d+
+
+sercom_member_mail_file_inbox:
+    pattern: /inbox/file/{id}
+    defaults: { _controller: SERCOMAppBundle:Mail:fileInbox }
+
+sercom_member_mail_file_outbox:
+    pattern: /outbox/file/{id}
+    defaults: { _controller: SERCOMAppBundle:Mail:fileOutbox }

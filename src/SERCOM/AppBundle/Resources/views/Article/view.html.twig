@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <title>{{ article.title }}</title>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+</head>
+<body>
+   <div class="container">
+       <div class="page-header">
+           <h1>{{ article.title }} </h1>
+       </div>
+       <div>
+           {{ text|raw }}
+
+       </div>
+        <br/>
+
+       {% for pic in pics|batch(4) %}
+           <div class="row">
+               {% for p in pic %}
+               <div class="col-xs-6 col-md-3">
+                   <a href="{{ asset( 'bundles/AppBundle/'~p.url ) }}"" class="thumbnail">
+                       <img src="{{ asset( 'bundles/AppBundle/'~p.url ) }}" alt="...">
+                   </a>
+               </div>
+               {% endfor %}
+           </div>
+
+       {% endfor %}
+
+        <div>
+            {% if article.tags is not empty %}
+
+            {% for tag in article.tags  %}
+                <i class="fa fa-tag fa-rotate-90"></i><a href="#">{{ tag.tagName }}</a>&nbsp;
+            {% endfor %}
+            {% endif %}
+
+        </div>
+       <div>
+           par {{ article.member.person.lastname }} {{ article.member.person.firstname }} le {{ article.publishDate|date('d-m-Y') }}
+       </div>
+
+
+   </div>
+</body>
+</html>

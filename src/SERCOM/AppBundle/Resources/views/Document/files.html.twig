@@ -1,0 +1,50 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig'  %}
+
+{% block well %}
+    <div class="well"> <a href="{{ path('sercom_members_docs') }}">Documents</a> / {{ souscat.category.name }} / {{ souscat.name }}
+    </div>
+{% endblock %}
+
+{% block body %}
+<br/>
+
+    <h3><i class="fa fa-folder-open-o"></i> {{ souscat.name }}</h3>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td> Nom du fichier </td>
+            <td> Tags</td>
+            <td> Actions</td>
+        </tr>
+        </thead>
+        <tbody>
+        {% if souscat.asbldocuments is not empty %}
+        {% for file in souscat.asbldocuments %}
+            <tr>
+                <td>{{ file.name }}</td>
+                {% if file.tags is not empty %}
+                    <td>
+                        {% for tag in file.tags %}
+                            <i class="fa fa-tag fa-rotate-90"></i><a href="#">{{ tag.tagName }}</a>
+                        {% endfor %}
+                    </td>
+                {% else %}
+                    <td> </td>
+                {% endif %}
+                <td>
+                    <a href="{{ path('sercom_members_download_file', {'id':file.asbldocid}) }}" title="Telecharger"><span class="fa fa-download fa-2x"></span></a>
+                </td>
+
+            </tr>
+        {% endfor %}
+        {% else %}
+            <tr>
+                <td>Pas de documents</td><td></td>
+            </tr>
+
+        {% endif %}
+        </tbody>
+    </table>
+    {% include '@SERCOMApp/Pagination/pagination.html.twig' %}
+{% endblock %}

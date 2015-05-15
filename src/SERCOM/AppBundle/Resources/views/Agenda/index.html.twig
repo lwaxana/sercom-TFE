@@ -1,0 +1,184 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/fullcalendar.min.css') }}"/>
+    <script type="text/javascript" src="{{ asset('bundles/AppBundle/js/moment.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/AppBundle/js/fullcalendar.min.js') }}"></script>
+    <style>
+        .fc-time{
+            display : none;
+        }
+    </style>
+{% endblock %}
+
+
+{% block titre %}
+<title>Agenda</title>
+{% endblock %}
+
+{% block well %}
+    <br/>
+    <div class="well">Agenda</div>
+    <br/>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-5">
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+
+
+
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Ajouter un évènementt</div>
+            <div class="panel-body">
+                <a href="{{ path('sercom_members_agenda_add') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter un évènement</a>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Events non confirmés</div>
+            <div class="panel-body">
+
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <td> Nom Evenement </td>
+                        <td> Organisateur</td>
+                        <td> Confirmé </td>
+                        <td> Date & heure </td>
+                        <td> Actions </td>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for event in events %}
+                            <tr>
+                                <td>{{ event.name }}</td>
+
+                                <td>{{ event.member.person.lastname }} {{ event.member.person.firstname }}</td>
+                                {% if event.validate == 0 %}
+                                    <td> NON </td>
+                                {% endif %}
+                                {% if event.dateHourEvent is null %}
+                                    <td> NON </td>
+                                {% else %}
+                                    <td>  {{ event.dateHourEvent|date('d-m-Y') }} {{ event.dateHourEvent|date('H:i') }}</td>
+                                {% endif %}
+                                <td>
+                                    <a href="{{ path('sercom_members_agenda_voir', {'id':event.eventid}) }}"><i class="fa fa-eye fa-2x" title="Voir"></i></a>
+                                    <a href="{{ path('sercom_members_agenda_choisir', {'id': event.eventid}) }}"><i class="fa fa-calendar fa-2x" title="Choisir"></i></a>
+                                    {% if  app.security.getToken().getUser().member == event.member %}
+                                        <a href="{{ path('sercom_members_agenda_modify', {'id':event.eventid}) }}"><i class="fa fa-gear fa-2x" title="modifier"></i></a>
+                                        <a href="{{ path('sercom_members_agenda_valider', {'id':event.eventid}) }}"><i class="fa fa-check-square-o fa-2x" title="confirmer" ></i></a>
+                                        <a href="{{ path('sercom_members_agenda_delete', {'id':event.eventid}) }}" onClick="return confirm('Effacer cet évènement ?')"><i class="fa fa-trash fa-2x" title="supprimer"></i></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Events confirmés</div>
+            <div class="panel-body">
+
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <td> Nom Evenement </td>
+                        <td> Organisateur</td>
+                        <td> Confirmé </td>
+                        <td> Date & heure </td>
+                        <td> Action </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% if eventsc is not empty %}
+
+                    {% for eventc in eventsc %}
+                        {% if eventc.dateHourEvent > datenow %}
+                        <tr>
+                            <td>{{ eventc.name }}</td>
+
+                            <td>{{ eventc.member.person.lastname }} {{ eventc.member.person.firstname }}</td>
+                            {% if eventc.validate == 1 %}
+                                <td> OUI </td>
+                            {% endif %}
+                            {% if eventc.validate == 1 %}
+                                <td> {{ eventc.dateHourEvent|date('d-m-Y') }} {{ eventc.dateHourEvent|date('H:i') }} </td>
+                            {% endif %}
+                            <td>
+                                <a href="{{ path('sercom_members_agenda_voir', {'id':eventc.eventid}) }}"><i class="fa fa-eye fa-2x" title="Voir détails"></i></a>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% else %}
+                     <td>Pas d'évènements</td><td></td><td></td><td></td><td></td>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $('#succes').delay( 5000).toggle("slow");
+        $('#alert').delay( 5000).toggle("slow")
+
+
+        $('#calendar').fullCalendar({
+            events: {
+                url: '{{ path('sercom_members_agenda_calendar') }}',
+                type: 'GET',
+
+                error: function() {
+                    alert('Une erreur s\'est produite sur le calendrier');
+                },
+                color: 'yellow',   // a non-ajax option
+                textColor: 'black' // a non-ajax option
+            },
+            timeFormat: '',
+
+
+            dayClick: function(date, jsEvent, view) {
+
+                alert('Clicked on: ' + date.format());
+
+                alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+
+                alert('Current view: ' + view.name);
+
+                // change the day's background color just for fun
+                $(this).css('background-color', 'red');
+
+            },
+            eventClick: function(calEvent, jsEvent, view) {
+
+                alert('Event: ' + calEvent.title);
+                alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                alert('View: ' + view.name);
+
+                // change the border color just for fun
+                $(this).css('border-color', 'red');
+
+            }
+
+
+        });
+
+
+    </script>
+{% endblock %}

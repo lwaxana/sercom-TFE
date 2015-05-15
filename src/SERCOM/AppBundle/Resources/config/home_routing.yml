@@ -1,0 +1,47 @@
+sercom_home_projet:
+    pattern: /qui-sommes-nous/projet
+    defaults: { _controller: SERCOMAppBundle:Home:projet }
+
+sercom_home_motpresident:
+    pattern: /qui-sommes-nous/le-mot-du-president
+    defaults: { _controller: SERCOMAppBundle:Home:motpresident }
+
+sercom_home_historique:
+    pattern: /qui-sommes-nous/historique
+    defaults: { _controller: SERCOMAppBundle:Home:historique }
+
+sercom_home_equipe:
+    pattern: /qui-sommes-nous/l-equipe
+    defaults: { _controller: SERCOMAppBundle:Home:equipe }
+
+sercom_home_activite_fle:
+    pattern: /activite/fle
+    defaults: { _controller: SERCOMAppBundle:Home:fle }
+
+sercom_home_activite_citoyennete:
+    pattern: /activite/citoyennete
+    defaults: { _controller: SERCOMAppBundle:Home:citoyennete }
+
+sercom_home_activite_remediations:
+    pattern: /activite/remediations
+    defaults: { _controller: SERCOMAppBundle:Home:remediations }
+
+sercom_home_activite_codev:
+    pattern: /activite/co-developpement
+    defaults: { _controller: SERCOMAppBundle:Home:codev }
+
+sercom_home_activite_dialogue:
+    pattern: /activite/dialogues
+    defaults: { _controller: SERCOMAppBundle:Home:dialogues }
+
+sercom_home_activite_valo:
+    pattern: /activite/valorisations
+    defaults: { _controller: SERCOMAppBundle:Home:valorisations }
+
+sercom_home_partenaire:
+    pattern: /partenaires
+    defaults: { _controller: SERCOMAppBundle:Home:partenaires }
+
+sercom_home_contact:
+    pattern: /contact
+    defaults: { _controller: SERCOMAppBundle:Home:contact }

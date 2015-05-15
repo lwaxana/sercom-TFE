@@ -1,0 +1,63 @@
+{% extends 'SERCOMAppBundle:Members:index.html.twig' %}
+
+{% block titre %}
+    <title>Agenda</title>
+{% endblock %}
+
+{% block well %}
+    <br/>
+    <div class="well"> <a href="{{ path('sercom_members_agenda')}}"> Agenda </a> / {{ event.name }} / Voir évenement </div>
+    <br/>
+{% endblock %}
+
+{% block body %}
+
+    <h3>{{ event.description }}</h3>
+    <br/>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>  </td>
+            {% for date in dates %}
+                <td>
+                    {{ date.getDateHour|date('d-m') }}
+                    <br/>
+                    {{ date.getDateHour|date('H:i') }}
+                </td>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% if members is empty %}
+            <tr><td>Pas d'inscriptions</td>
+                {% for date in dates %}
+                    <td></td>
+                {% endfor %}
+            </tr>
+        {% else %}
+            {% for member in members %}
+                <tr>
+                    <td>{{ member.person.firstname }} {{ member.person.lastname }}</td>
+                    {% for date in dates %}
+                        {% if date in member.dateproposals %}
+                            <td><input type="checkbox" checked disabled/></td>
+                        {% else %}
+                            <td><input type="checkbox" disabled/></td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-3">
+            <a href="{{ path('sercom_members_agenda') }}" class="btn btn-warning btn-sm btn-block">Retour</a>
+        </div>
+    </div>
+
+
+
+{% endblock %}

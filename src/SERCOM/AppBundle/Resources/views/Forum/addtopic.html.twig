@@ -1,0 +1,117 @@
+{% extends 'SERCOMAppBundle:Forum:index.html.twig' %}
+
+{% block titre %}
+    <title> Nouveau sujet </title>
+{% endblock %}
+
+{% block style %}
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+    <script src="http://tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+
+{% endblock %}
+
+{% block well %}
+    <div class="well"><i class="fa fa-home fa-lg"></i> &nbsp;<a href="{{ path('sercom_members_forum') }}">Index du forum</a> /
+        <a href="{{ path('sercom_members_forum_topics', {'forum':forum.forumid })  }}"> {{ forum.name }} </a> / Ajouter un nouveau sujet
+    </div>
+{% endblock %}
+
+{% block body %}
+
+    {% set moderator = false %}
+    {% for group in  app.user.sitegroups %}
+        {% if group.name == 'MODERATION_FORUM' %}
+            {% set moderator = true %}
+        {% endif %}
+    {% endfor %}
+
+    <br/>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Nouvel sujet</div>
+            <div class="panel-body">
+                    {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+                    {{ form_errors(form) }}
+                    <div class="form-group">
+                        {{ form_label(form.forumtopic.title, "Titre :", {'label_attr': {'class': 'col-sm-1 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.forumtopic.title) }}
+                        <div class="col-sm-10">
+                            {{ form_widget(form.forumtopic.title, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <br/>
+
+                    <div class="form-group">
+                        {{ form_widget(form.post_content, {'attr': {'class': 'form-control'}}) }}
+                    </div>
+
+                    <br/>
+
+                    {% if moderator %}
+                    <div class="form-group">
+                        {{ form_label(form.forumtopic.priority, "Type de sujet :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.forumtopic.priority) }}
+                        <div class="col-sm-2">
+                            {{ form_widget(form.forumtopic.priority, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {{ form_label(form.forumtopic.locked, "Sujet verouillé :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
+                        {{ form_errors(form.forumtopic.locked) }}
+                        <div class="col-sm-1">
+                            {{ form_widget(form.forumtopic.locked, {'attr': {'class': 'form-control', 'require':'false'}}) }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <div class="form-group">
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-4">
+                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}, 'label':'Enregistrer'}) }}
+                        </div>
+                        <div class="col-sm-4">
+                            <a href="{{ path('sercom_members_forum_topics', {'forum':forum.forumid}) }}" class="btn btn-warning btn-md btn-block"> Retour </a>
+                        </div>
+                    </div>
+
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+
+                     </div></div>
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        tinymce.init({
+            menubar : false,
+            selector: 'textarea',
+            theme: "modern",
+
+            theme_advanced_font_sizes: "10px,12px,13px,14px,16px,18px,20px",
+            font_size_style_values: "12px,13px,14px,16px,18px,20px",
+            plugins: [
+                "emoticons textcolor"
+            ],
+
+            toolbar: "bold italic underline |  forecolor  emoticons sizeselect | fontsizeselect" ,
+            style_formats: [
+                {title: 'Bold text', inline: 'b'},
+                {title: 'Red text', inline: 'span', styles: {color: '#ff0000'}},
+                {title: 'Red header', block: 'h1', styles: {color: '#ff0000'}},
+                {title: 'Example 1', inline: 'span', classes: 'example1'},
+                {title: 'Example 2', inline: 'span', classes: 'example2'},
+                {title: 'Table styles'},
+                {title: 'Table row 1', selector: 'tr', classes: 'tablerow1'}
+            ]
+        });
+
+    </script>
+
+
+
+{% endblock %}

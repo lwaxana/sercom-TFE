@@ -1,0 +1,17 @@
+# / admin/articles
+
+sercom_admin_article_index:
+    pattern:  /
+    defaults: { _controller: SERCOMAppBundle:AdminArticle:index }
+
+sercom_admin_article_pulier:
+    pattern:  /publier/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminArticle:publier }
+    requirements:
+        id: \d+
+
+sercom_admin_article_refuser:
+    pattern:  /refuser/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminArticle:refuser }
+    requirements:
+        id: \d+

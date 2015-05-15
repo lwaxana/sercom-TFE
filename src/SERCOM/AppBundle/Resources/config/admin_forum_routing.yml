@@ -1,0 +1,42 @@
+#/members/admin/forum
+
+sercom_admin_forum:
+    pattern:  /
+    defaults: { _controller: SERCOMAppBundle:AdminForum:adminforum }
+
+sercom_members_forum_modifygroups:
+    pattern:  /modifygroups/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminForum:modifygroups }
+    requirements:
+        id: \d+
+
+sercom_members_forum_delete_forum:
+    pattern:  /deleteforum
+    defaults: { _controller: SERCOMAppBundle:AdminForum:delForum }
+    requirements:
+        id: \d+
+
+sercom_members_forum_delete_groups:
+    pattern:  /deletegroup
+    defaults: { _controller: SERCOMAppBundle:AdminForum:delGroups }
+
+sercom_members_forum_add_forum:
+    pattern:  /addforum
+    defaults: { _controller: SERCOMAppBundle:AdminForum:addforum }
+
+
+sercom_members_forum_add_group:
+    pattern:  /addgroup
+    defaults: { _controller: SERCOMAppBundle:AdminForum:addGroups }
+
+sercom_members_forum_del_form:
+    pattern:  /delforum/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminForum:deleteForum }
+    requirements:
+        id: \d+
+
+sercom_members_forum_del_group:
+    pattern:  /delgroup/{id}
+    defaults: { _controller: SERCOMAppBundle:AdminForum:deleteGroup }
+    requirements:
+        id: \d+

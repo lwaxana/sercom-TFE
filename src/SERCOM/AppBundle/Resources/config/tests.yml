@@ -1,0 +1,19 @@
+sercom_tests:
+    pattern:  /test
+    defaults: { _controller: SERCOMAppBundle:Test:index }
+
+sercom_tests2:
+    pattern:  /test2
+    defaults: { _controller: SERCOMAppBundle:Test:index2 }
+
+sercom_tests3:
+    pattern:  /test3
+    defaults: { _controller: SERCOMAppBundle:Test:index3 }
+
+sercom_tests4:
+    pattern:  /test4
+    defaults: { _controller: SERCOMAppBundle:Test:index4 }
+
+sercom_tests5:
+    pattern:  /test5
+    defaults: { _controller: SERCOMAppBundle:Test:index5 }

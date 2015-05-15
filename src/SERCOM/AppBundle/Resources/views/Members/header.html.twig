@@ -1,0 +1,33 @@
+{% extends 'SERCOMAppBundle:Home:header.html.twig' %}
+
+{% block navbar %}
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <ul class="nav nav-pills" role="tablist">
+            <li role="presentation" title="Accueil Membres"> <a href="{{ path('sercom_members') }}"> <i class="fa fa-home fa-2x"> </i> </a> </li>
+            <li role="presentation" title="Agenda"> <a href="{{ path('sercom_members_agenda') }}"> <i class="fa fa-calendar fa-2x"> </i> </a> </li>
+            <li role="presentation" title="Mon compte"> <a href="{{ path('sercom_members_infos') }}"> <i class="fa fa-user fa-2x"> </i> </a> </li>
+            <li role="presentation" title="Messages"> <a href="{{ path('sercom_member_mail_index') }}"> <i class="fa fa-envelope fa-2x"></i> </a> </li>
+            <li role="presentation" title="Documents"> <a href="{{ path('sercom_members_docs') }}"> <i class="fa fa-file fa-2x"></i> </a> </li>
+            <li role="presentation" title="Forum"> <a href="{{ path('sercom_members_forum') }}"> <i class="fa fa-comment fa-2x"></i> </a> </li>
+            <li role="presentation" title="Articles"> <a href="{{ path('sercom_members_article') }}"> <i class="fa fa-pencil fa-2x"></i> </a> </li>
+            <li role="presentation" title="Liste des membres"> <a href="{{ path('sercom_members_listmembres', {'page': 1}) }}"> <i class="fa fa-users fa-2x"></i> </a> </li>
+
+
+            {% for role in app.user.roles %}
+                {% if (role == "ROLE_PRESIDENT") or (role == "ADMIN_FORUM" ) or (role == "ADMIN_DOCS") or ( role == "ADMIN_USER" ) or ( role == "ADMIN_ARTICLES" )
+                or (role == "ADMIN_INSCRIPTION") or ( role == "ADMIN_AGENDA")%}
+
+                    <li role="presentation" title="Administration"> <a href="{{ path('sercom_admin') }}"> <i class="fa fa-gear fa-2x"></i> </a> </li>
+
+                {% endif %}
+            {% endfor %}
+
+            <li role="presentation" title="Help"> <a > <i class="fa fa-life-ring fa-2x"></i> </a> </li>
+            <li role="presentation"> <a href="{{ path('logout') }}"class="btn btn-default navbar-btn">Logout</a> </li>
+
+        </ul>
+
+    </div>
+</nav>
+{% endblock %}
