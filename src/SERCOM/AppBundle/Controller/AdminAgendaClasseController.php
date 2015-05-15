@@ -106,10 +106,10 @@ class AdminAgendaClasseController extends Controller {
         }
     }
 
-    public function delEventsAction(){
+    public function actionEventsAction(){
         $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:CoursePlanning');
         $cours = $rep->findAll(array(), array('datecours' => 'ASC'));
-        return $this->render('@SERCOMApp/AgendaClasse/delete.html.twig', array('courses' => $cours));
+        return $this->render('@SERCOMApp/AgendaClasse/gerer.html.twig', array('courses' => $cours));
     }
 
     public function deleteEventsAction(CoursePlanning $planning){
@@ -119,7 +119,17 @@ class AdminAgendaClasseController extends Controller {
         return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_event_del'));
     }
 
-
+    public function modifyEventsAction(CoursePlanning $planning, Request $request){
+        $form = $this->createForm(new CoursePlanningType(), $planning);
+        $form->handleRequest($request);
+        if ( $form->isValid()){
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($planning);
+            $em->flush();
+            return $this->redirect($this->generateUrl('sercom_admin_agenda_classes'));
+        }
+        return $this->render('@SERCOMApp/AgendaClasse/modify.html.twig', array('form' => $form->createView()));
+    }
 
 
 } 
