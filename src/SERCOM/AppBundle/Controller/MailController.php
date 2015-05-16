@@ -42,50 +42,56 @@ class MailController extends Controller{
 
         $form->handleRequest($request);
         if ( $form->isValid()){
+            try{
+                $em = $this->getDoctrine()->getManager();
+                $persons = $form->get('persons')->getData();
+                $msg->setMessageDelete(false);
+                $msg->setSender($p->getMember());
+                $msg->setDateMessage(new \DateTime());
+                $msg->setMessagecontent(str_replace("&nbsp;", "<br/>", $msg->getMessagecontent()));
 
-            $em = $this->getDoctrine()->getManager();
-            $persons = $form->get('persons')->getData();
-            $msg->setMessageDelete(false);
-            $msg->setSender($p->getMember());
-            $msg->setDateMessage(new \DateTime());
-            $msg->setMessagecontent(str_replace("&nbsp;", "<br/>", $msg->getMessagecontent()));
 
 
+                if ( !(empty($msg->getAttachements())  )){
+                    $path = $this->get('kernel')->getRootDir().'/../src/attachements/';
+                    foreach ($msg->getAttachements() as $attach){
+                        $file = $attach->getFile();
+                        $new_name = sha1(uniqid(mt_rand(), true)).'.'.$file->guessExtension();
+                        $file->move($path, $new_name);
+                        $attach->setPrivatemessage($msg);
+                        $attach->setName($file->getClientOriginalName());
+                        $attach->setUrl($path ."/". $new_name);
 
-            if ( !(empty($msg->getAttachements())  )){
-                $path = $this->get('kernel')->getRootDir().'/../src/attachements/';
-                foreach ($msg->getAttachements() as $attach){
-                    $file = $attach->getFile();
-                    $new_name = sha1(uniqid(mt_rand(), true)).'.'.$file->guessExtension();
-                    $file->move($path, $new_name);
-                    $attach->setPrivatemessage($msg);
-                    $attach->setName($file->getClientOriginalName());
-                    $attach->setUrl($path ."/". $new_name);
-
+                    }
                 }
-            }
 
-            $em->persist($msg);
-            $em->flush();
-
-            foreach($persons as $per){
-                $receive = new ReceiveMessage();
-                $receive->setPrivatemessages($msg);
-                $receive->setMember($per->getMember());
-                $receive->setReadMessage(false);
-                $receive->setMessageDelete(false);
-                $em->persist($receive);
+                $em->persist($msg);
                 $em->flush();
 
+                foreach($persons as $per){
+                    $receive = new ReceiveMessage();
+                    $receive->setPrivatemessages($msg);
+                    $receive->setMember($per->getMember());
+                    $receive->setReadMessage(false);
+                    $receive->setMessageDelete(false);
+                    $em->persist($receive);
+                    $em->flush();
+
+                }
+                if ( count($persons) > 1){
+                    $this->get('session')->getFlashBag()->add('succes', 'Messages envoyés');
+                }
+                else{
+                    $this->get('session')->getFlashBag()->add('succes', 'Message envoyé');
+                }
             }
-            if ( count($persons) > 1){
-                $this->get('session')->getFlashBag()->add('succes', 'Messages envoyés');
+            catch(\Exception $e){
+                $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
             }
-            else{
-                $this->get('session')->getFlashBag()->add('succes', 'Message envoyé');
+            finally{
+                return $this->redirect($this->generateUrl('sercom_member_mail_new_mail'));
             }
 
-            return $this->redirect($this->generateUrl('sercom_member_mail_new_mail'));
         }
         return $this->render('@SERCOMApp/Mail/newmail.html.twig', array('form' => $form->createView()));
     }
@@ -97,14 +103,21 @@ class MailController extends Controller{
         $msg = $rep->find($id);
         if ( !empty($msg) ){
             if ( $person->getMember() == $msg->getMember()){
-                $em = $this->getDoctrine()->getManager();
-                $msg->setMessagedelete(true);
-                $em->persist($msg);
-                $em->flush();
-                $m2 = $msg->getPrivatemessages();
-                $this->deleteDeletedMessage($m2);
-                $this->get('session')->getFlashBag()->add('succes', 'Message supprimé');
-                return $this->redirect($this->generateUrl('sercom_member_mail_index'));
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $msg->setMessagedelete(true);
+                    $em->persist($msg);
+                    $em->flush();
+                    $m2 = $msg->getPrivatemessages();
+                    $this->deleteDeletedMessage($m2);
+                    $this->get('session')->getFlashBag()->add('succes', 'Message supprimé');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_member_mail_index'));
+                }
             }
             else{
                 throw new AccessDeniedException();
@@ -122,11 +135,19 @@ class MailController extends Controller{
         $msg = $rep->find($id);
         if ( !empty($msg)){
             if ( $msg->getMember() == $person->getMember()){
-                $em = $this->getDoctrine()->getManager();
-                $msg->setReadMessage(true);
-                $em->persist($msg);
-                $em->flush();
-                return $this->render('@SERCOMApp/Mail/inboxvoir.html.twig', array('msg' => $msg));
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $msg->setReadMessage(true);
+                    $em->persist($msg);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->render('@SERCOMApp/Mail/inboxvoir.html.twig', array('msg' => $msg));
+                }
             }
             else{
                 throw new AccessDeniedException();
@@ -163,13 +184,20 @@ class MailController extends Controller{
         $msg = $rep->find($id);
         if ( $person->getMember() == $msg->getSender()){
             if ( !empty($msg)){
-                $msg->setMessageDelete(true);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($msg);
-                $em->flush();
-                $this->deleteDeletedMessage($msg);
-                $this->get('session')->getFlashBag()->add('succes', 'Message supprimé');
-                return $this->redirect($this->generateUrl('sercom_member_mail_receive'));
+                try{
+                    $msg->setMessageDelete(true);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($msg);
+                    $em->flush();
+                    $this->deleteDeletedMessage($msg);
+                    $this->get('session')->getFlashBag()->add('succes', 'Message supprimé');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_member_mail_receive'));
+                }
             }
             else{
                 throw new NotFoundHttpException();
@@ -187,17 +215,23 @@ class MailController extends Controller{
         $em = $this->getDoctrine()->getManager();
         if ( count($all_receive_messages) == count($message_deleted)){
             if ( $message->getMessageDelete()){
-                foreach ( $all_receive_messages as $m){
-                    $em->remove($m);
+                try{
+                    foreach ( $all_receive_messages as $m){
+                        $em->remove($m);
+                        $em->flush();
+                    }
+                    if ( !empty($message->getAttachements()) ){
+                        foreach($message->getAttachements() as $attach){
+                            unlink(realpath($attach->getUrl()));
+                        }
+                    }
+                    $em->remove($message);
                     $em->flush();
                 }
-                if ( !empty($message->getAttachements()) ){
-                    foreach($message->getAttachements() as $attach){
-                        unlink(realpath($attach->getUrl()));
-                    }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
                 }
-                $em->remove($message);
-                $em->flush();
+
             }
         }
     }
@@ -219,24 +253,30 @@ class MailController extends Controller{
                 $form = $this->createForm( new PrivateMessage3Type(), $msg, array('attr'=> array('idp'=> $message->getSender()->getPerson()->getPersonId())));
                 $form->handleRequest($request);
                 if ( $form->isValid()){
+                    try{
+                        $msg->setDateMessage(new \DateTime());
+                        $msg->setMessageDelete(false);
+                        $msg->setSender($p->getMember());
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($msg);
+                        $em->flush();
 
-                    $msg->setDateMessage(new \DateTime());
-                    $msg->setMessageDelete(false);
-                    $msg->setSender($p->getMember());
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($msg);
-                    $em->flush();
-
-                    $receive = new ReceiveMessage();
-                    $receiver = $form->get('persons')->getData();
-                    $receive->setPrivatemessages($msg);
-                    $receive->setMember($receiver->getMember());
-                    $receive->setReadMessage(false);
-                    $receive->setMessageDelete(false);
-                    $em->persist($receive);
-                    $em->flush();
-                    $this->get('session')->getFlashBag()->add('succes', 'Messages envoyés');
-                    return $this->redirect($this->generateUrl('sercom_member_mail_new_mail'));
+                        $receive = new ReceiveMessage();
+                        $receiver = $form->get('persons')->getData();
+                        $receive->setPrivatemessages($msg);
+                        $receive->setMember($receiver->getMember());
+                        $receive->setReadMessage(false);
+                        $receive->setMessageDelete(false);
+                        $em->persist($receive);
+                        $em->flush();
+                        $this->get('session')->getFlashBag()->add('succes', 'Messages envoyés');
+                    }
+                    catch(\Exception $e){
+                        $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                    }
+                    finally{
+                        return $this->redirect($this->generateUrl('sercom_member_mail_new_mail'));
+                    }
                 }
                 return $this->render('@SERCOMApp/Mail/antwoordmail.html.twig', array('form' => $form->createView()));
             }

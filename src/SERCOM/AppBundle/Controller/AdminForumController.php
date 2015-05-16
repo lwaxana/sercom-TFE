@@ -102,11 +102,18 @@ class AdminForumController extends Controller {
             $form_group = $this->createForm(new ForumGroupAddForumType(), $group)->add('save','submit');
             $form_group->handleRequest($request);
             if ( $form_group->isValid()){
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($group);
-                $em->flush();
-                $this->get('session')->getFlashBag()->add('succes', 'Ajout du nouveau groupe effectué');
-                return $this->redirect($this->generateUrl('sercom_admin_forum'));
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($group);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Ajout du nouveau groupe effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_admin_forum'));
+                }
             }
             return $this->render('@SERCOMApp/AdminForum/addgroup.html.twig', array('form' => $form_group->createView()));
         }

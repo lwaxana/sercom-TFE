@@ -75,14 +75,21 @@ class HomeController extends Controller{
                 $form = $this->createForm(new PersonPwdType(), $person);
                 $form->handleRequest($request);
                 if ( $form->isValid()){
-                    $em = $this->getDoctrine()->getManager();
-                    $pwd = $this->get('security.encoder_factory')->getEncoder($person)->encodePassword($person->getPassword(), $person->getSalt());
-                    $person->setPassword($pwd);
-                    $person->setActivationcode(NULL);
-                    $em->persist($person);
-                    $em->flush();
-                    return $this->render('@SERCOMApp/Home/changepwddone.html.twig');
-
+                    try{
+                        $em = $this->getDoctrine()->getManager();
+                        $pwd = $this->get('security.encoder_factory')->getEncoder($person)->encodePassword($person->getPassword(), $person->getSalt());
+                        $person->setPassword($pwd);
+                        $person->setActivationcode(NULL);
+                        $em->persist($person);
+                        $em->flush();
+                        $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                    }
+                    catch(\Exception $e){
+                        $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                    }
+                    finally{
+                        return $this->render('@SERCOMApp/Home/changepwddone.html.twig');
+                    }
                 }
                 return $this->render('@SERCOMApp/Home/newpwd.html.twig', array('form' => $form->createView()));
             }

@@ -195,20 +195,40 @@ class StudentController extends Controller {
                 if ($request->request->has($form6->getName())) {
                     $form6->handleRequest($request);
                     if ( $form6->isValid()){
-                        $em= $this->getDoctrine()->getManager();
-                        $em->persist($person);
-                        $em->flush();
-                        return $this->redirect($this->generateUrl('student_infos'));
+                        try{
+                            $em= $this->getDoctrine()->getManager();
+                            $em->persist($person);
+                            $em->flush();
+                            $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                        }
+                        catch(\Exception $e){
+                            $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                        }
+                        finally{
+                            return $this->redirect($this->generateUrl('student_infos'));
+                        }
+
+
                     }
                 }
 
                 if ($request->request->has($form7->getName())) {
                     $form7->handleRequest($request);
                     if ( $form6->isValid()){
-                        $em= $this->getDoctrine()->getManager();
-                        $em->persist($person);
-                        $em->flush();
-                        return $this->redirect($this->generateUrl('student_infos'));
+                        try{
+                            $em= $this->getDoctrine()->getManager();
+                            $em->persist($person);
+                            $em->flush();
+                            $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                        }
+                        catch(\Exception $e){
+                            $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                        }
+                        finally{
+                            return $this->redirect($this->generateUrl('student_infos'));
+                        }
+
+
                     }
                 }
 

@@ -88,171 +88,170 @@ class AdminUserController extends Controller {
 
                 $form->handleRequest($request);
                 if ( $form->isValid()){
+                    try{
+                        $membre = $form->get('membre')->getData();
+                        if ( $membre != null){
+                            $membre = $membre[0];
+                        }
+                        $membre_groupe = $form->get('accesmembre')->getData();
 
-                    $membre = $form->get('membre')->getData();
-                    if ( $membre != null){
-                        $membre = $membre[0];
-                    }
-                    $membre_groupe = $form->get('accesmembre')->getData();
 
+                        $prof = $form->get('teacher')->getData();
+                        if ( $prof != null){
+                            $prof = $prof[0];
+                        }
+                        $student = $form->get('student')->getData();
+                        if ( $student != null){
+                            $student = $student[0];
+                        }
+                        $prof_group = $form->get('accesprof')->getData();
+                        $student_group = $form->get('accesetudiant')->getData();
 
-                    $prof = $form->get('teacher')->getData();
-                    if ( $prof != null){
-                        $prof = $prof[0];
-                    }
-                    $student = $form->get('student')->getData();
-                    if ( $student != null){
-                        $student = $student[0];
-                    }
-                    $prof_group = $form->get('accesprof')->getData();
-                    $student_group = $form->get('accesetudiant')->getData();
+                        $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:SiteGroup');
+                        $roles_membres = $rep->getMembersRoles();
+                        $user_roles = $p->getSitegroups()->toArray();
+                        $em = $this->getDoctrine()->getManager();
 
-                    $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:SiteGroup');
-                    $roles_membres = $rep->getMembersRoles();
-                    $user_roles = $p->getSitegroups()->toArray();
-                    $em = $this->getDoctrine()->getManager();
+                        if ( !empty($p->getMember())){
+                            if ( $membre == 0){
+                                // membre existe et case cochée ---> CHECK DROITS
+                                if ( !in_array($membre_groupe, $p->getSitegroups()->toArray())){
+                                    foreach ( $user_roles as $role){
+                                        if ( in_array($role, $roles_membres)){
+                                            $p->removeSitegroup($role);
+                                        }
+                                    }
+                                    $p->getMember()->setActif(true);
+                                    $em->persist($p);
+                                    $p->addSitegroup($membre_groupe);
+                                    $em->persist($p);
+                                    $em->flush();
+                                }
 
-                    if ( !empty($p->getMember())){
-                        if ( $membre == 0){
-                            // membre existe et case cochée ---> CHECK DROITS
-                            if ( !in_array($membre_groupe, $p->getSitegroups()->toArray())){
-                                foreach ( $user_roles as $role){
-                                    if ( in_array($role, $roles_membres)){
-                                        $p->removeSitegroup($role);
+                            }
+                            else{
+                                //effacer membre + droits eventuels
+                                foreach( $roles_membres as $r) {
+                                    if (in_array($r, $user_roles)) {
+                                        $p->removeSitegroup($r);
                                     }
                                 }
-                                $p->getMember()->setActif(true);
+                                foreach( $rep->getAdminRoles() as $r){
+                                    if ( in_array($r, $user_roles)){
+                                        $p->removeSitegroup($r);
+                                    }
+                                }
                                 $em->persist($p);
+                                $em->flush();
+                                $member = $p->getMember();
+                                $member->setActif(false);
+                                $em->persist($member);
+                                $em->flush();
+
+
+                            }
+                        }
+                        else{
+                            if ( $membre == 0){
+                                $membre = new Member();
+                                $membre->setPerson($p);
+                                $membre->setActif(true);
+                                $em->persist($membre);
+                                $em->flush();
                                 $p->addSitegroup($membre_groupe);
                                 $em->persist($p);
                                 $em->flush();
                             }
+                        }
 
+                        $prof_role = $rep->findOneByName('ROLE_TEACHER');
+
+                        if ( !empty($p->getTeacher())){
+                            if ( $prof == 0){
+                                if ( !in_array($prof_role, $user_roles)){
+                                    $p->addSitegroup($prof_role);
+                                }
+                                $p->getTeacher()->setActif(true);
+                                $em->persist($p);
+                                $em->flush();
+                            }
+                            else{
+                                foreach ( $user_roles as $role){
+                                    if ( $role->getName() == $prof_role->getName()){
+                                        $p->removeSitegroup($prof_role);
+                                    }
+                                }
+                                $em->persist($p);
+                                $em->flush();
+                                $teacher = $p->getTeacher();
+                                $teacher->setActif(false);
+                                $em->persist($teacher);
+                                $em->flush();
+                            }
                         }
                         else{
-                            //effacer membre + droits eventuels
-                            foreach( $roles_membres as $r) {
-                                if (in_array($r, $user_roles)) {
-                                    $p->removeSitegroup($r);
-                                }
-                            }
-                            foreach( $rep->getAdminRoles() as $r){
-                                if ( in_array($r, $user_roles)){
-                                    $p->removeSitegroup($r);
-                                }
-                            }
-                            $em->persist($p);
-                            $em->flush();
-                            $member = $p->getMember();
-                            $member->setActif(false);
-                            $em->persist($member);
-                            $em->flush();
-
-
-                        }
-                    }
-                    else{
-                        if ( $membre == 0){
-                            $membre = new Member();
-                            $membre->setPerson($p);
-                            $membre->setActif(true);
-                            $em->persist($membre);
-                            $em->flush();
-                            $p->addSitegroup($membre_groupe);
-                            $em->persist($p);
-                            $em->flush();
-                        }
-                    }
-
-                    $prof_role = $rep->findOneByName('ROLE_TEACHER');
-
-                    if ( !empty($p->getTeacher())){
-                        if ( $prof == 0){
-                            if ( !in_array($prof_role, $user_roles)){
+                            // creer prof + droits
+                            if ( $prof == 0){
+                                $teacher = new Teacher();
+                                $teacher->setPerson($p);
+                                $teacher->setActif(true);
+                                $em->persist($teacher);
+                                $em->flush();
                                 $p->addSitegroup($prof_role);
+                                $em->persist($p);
+                                $em->flush();
                             }
-                            $p->getTeacher()->setActif(true);
-                            $em->persist($p);
-                            $em->flush();
+                        }
+
+                        $student_role = $rep->findOneByName('ROLE_STUDENT');
+
+                        if ( !empty($p->getStudent())){
+                            if ( $student == 0){
+                                // droits
+                                if ( !in_array($student_role, $user_roles)){
+                                    $p->addSitegroup($student_role);
+                                }
+                                $p->getStudent()->setActif(true);
+                                $em->persist($p);
+                                $em->flush();
+                            }
+                            else{
+                                // effacer + droits
+                                foreach ( $user_roles as $role){
+                                    if ( $role->getName() == $student_role->getName()){
+                                        $p->removeSitegroup($student_role);
+                                    }
+                                }
+                                $em->persist($p);
+                                $em->flush();
+                                $student = $p->getStudent();
+                                $student->setActif(false);
+                                $em->persist($student);
+                                $em->flush();
+                            }
                         }
                         else{
-                            foreach ( $user_roles as $role){
-                                if ( $role->getName() == $prof_role->getName()){
-                                    $p->removeSitegroup($prof_role);
-                                }
-                            }
-                            $em->persist($p);
-                            $em->flush();
-                            $teacher = $p->getTeacher();
-                            $teacher->setActif(false);
-                            $em->persist($teacher);
-                            $em->flush();
-                        }
-                    }
-                    else{
-                        // creer prof + droits
-                        if ( $prof == 0){
-                            $teacher = new Teacher();
-                            $teacher->setPerson($p);
-                            $teacher->setActif(true);
-                            $em->persist($teacher);
-                            $em->flush();
-                            $p->addSitegroup($prof_role);
-                            $em->persist($p);
-                            $em->flush();
-                        }
-                    }
-
-                    $student_role = $rep->findOneByName('ROLE_STUDENT');
-
-                    if ( !empty($p->getStudent())){
-                        if ( $student == 0){
-                            // droits
-                            if ( !in_array($student_role, $user_roles)){
+                            // creer prof + droits
+                            if ( $student == 0){
+                                $etudiant = new Student();
+                                $etudiant->setPerson($p);
+                                $etudiant->setActif(true);
+                                $em->persist($etudiant);
+                                $em->flush();
                                 $p->addSitegroup($student_role);
+                                $em->persist($p);
+                                $em->flush();
                             }
-                            $p->getStudent()->setActif(true);
-                            $em->persist($p);
-                            $em->flush();
                         }
-                        else{
-                            // effacer + droits
-                            foreach ( $user_roles as $role){
-                                if ( $role->getName() == $student_role->getName()){
-                                    $p->removeSitegroup($student_role);
-                                }
-                            }
-                            $em->persist($p);
-                            $em->flush();
-                            $student = $p->getStudent();
-                            $student->setActif(false);
-                            $em->persist($student);
-                            $em->flush();
-                        }
-                    }
-                    else{
-                        // creer prof + droits
-                        if ( $student == 0){
-                            $etudiant = new Student();
-                            $etudiant->setPerson($p);
-                            $etudiant->setActif(true);
-                            $em->persist($etudiant);
-                            $em->flush();
-                            $p->addSitegroup($student_role);
-                            $em->persist($p);
-                            $em->flush();
-                        }
-                    }
 
-                    /*
-                    $message = \Swift_Message::newInstance()
-                        ->setSubject("Votre compte est validé")
-                        ->setFrom('mf.sercom@gmail.com')
-                        ->setTo($person->getEmail())
-                        ->setBody($this->renderView('SERCOMAppBundle:Email:accountvalid.html.twig', array('person' => $person)));
-                    $this->get('swiftmailer.mailer.default')->send($message);*/
-
-                    return $this->redirect($this->generateUrl('sercom_admin_users'));
+                        $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                    }
+                    catch(\Exception $e){
+                        $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                    }
+                    finally{
+                        return $this->redirect($this->generateUrl('sercom_admin_users'));
+                    }
                 }
                 return $this->render('SERCOMAppBundle:AdminUser:modifyuser.html.twig', array('form' => $form->createView(), 'person' => $p, 'd2' => $d2, 'tea' => $user_teacher_rights, 'stu' => $user_student_rights));
             }

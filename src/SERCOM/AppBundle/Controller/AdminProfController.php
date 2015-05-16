@@ -75,13 +75,21 @@ class AdminProfController extends Controller {
                 $form = $this->createForm(new TeacherType(), $teacher)->add('save','submit');
                 $form->handleRequest($request);
                 if ( $form->isValid()){
-                    $em = $this->getDoctrine()->getManager();
-                    foreach( $teacher->getSubjects() as $s){
-                        $s->addTeacher($teacher);
+                    try{
+                        $em = $this->getDoctrine()->getManager();
+                        foreach( $teacher->getSubjects() as $s){
+                            $s->addTeacher($teacher);
+                        }
+                        $em->persist($teacher);
+                        $em->flush();
+                        $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
                     }
-                    $em->persist($teacher);
-                    $em->flush();
-                    return $this->redirect($this->generateUrl('sercom_admin_teachers'));
+                    catch(\Exception $e){
+                        $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                    }
+                    finally{
+                        return $this->redirect($this->generateUrl('sercom_admin_teachers'));
+                    }
                 }
                 return $this->render('@SERCOMApp/AdminProf/modify.html.twig', array('form' => $form->createView()));
             }

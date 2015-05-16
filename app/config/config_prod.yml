@@ -14,24 +14,22 @@ imports:
 monolog:
     handlers:
         main:
-            type:               fingers_crossed
-            action_level:       error
-            handler:            grouped
+            type:         fingers_crossed
+            action_level: error
+            handler:      grouped
         grouped:
-            type:               group
-            members:            [streamed, swift]
+            type:    group
+            members: [streamed, buffered]
         streamed:
-            type:               stream
-            path:               "%kernel.logs_dir%/%kernel.environment%.log"
-            level:              debug
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
+        buffered:
+            type:    buffer
+            handler: swift
         swift:
-            type:               swift_mailer
-            from_email:         mf.sercom@gmail.com
-            to_email:           mf.sercom@gmail.com
-            subject:            "OOps"
-            level:              debug
-        login:
-            type:               stream
-            path:               "%kernel.logs_dir%/auth.log"
-            level:              info
-            channels:           security
+            type:       swift_mailer
+            from_email: error@example.com
+            to_email:   error@example.com
+            subject:    An Error Occurred!
+            level:      debug

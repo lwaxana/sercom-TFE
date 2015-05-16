@@ -29,20 +29,25 @@ class AdminAgendaClasseController extends Controller {
             $form = $this->createForm(new CoursePlanningType(), $planning);
             $form->handleRequest($request);
             if ( $form->isValid()){
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($planning);
-                $em->flush();
-                return $this->redirect($this->generateUrl('sercom_admin_agenda_classes'));
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($planning);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_admin_agenda_classes'));
+                }
             }
             return $this->render('@SERCOMApp/AgendaClasse/index.html.twig', array('form' => $form->createView()));
         }
         else{
             throw new AccessDeniedException();
         }
-
     }
-
-
 
     public function calendarAction(Request $request){
 
@@ -50,7 +55,6 @@ class AdminAgendaClasseController extends Controller {
             $em = $this->getDoctrine()->getManager();
             $datas = $em->getRepository('SERCOMAppBundle:CoursePlanning')->getCal();
             $datas2 = array();
-
             foreach ($datas as $data) {
                 $data = array( "title" => $data->getClasse()->getName(),'start' => $data->getDatecours()->format('Y-m-d H:i'), "timezone"=> "Europe/Paris");
                 array_push($datas2, $data);
@@ -79,11 +83,18 @@ class AdminAgendaClasseController extends Controller {
             $form = $this->createForm( new CoursePlaceType(), $lieu);
             $form->handleRequest($request);
             if ( $form->isValid()){
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($lieu);
-                $em->flush();
-                return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
-
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($lieu);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
+                }
             }
             return $this->render('@SERCOMApp/AgendaClasse/addlieu.html.twig', array('form' => $form->createView()));
         }
@@ -100,10 +111,18 @@ class AdminAgendaClasseController extends Controller {
                 $form = $this->createForm( new CoursePlaceType(), $place);
                 $form->handleRequest($request);
                 if ( $form->isValid()){
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($place);
-                    $em->flush();
-                    return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
+                    try{
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($place);
+                        $em->flush();
+                        $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                    }
+                    catch(\Exception $e){
+                        $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                    }
+                    finally{
+                        return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
+                    }
 
                 }
                 return $this->render('@SERCOMApp/AgendaClasse/addlieu.html.twig', array('form' => $form->createView()));
@@ -122,10 +141,18 @@ class AdminAgendaClasseController extends Controller {
         $person = $this->get('security.context')->getToken()->getUser();
         if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
             if ( !empty($place)){
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($place);
-                $em->flush();
-                return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $em->remove($place);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_places'));
+                }
             }
             else{
                 throw new NotFoundHttpException();
@@ -171,10 +198,18 @@ class AdminAgendaClasseController extends Controller {
         $person = $this->get('security.context')->getToken()->getUser();
         if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_AGENDA_CLASSE')){
             if ( !empty($planning)){
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($planning);
-                $em->flush();
-                return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_event_del'));
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $em->remove($planning);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_admin_agenda_classe_event_del'));
+                }
             }
             else{
                 throw new NotFoundHttpException();
@@ -193,10 +228,18 @@ class AdminAgendaClasseController extends Controller {
                 $form = $this->createForm(new CoursePlanningType(), $planning);
                 $form->handleRequest($request);
                 if ( $form->isValid()){
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($planning);
-                    $em->flush();
-                    return $this->redirect($this->generateUrl('sercom_admin_agenda_classes'));
+                    try{
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($planning);
+                        $em->flush();
+                        $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                    }
+                    catch(\Exception $e){
+                        $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                    }
+                    finally{
+                        return $this->redirect($this->generateUrl('sercom_admin_agenda_classes'));
+                    }
                 }
                 return $this->render('@SERCOMApp/AgendaClasse/modify.html.twig', array('form' => $form->createView()));
             }

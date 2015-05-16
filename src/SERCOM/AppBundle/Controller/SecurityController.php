@@ -51,17 +51,27 @@ class SecurityController extends Controller{
             $p = $rep->findOneBy(array('email' => $form->get('email')->getData()));
             if ( !empty($p) ){
                 if ( !$p->getBan() && $p->getValidate() && $p->getEmailvalid() ){
-                    $em= $this->getDoctrine()->getManager();
-                    $p->setActivationcode($this->generateActivationCode());
-                    $em->persist($p);
-                    $em->flush();
-                    $message = \Swift_Message::newInstance()
-                        ->setSubject("Reinitialisation de votre mot de passe")
-                        ->setFrom('mf.sercom@gmail.com')
-                        ->setTo($p->getEmail())
-                        ->setBody($this->renderView('SERCOMAppBundle:Email:resetpwd.html.twig', array('person' => $p)));
-                    $this->get('swiftmailer.mailer.default')->send($message);
-                    return $this->render('@SERCOMApp/Security/passwordreste.html.twig');
+                    try{
+                        $em= $this->getDoctrine()->getManager();
+                        $p->setActivationcode($this->generateActivationCode());
+                        $em->persist($p);
+                        $em->flush();
+                        $message = \Swift_Message::newInstance()
+                            ->setSubject("Reinitialisation de votre mot de passe")
+                            ->setFrom('mf.sercom@gmail.com')
+                            ->setTo($p->getEmail())
+                            ->setBody($this->renderView('SERCOMAppBundle:Email:resetpwd.html.twig', array('person' => $p)));
+                        $this->get('swiftmailer.mailer.default')->send($message);
+
+                    }
+                    catch(\Exception $e){
+                        $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                    }
+                    finally{
+                        return $this->render('@SERCOMApp/Security/passwordreste.html.twig');
+                    }
+
+
                 }
                 else{
                     $this->get('session')->getFlashBag()->add('error', 'Compte non valide');

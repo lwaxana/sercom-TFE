@@ -64,16 +64,24 @@ class AdminClasseController extends Controller {
 
             $form->handleRequest($request);
             if ( $form->isValid()){
-                $em = $this->getDoctrine()->getManager();
-                $t = $form->get('teacher')->getData();
-                $students = $form->get('students')->getData();
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $t = $form->get('teacher')->getData();
+                    $students = $form->get('students')->getData();
 
-                $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:Teacher');
-                $teacher = $rep->find($t);
-                $classe->setTeacher($teacher);
-                $em->persist($classe);
-                $em->flush();
-                 return $this->redirect($this->generateUrl('sercom_admin_classes'));
+                    $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:Teacher');
+                    $teacher = $rep->find($t);
+                    $classe->setTeacher($teacher);
+                    $em->persist($classe);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_admin_classes'));
+                }
             }
             return $this->render('@SERCOMApp/AdminClasse/addclasse.html.twig', array('form' => $form->createView()));
         }
@@ -89,22 +97,13 @@ class AdminClasseController extends Controller {
         if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_CLASSES')){
             try {
                 $em = $this->getDoctrine()->getManager();
-                $em->remove(@$classe);
+                $em->remove($classe);
                 $em->flush();
                 $this->get('session')->getFlashBag()->add('succes', 'Suppression effectuée');
             }catch (\Exception $e) {
                 $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
             }
             finally{
-            /*
-            }catch( ORMException $e){
-                $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
-            }catch( DBALException $e){
-                $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
-            }catch( \Exception $e){
-                $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
-            }
-            finally{*/
                 return $this->redirect($this->generateUrl('sercom_admin_classes'));
             }
         }
@@ -120,10 +119,18 @@ class AdminClasseController extends Controller {
             $form = $this->createForm(new SubjectType(), $subject)->add('save', 'submit');
             $form->handleRequest($request);
             if ( $form->isValid()){
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($subject);
-                $em->flush();
-                return $this->redirect($this->generateUrl('sercom_admin_classes'));
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($subject);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_admin_classes'));
+                }
             }
 
             return $this->render('@SERCOMApp/AdminClasse/addsubject.html.twig', array('form' => $form->createView()));
@@ -138,10 +145,18 @@ class AdminClasseController extends Controller {
         $form = $this->createForm(new ClasseType(), $classe)->add('save','submit');
         $form->handleRequest($request);
         if ( $form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($classe);
-            $em->flush();
-            return $this->redirect($this->generateUrl('sercom_admin_classes'));
+            try{
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($classe);
+                $em->flush();
+                $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+            }
+            catch(\Exception $e){
+                $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+            }
+            finally{
+                return $this->redirect($this->generateUrl('sercom_admin_classes'));
+            }
         }
         return $this->render('@SERCOMApp/AdminClasse/modify.html.twig', array('form' => $form->createView()));
     }
@@ -164,14 +179,10 @@ class AdminClasseController extends Controller {
                 $em->remove($subject);
                 $em->flush();
                 $this->get('session')->getFlashBag()->add('succes', 'Suppression effectuée');
-            }catch( ORMException $e){
-                $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
-            }catch( DBALException $e){
-                $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
-            }catch( \Exception $e){
+            }
+            catch(\Exception $e){
                 $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
             }
-
             finally{
                 return $this->redirect($this->generateUrl('sercom_admin_del_subject_page'));
             }

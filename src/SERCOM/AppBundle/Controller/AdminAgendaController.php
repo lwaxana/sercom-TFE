@@ -35,10 +35,18 @@ class AdminAgendaController extends Controller {
             $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:Event');
             $event = $rep->find($id);
             if ( !empty($event)){
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($event);
-                $em->flush();
-                $this->redirect($this->generateUrl('sercom_admin_agenda_voir'));
+                try{
+                    $em = $this->getDoctrine()->getManager();
+                    $em->remove($event);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    $this->redirect($this->generateUrl('sercom_admin_agenda_voir'));
+                }
             }
             else{
                 throw new NotFoundHttpException();

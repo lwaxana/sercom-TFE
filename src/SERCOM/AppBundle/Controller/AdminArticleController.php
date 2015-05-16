@@ -34,18 +34,26 @@ class AdminArticleController extends Controller{
             $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:SiteArticle');
             $article = $rep->find($id);
             if ( !empty($article)){
-                $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:ArticleDocument');
-                $article->setPublish(true);
-                $article->setPublishDate(new \DateTime());
-                $doc = $rep->findOneBy(array('article' => $id, 'picture' => false));
-                $text = file_get_contents(realpath($doc->getUrl()));
-                $text_clean = substr(strip_tags($text), 0, 50);
-                $article->setPreview($text_clean);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($article);
-                $em->flush();
-                $this->get('session')->getFlashBag()->add('succes', 'Article publié');
-                return $this->redirect($this->generateUrl('sercom_admin_article_index'));
+                try{
+                    $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:ArticleDocument');
+                    $article->setPublish(true);
+                    $article->setPublishDate(new \DateTime());
+                    $doc = $rep->findOneBy(array('article' => $id, 'picture' => false));
+                    $text = file_get_contents(realpath($doc->getUrl()));
+                    $text_clean = substr(strip_tags($text), 0, 50);
+                    $article->setPreview($text_clean);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($article);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Article publié');
+                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_admin_article_index'));
+                }
             }
             else{
                 throw new NotFoundHttpException();
@@ -62,13 +70,20 @@ class AdminArticleController extends Controller{
             $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:SiteArticle');
             $article = $rep->find($id);
             if ( !empty($article)){
-                $article->setSubmit(false);
-                $article->setSubmitDate(NULL);
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($article);
-                $em->flush();
-                $this->get('session')->getFlashBag()->add('succes', 'Article retourné');
-                return $this->redirect($this->generateUrl('sercom_admin_article_index'));
+                try{
+                    $article->setSubmit(false);
+                    $article->setSubmitDate(NULL);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($article);
+                    $em->flush();
+                    $this->get('session')->getFlashBag()->add('succes', 'Article retourné');
+                }
+                catch(\Exception $e){
+                    $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
+                }
+                finally{
+                    return $this->redirect($this->generateUrl('sercom_admin_article_index'));
+                }
             }
             else{
                 throw new NotFoundHttpException();
