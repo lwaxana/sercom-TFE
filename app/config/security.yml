@@ -54,6 +54,7 @@ security:
         - { path: ^/members/admin/teachers, roles: ADMIN_PROFS }
         - { path: ^/members/admin/classes, roles: ADMIN_CLASSES }
         - { path: ^/members/admin/agendaclasses, roles: ADMIN_AGENDA_CLASSE }
+        - { path: ^/newpassword, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
 
 

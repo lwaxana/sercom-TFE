@@ -1,0 +1,15 @@
+
+Bonjour {{ person.firstname }} {{ person.lastname }}
+
+Afin de  reinitialiser votre mot de passe , veuillez cliquer sur le lien suivant
+
+{{ url('sercom_register_resetpwd', {'login': person.username, 'code': person.activationcode })|raw }}
+
+Veuillez ne pas répondre à cet email.
+
+Merci
+
+
+
+
+

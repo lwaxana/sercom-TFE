@@ -45,3 +45,11 @@ sercom_home_partenaire:
 sercom_home_contact:
     pattern: /contact
     defaults: { _controller: SERCOMAppBundle:Home:contact }
+
+sercom_lost_pwd:
+    pattern: /lostpassword
+    defaults: { _controller: SERCOMAppBundle:Security:lostpassword }
+
+sercom_register_newpwd:
+    pattern:  /newpassword/{id}/{activ}
+    defaults: { _controller: SERCOMAppBundle:Home:newpwd }

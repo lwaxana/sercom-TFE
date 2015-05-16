@@ -23,3 +23,10 @@ sercom_register_access:
     defaults: {_controller: SERCOMAppBundle:Register:access}
     requirements:
         _method: POST
+
+sercom_register_resetpwd:
+    pattern:  /resetpassword
+    defaults: { _controller: SERCOMAppBundle:Register:resetpwd }
+    requirements:
+        _method: GET
+

@@ -7,12 +7,15 @@ use SERCOM\AppBundle\Entity\Teacher;
 use SERCOM\AppBundle\Entity\Member;
 use SERCOM\AppBundle\Entity\Student;
 use SERCOM\AppBundle\Form\PersonInscriptionType;
+use SERCOM\AppBundle\Form\PersonPwdType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use SERCOM\AppBundle\Entity\Person;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Util\SecureRandom;
 use Symfony\Component\Security\Core\Util\StringUtils;
 
@@ -176,9 +179,37 @@ class RegisterController extends Controller{
         else{
             return new Response('NOK');
         }
-
-
-
     }
+
+    public function resetPwdAction(Request $request){
+        $login = $request->query->get('login');
+        $code = $request->query->get('code');
+        $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:Person');
+        $person = $rep->findOneByUsername($login);
+        if ( !empty($person)){
+            if( StringUtils::equals($code, $person->getActivationcode() )){
+                if ( !$person->getBan() && $person->getValidate() && $person->getEmailValid() ){
+                    $person->setActivationcode($this->generateActivationCode());
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($person);
+                    $em->flush();
+                    $route = $this->generateUrl('sercom_register_newpwd', array('id' => $person->getPersonid(), 'activ' => $person->getActivationcode()));
+                    return $this->redirect($route);
+                }
+                else{
+                    throw new AccessDeniedException();
+                }
+            }
+            else{
+                throw new NotFoundHttpException();
+            }
+        }
+        else{
+            throw new NotFoundHttpException();
+        }
+    }
+
+
+
 
 } 

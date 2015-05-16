@@ -2,7 +2,13 @@
 
 namespace SERCOM\AppBundle\Controller;
 
+use SERCOM\AppBundle\Form\PersonPwdType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use SERCOM\AppBundle\Entity\Person;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Util\StringUtils;
 
 class HomeController extends Controller{
 
@@ -62,6 +68,33 @@ class HomeController extends Controller{
         return $this->render('@SERCOMApp/Home/contact/contact.html.twig');
     }
 
+    public function newpwdAction(Person $person, $activ, Request $request){
 
+        if ( !empty($person) && StringUtils::equals($activ, $person->getActivationcode())){
+            if ( !$person->getBan() && $person->getEmailvalid() && $person->getValidate() && $person->getActivationcode() != NULL){
+                $form = $this->createForm(new PersonPwdType(), $person);
+                $form->handleRequest($request);
+                if ( $form->isValid()){
+                    $em = $this->getDoctrine()->getManager();
+                    $pwd = $this->get('security.encoder_factory')->getEncoder($person)->encodePassword($person->getPassword(), $person->getSalt());
+                    $person->setPassword($pwd);
+                    $person->setActivationcode(NULL);
+                    $em->persist($person);
+                    $em->flush();
+                    return $this->render('@SERCOMApp/Home/changepwddone.html.twig');
+
+                }
+                return $this->render('@SERCOMApp/Home/newpwd.html.twig', array('form' => $form->createView()));
+            }
+            else{
+                throw new AccessDeniedException();
+            }
+        }
+        else{
+            throw new NotFoundHttpException();
+        }
+
+
+    }
 
 }
