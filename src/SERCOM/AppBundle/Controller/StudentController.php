@@ -25,19 +25,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class StudentController extends Controller {
 
     public function indexAction(){
-        $person = $this->get('security.context')->getToken()->getUser();
-        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_STUDENTS')){
+
             return $this->render('SERCOMAppBundle:Student:index.html.twig');
-        }
-        else{
-            throw new AccessDeniedException();
-        }
+
 
     }
 
     public function infosAction(Request $request){
-        $person = $this->get('security.context')->getToken()->getUser();
-        if ( $person->isGranted('ROLE_PRESIDENT') or $person->isGranted('ADMIN_STUDENTS')){
+
             $person = $this->get('security.context')->getToken()->getUser();
             $address = $person->getAddress();
             $countries = $person->getCountries();
@@ -240,9 +235,7 @@ class StudentController extends Controller {
 
             return $this->render('@SERCOMApp/Student/mesinfos.html.twig', array('form' => $form->createView(), 'form2' => $form2->createView(), 'form3' => $form3->createView(),
                 'form4' => $form4->createView(),'form5' => $form5->createView(),'form6' => $form6->createView(), 'countries' => $countries, 'pic' => $pic , 'form7' => $form7->createView()));
-        }else{
-            throw new AccessDeniedException();
-        }
+
     }
 
 
