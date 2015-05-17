@@ -1,1 +1,50 @@
-{% extends '@SERCOMApp/Student/index.html.twig' %}
+{% extends 'SERCOMAppBundle:Student:index.html.twig' %}
+
+{% block titre %}
+    <title>Mes classes</title>
+{% endblock %}
+
+{% block well %}
+    <div class="well">Mes classes </div>
+{% endblock %}
+
+{% block body %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td> Classe </td>
+            <td> Matière</td>
+
+        </tr>
+        </thead>
+        <tbody>
+        {% if classes is not empty %}
+        {% for classe in classes %}
+            <tr>
+                <td>{{ classe.name }}</td>
+                <td>{{ classe.suject.name }}</td>
+
+            </tr>
+        {% endfor %}
+        {% else %}
+            <td> Pas de classe</td><td></td><td></td>
+        {% endif %}
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <a href="{{ path('student_index') }}" class="btn-warning btn btn-block">Retour</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+
+        $('#succes').delay( 5000).hide(0);
+        $('#alert').delay( 5000).hide(0);
+
+
+    </script>
+{% endblock %}

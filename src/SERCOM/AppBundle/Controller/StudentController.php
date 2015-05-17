@@ -19,13 +19,12 @@ use SERCOM\AppBundle\Form\PersonPictureType;
 use SERCOM\AppBundle\Form\PersonPwdType;
 use Symfony\Component\HttpFoundation\Request;
 use SERCOM\AppBundle\Image\Image;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
 
 
 class StudentController extends Controller {
 
     public function indexAction(){
-
             return $this->render('SERCOMAppBundle:Student:index.html.twig');
 
 
@@ -236,6 +235,12 @@ class StudentController extends Controller {
             return $this->render('@SERCOMApp/Student/mesinfos.html.twig', array('form' => $form->createView(), 'form2' => $form2->createView(), 'form3' => $form3->createView(),
                 'form4' => $form4->createView(),'form5' => $form5->createView(),'form6' => $form6->createView(), 'countries' => $countries, 'pic' => $pic , 'form7' => $form7->createView()));
 
+    }
+
+    public function classesAction(){
+        $person = $this->get('security.context')->getToken()->getUser();
+        $classes = $person->getStudent()->getClasses();
+        return $this->render('@SERCOMApp/Student/mesclasses.html.twig', array('classes' => $classes));
     }
 
 

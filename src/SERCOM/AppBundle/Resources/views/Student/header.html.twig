@@ -7,10 +7,7 @@
 
                 <li role="presentation" title="Accueil"> <a href="{{ path('student_index') }}"> <i class="fa fa-home fa-2x"></i> </a> </li>
                 <li role="presentation" title="Mon compte"> <a href="{{ path('student_infos') }}"> <i class="fa fa-user fa-2x"></i> </a> </li>
-                <li role="presentation" title="Mes classes"> <a href=""> <i class="fa fa-university fa-2x"></i> </a> </li>
-                <li role="presentation" title="Mon agenda"> <a href=""> <i class="fa fa-calendar fa-2x"></i> </a> </li>
-
-                <li role="presentation" title="Help"> <a > <i class="fa fa-life-ring fa-2x"></i> </a> </li>
+                <li role="presentation" title="Mes classes"> <a href="{{ path('student_classes') }}"> <i class="fa fa-university fa-2x"></i> </a> </li>
                 <li role="presentation"> <a href="{{ path('logout') }}"class="btn btn-default navbar-btn">Logout</a> </li>
 
             </ul>
