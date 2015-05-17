@@ -3,6 +3,7 @@
 namespace SERCOM\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Attachement
@@ -37,7 +38,9 @@ class Attachement
      */
     private $privatemessage;
 
-
+    /**
+     * @Assert\File(maxSize="5M")
+     */
     private $file;
 
 

@@ -3,12 +3,16 @@
 namespace SERCOM\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * CoursePlace
  *
  * @ORM\Table(name="course_place")
  * @ORM\Entity(repositoryClass="SERCOM\AppBundle\Entity\Repository\CoursePlaceRepository")
+ * @UniqueEntity("name")
  */
 class CoursePlace
 {
@@ -21,6 +25,8 @@ class CoursePlace
     private $place_id;
     /**
      * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(min = "6", max = "50")
      * @ORM\Column(name="name", type="string", length=50, nullable=false)
      */
     private $name;

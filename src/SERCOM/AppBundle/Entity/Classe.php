@@ -3,12 +3,15 @@
 namespace SERCOM\AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Classe
  *
  * @ORM\Table(name="classe")
  * @ORM\Entity(repositoryClass="SERCOM\AppBundle\Entity\Repository\ClasseRepository")
+ * @UniqueEntity("name")
  */
 class Classe
 {
