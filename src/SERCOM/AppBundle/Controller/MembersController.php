@@ -33,8 +33,11 @@ class MembersController extends Controller {
         $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Event');
         $agenda = $rep->getLastEven();
         $agenda = $agenda[0];
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Member');
+        $mail = $rep->getLastMail($person->getMember());
+        $mail = $mail[0];
 
-        return $this->render('SERCOMAppBundle:Members:index.html.twig', array('post' => $post, 'article' => $article, 'upload' => $upload , 'agenda' => $agenda));
+        return $this->render('SERCOMAppBundle:Members:index.html.twig', array('post' => $post, 'article' => $article, 'upload' => $upload , 'agenda' => $agenda, 'mail' => $mail));
 
     }
 

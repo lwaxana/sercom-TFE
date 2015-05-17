@@ -75,6 +75,19 @@ class MemberRepository extends EntityRepository{
         return $query2->getQuery()->getResult();
     }
 
+    public function getLastMail(Member $member){
+        $query2 = $this->_em->createQueryBuilder();
+        $query2 ->select('m')
+            ->from('SERCOMAppBundle:ReceiveMessage','m')
+            ->join('m.privatemessages','p')
+            ->join('m.member','r')
+            ->join('r.person','z')
+            ->where('m.read_message = 0 AND z.person_id = ?1')
+            ->setParameter(1, $member->getPerson()->getPersonId())
+            ->orderBy('p.dateMessage', ' DESC');
+
+        return $query2->getQuery()->getResult();
+    }
 
 
 }

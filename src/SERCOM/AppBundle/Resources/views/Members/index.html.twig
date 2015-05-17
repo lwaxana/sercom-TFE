@@ -80,7 +80,14 @@
     <div class="panel panel-primary">
         <div class="panel-heading">Mails</div>
         <div class="panel-body">
-            Contenu
+            {% if mail is not empty %}
+                De : {{ mail.privatemessages.sender.person.lastname }} {{ mail.privatemessages.sender.person.firstname }}
+                Objet : {{ mail.privatemessages.subject }}
+                Le : {{ mail.privatemessages.datemessage|date('d-m-Y h:i') }}
+            {% else %}
+                Pas de nouveau message
+            {% endif %}
+
         </div>
     </div>
 
