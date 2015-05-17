@@ -140,7 +140,7 @@ class MailController extends Controller{
                     $msg->setReadMessage(true);
                     $em->persist($msg);
                     $em->flush();
-                    $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
+
                 }
                 catch(\Exception $e){
                     $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');

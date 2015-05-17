@@ -109,12 +109,12 @@
 
                             <div class="form-group">
                                 {{ form_label(form.attachements, 'Fichiers attachés') }}
-                                <div id="post_tags" data-prototype="{{ _self.widget_prototype(form.attachements, 'Remove tag')|escape }}">
+                                <div id="post_tags" data-prototype="{{ _self.widget_prototype(form.attachements, 'Supprimer fichier')|escape }}">
                                     {% for widget in form.attachements.children %}
-                                        {{ _self.widget_prototype(widget, 'Remove tag') }}
+                                        {{ _self.widget_prototype(widget, 'Supprimer fichier') }}
                                     {% endfor %}
                                 </div>
-                                <a class="btn-add" data-target="post_tags">Add tag</a>
+                                <a class="btn-add" data-target="post_tags">Ajouter fichier</a>
                             </div>
                         </div>
 
