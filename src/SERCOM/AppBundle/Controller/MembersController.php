@@ -21,7 +21,21 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class MembersController extends Controller {
 
     public function indexAction(){
-        return $this->render('SERCOMAppBundle:Members:index.html.twig');
+        $person = $this->get('security.context')->getToken()->getUser();
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Member');
+        $post = $rep->getLastPost($person->getMember());
+        $post = $post[0];
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteArticle');
+        $article = $rep->findOneBy(array(), array('publishDate' => 'DESC'));
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Member');
+         $upload = $rep->getLastDocs($person->getMember());
+        $upload = $upload[0];
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Event');
+        $agenda = $rep->getLastEven();
+        $agenda = $agenda[0];
+
+        return $this->render('SERCOMAppBundle:Members:index.html.twig', array('post' => $post, 'article' => $article, 'upload' => $upload , 'agenda' => $agenda));
+
     }
 
     public function infosAction(Request $request){

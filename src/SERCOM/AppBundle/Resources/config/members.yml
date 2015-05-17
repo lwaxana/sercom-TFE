@@ -20,7 +20,7 @@ sercom_members_docs:
 
 sercom_members_docs_files:
     pattern:  /members/files/{id}/{page}
-    defaults: { _controller: SERCOMAppBundle:Document:files }
+    defaults: { _controller: SERCOMAppBundle:Document:files, page: 1 }
 
 sercom_members_download_file:
     pattern : /members/download/{id}

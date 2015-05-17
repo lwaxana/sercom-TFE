@@ -30,28 +30,51 @@
     <div class="panel panel-primary">
         <div class="panel-heading">Dernier messages sur le forum</div>
         <div class="panel-body">
-            Contenu
+
+            {% if post is not empty %}
+            Forum : <a href="{{ path('sercom_members_forum_topics',{'forum': post.forumtopic.forum.forumid}) }}">{{ post.forumtopic.forum.name }}</a>
+            Topic : <a href="{{ path('sercom_members_forum_posts',{'forum': post.forumtopic.forum.forumid ,'topic': post.forumtopic.topicid }) }}">{{ post.forumtopic.title }}</a>
+            par :  {{ post.member.person.lastname }} {{ post.member.person.firstname }} le {{ post.datepost|date('d-m-Y H:i') }}
+            {% else %}
+                Pas de post
+            {% endif %}
         </div>
     </div>
 
     <div class="panel panel-primary">
-        <div class="panel-heading">Dernier article écrit</div>
+        <div class="panel-heading">Dernier article publié</div>
         <div class="panel-body">
-            Contenu
+            {% if article is not empty %}
+            Titre : {{ article.title }}
+            Section: {{ article.sitesection.name }}
+            par {{ article.member.person.lastname }} {{ article.member.person.firstname }}
+            le {{ article.publishdate|date('d-m-Y H:i') }}
+            {% else %}
+                Pas d'article
+            {% endif %}
+
         </div>
     </div>
 
     <div class="panel panel-primary">
-        <div class="panel-heading">Derniers documents uploadés</div>
+        <div class="panel-heading">Dernier document uploadé</div>
         <div class="panel-body">
-            Contenu
+            {% if upload is not empty %}
+            Document : {{ upload.name }} SECTION : <a href={{ path('sercom_members_docs_files', {'id': upload.souscat.souscatid }) }}>{{ upload.souscat.category.name }} / {{ upload.souscat.name }}</a>
+            {% else %}
+                Pas de documents
+            {% endif %}
         </div>
     </div>
 
     <div class="panel panel-primary">
         <div class="panel-heading">Agenda</div>
         <div class="panel-body">
-            Contenu
+            {% if agenda is not empty %}
+                Evenement : {{ agenda.name }} Sujet : {{ agenda.description }} DATE : {{ agenda.datehourevent|date('d-m-Y H:i') }}
+            {% else %}
+                Pas d'évènement
+            {% endif %}
         </div>
     </div>
     <div class="panel panel-primary">

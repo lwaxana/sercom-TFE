@@ -16,4 +16,10 @@ class EventRepository extends EntityRepository{
         $query = $this->_em->createQuery('SELECT e FROM SERCOMAppBundle:Event e WHERE e.validate = 1');
         return $query->getResult();
     }
+
+    public function getLastEven(){
+        $query = $this->_em->createQuery('SELECT e FROM SERCOMAppBundle:Event e WHERE e.validate = 1 AND e.dateHourEvent > ?1 ORDER BY e.dateHourEvent DESC')
+            ->setParameter(1, new \DateTime());
+        return $query->getResult();
+    }
 }

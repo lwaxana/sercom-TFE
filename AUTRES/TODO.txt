@@ -1,6 +1,5 @@
-8) HOME MEMBRE
 9) ANNOTATIONS ASSERT à FAIRE : -> ATTACHEMENT ( FILE )  -> CHAMP TEL PERSON  -> course place
-10) CSS FORMS + wells + footer
+10) CSS FORMS + wells
 11) FRONT WEB ( attente du css )
 12) TOUT TESTER ....
 

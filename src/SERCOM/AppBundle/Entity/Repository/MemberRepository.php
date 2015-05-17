@@ -3,6 +3,7 @@
 namespace SERCOM\AppBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use SERCOM\AppBundle\Entity\Member;
 
 /**
  * MemberRepository
@@ -25,4 +26,55 @@ class MemberRepository extends EntityRepository{
             ->setParameter( 1 , $idevent);
         return $query->getResult();
     }
+
+    public function getLastPost(Member $member){
+        $query = $this->_em->createQuery('SELECT DISTINCT f FROM SERCOMAppBundle:Forum f JOIN f.forumgroups g JOIN g.members m WHERE m.person = ?1')->setParameter(1, $member);
+        $res = $query->getResult();
+        $res2 = array();
+        foreach ( $res as $r){
+            array_push($res2, $r->getForumid());
+        }
+
+        $query2 = $this->_em->createQueryBuilder();
+        $query2 ->select('p')
+                ->from('SERCOMAppBundle:ForumPost','p')
+                ->join('p.forumtopic','t')
+                ->join('t.forum','f')
+                ->add('where', $query2->expr()->in('f.forum_id', $res2))
+                ->orderBy('p.datePost', ' DESC');
+        return $query2->getQuery()->getResult();
+    }
+
+    public function getLastDocs(Member $member){
+
+
+        if ( in_array("ROLE_PRESIDENT", $member->getPerson()->getRoles() )){
+            $roles = array( 1,2,3,4 );
+        }
+        if ( in_array("ROLE_ANIMATEUR", $member->getPerson()->getRoles() )){
+            $roles = array( 2,3,4 );
+        }
+        if ( in_array("ROLE_COMITE", $member->getPerson()->getRoles() )){
+            $roles = array( 3,4 );
+        }
+        if ( in_array("ROLE_MEMBRE", $member->getPerson()->getRoles() )){
+            $roles = array( 4 );
+        }
+
+
+        $query2 = $this->_em->createQueryBuilder();
+        $query2 ->select('m')
+            ->from('SERCOMAppBundle:AsblDocument','m')
+            ->join('m.souscat','s')
+            ->join('s.category','c')
+            ->join('c.sitegroup','g')
+            ->where('g.sitegroup_id IN (?1)')
+            ->setParameter(1, $roles)
+            ->orderBy('m.asbldoc_id', ' DESC');
+
+        return $query2->getQuery()->getResult();
+    }
+
+
+
 }

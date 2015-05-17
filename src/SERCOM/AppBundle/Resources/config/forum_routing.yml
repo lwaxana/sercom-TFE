@@ -4,7 +4,7 @@ sercom_members_forum:
 
 sercom_members_forum_topics:
     pattern:  /forum/{forum}/{page}
-    defaults: { _controller: SERCOMAppBundle:Forum:topic }
+    defaults: { _controller: SERCOMAppBundle:Forum:topic, page: 1 }
     requirements:
         forum: \d+
         page: \d+
@@ -12,7 +12,7 @@ sercom_members_forum_topics:
 
 sercom_members_forum_posts:
     pattern:  /forum/topic/{forum}/{topic}/{page}
-    defaults: { _controller: SERCOMAppBundle:Forum:post }
+    defaults: { _controller: SERCOMAppBundle:Forum:post, page: 1 }
     requirements:
         forum: \d+
         topic: \d+
