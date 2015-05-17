@@ -1,0 +1,15 @@
+{% extends 'SERCOMAppBundle:Home:header.html.twig' %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <ul class="nav nav-pills" role="tablist">
+
+                <li role="presentation" title="Accueil"> <a href="{{ path('teacher_index') }}"> <i class="fa fa-home fa-2x"></i> </a> </li>
+                <li role="presentation"> <a href="{{ path('logout') }}"class="btn btn-default navbar-btn">Logout</a> </li>
+
+            </ul>
+
+        </div>
+    </nav>
+{% endblock %}

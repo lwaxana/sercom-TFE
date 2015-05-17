@@ -25,7 +25,11 @@ use SERCOM\AppBundle\Image\Image;
 class StudentController extends Controller {
 
     public function indexAction(){
-            return $this->render('SERCOMAppBundle:Student:index.html.twig');
+        $person = $this->get('security.context')->getToken()->getUser();
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:CoursePlanning');
+        $agenda = $rep->findLastEventClasse($person->getPersonid());
+
+        return $this->render('SERCOMAppBundle:Student:index.html.twig', array('agenda' => $agenda));
 
 
     }

@@ -62,8 +62,9 @@ login_check:
 logout:
     pattern:  /logout
 
-
-
+teacher_index:
+    pattern:  /teachers
+    defaults: { _controller: SERCOMAppBundle:Teachers:index }
 
 
 

@@ -1,18 +1,18 @@
 {% extends 'SERCOMAppBundle:Home:base.html.twig' %}
 
 {% block header %}
-    {% include 'SERCOMAppBundle:Student:header.html.twig' %}
+    {% include 'SERCOMAppBundle:Teachers:header.html.twig' %}
 {% endblock %}
 
 {% block nav %}
 {% endblock %}
 
 {% block titre %}
-    <title>Espace Etudiants</title>
+    <title>Espace Professeur</title>
 {% endblock %}
 
 {% block well %}
-    <div class="well">Accueil Etudiants</div>
+    <div class="well">Accueil Professeur</div>
 {% endblock %}
 
 {% block flash %}
@@ -27,14 +27,9 @@
 
 {% block body %}
 
-    <div class="panel panel-primary">
-        <div class="panel-heading">Prochain cours</div>
-        <div class="panel-body">
-            {{ agenda.classe.name }} - Matière : {{ agenda.classe.suject.name}} - Date : {{ agenda.datecours|date('d-m-Y H:i') }} - Lieu : {{ agenda.courseplace.name }}
-        </div>
-    </div>
 
 
+    EN CONSTRUCTION
 
 
 {% endblock %}

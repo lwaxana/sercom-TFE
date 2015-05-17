@@ -26,4 +26,14 @@ class CoursePlanningRepository extends EntityRepository{
 
         return $query->getQuery()->getSingleResult();
     }
+
+    public function findLastEventClasse( $student){
+        $query = $this->_em->createQueryBuilder()->select('p')
+            ->from('SERCOMAppBundle:CoursePlanning','p')
+            ->join('p.classe','c')
+            ->join('c.students','s')
+            ->where('s.person = ?2 AND p.datecours > ?1')
+            ->addOrderBy('p.datecours', 'ASC')->setParameters(array(1 => new \DateTime(), 2 => $student));
+        return $query->getQuery()->getSingleResult();
+    }
 }
