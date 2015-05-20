@@ -34,15 +34,20 @@ class MemberRepository extends EntityRepository{
         foreach ( $res as $r){
             array_push($res2, $r->getForumid());
         }
-
-        $query2 = $this->_em->createQueryBuilder();
-        $query2 ->select('p')
+        if ( !empty($res2)){
+            $query2 = $this->_em->createQueryBuilder();
+            $query2 ->select('p')
                 ->from('SERCOMAppBundle:ForumPost','p')
                 ->join('p.forumtopic','t')
                 ->join('t.forum','f')
                 ->add('where', $query2->expr()->in('f.forum_id', $res2))
                 ->orderBy('p.datePost', ' DESC');
-        return $query2->getQuery()->getResult();
+            return $query2->getQuery()->getResult();
+        }
+        else{
+            return $res;
+        }
+
     }
 
     public function getLastDocs(Member $member){

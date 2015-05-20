@@ -42,6 +42,7 @@ class PersonModifRightsType extends AbstractType{
 
             ));
         }
+
         $builder->add('teacher', 'choice', array('choices' => array(' '), 'required' => false, 'mapped' => false, 'expanded' => true, 'multiple' => true, 'data' => array($options['attr']['t']) ));
 
         $builder->add('accesprof', 'entity', array( 'mapped' => false, 'class' => 'SERCOMAppBundle:SiteGroup', 'property' => 'description',

@@ -24,18 +24,29 @@ class MembersController extends Controller {
         $person = $this->get('security.context')->getToken()->getUser();
         $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Member');
         $post = $rep->getLastPost($person->getMember());
-        $post = $post[0];
+        if ( !empty($post)){
+            $post = $post[0];
+        }
         $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteArticle');
         $article = $rep->findOneBy(array(), array('publishDate' => 'DESC'));
+
         $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Member');
-         $upload = $rep->getLastDocs($person->getMember());
-        $upload = $upload[0];
+        $upload = $rep->getLastDocs($person->getMember());
+        if ( !empty($upload)){
+            $upload = $upload[0];
+        }
         $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Event');
         $agenda = $rep->getLastEven();
-        $agenda = $agenda[0];
+        if ( !empty($agenda)){
+            $agenda = $agenda[0];
+        }
+
         $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Member');
         $mail = $rep->getLastMail($person->getMember());
-        $mail = $mail[0];
+        if ( !empty($mail)){
+            $mail = $mail[0];
+        }
+
 
         return $this->render('SERCOMAppBundle:Members:index.html.twig', array('post' => $post, 'article' => $article, 'upload' => $upload , 'agenda' => $agenda, 'mail' => $mail));
 

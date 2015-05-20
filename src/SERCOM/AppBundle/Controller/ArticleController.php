@@ -42,6 +42,10 @@ class ArticleController extends Controller {
                 $article->setMember($member);
                 $article->setPublish(false);
                 $article->setSubmit(false);
+                $data = $request->get($form->getName());
+                $text = strip_tags(html_entity_decode($data['content']));
+                $text = substr($text, 0, 50);
+                $article->setPreview($text);
                 $docs = $article->getDocuments();
                 $nom_article = SpecialChar::removeChar($article->getTitle());
                 $nom_article = SpecialChar::removeSpace($nom_article);
@@ -63,7 +67,7 @@ class ArticleController extends Controller {
                 }
 
                 $patharticle = $this->get('kernel')->getRootDir().'/../src/articles/';
-                $data = $request->get($form->getName());
+
                 $file_name = $patharticle.$nom_article.".html";
                 $file = fopen( $file_name, 'a');
                 fputs($file, $data['content']);
@@ -162,7 +166,10 @@ class ArticleController extends Controller {
                                 }
                             }
                         }
-
+                        $data = $form->get('content')->getData();
+                        $text = strip_tags(html_entity_decode($data));
+                        $text = substr($text, 0, 50);
+                        $article->setPreview($text);
                         $em->persist($article);
                         $em->flush();
                         $this->get('session')->getFlashBag()->add('succes', 'Enregistrement effectué');
