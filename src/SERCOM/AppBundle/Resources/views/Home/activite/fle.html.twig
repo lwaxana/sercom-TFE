@@ -20,17 +20,18 @@
                                         <img src="{{ asset('bundles/AppBundle/')~doc.url }}" alt="">
                                         <h3>{{ article.title|slice(0,35) }}...</h3>
                                         <p>{{ article.preview|raw}} ...</p>
-                                        <a href="{{ path('sercom_home_article',{'id':article.articleid}) }}">Lire la suite -></a>
+
                                         {% set pic = 1 %}
                                     {% endif %}
                                 {% endfor %}
+
                             {% else %}
                                 <img src="{{ asset('bundles/AppBundle/images/noimage.png') }}" alt="">
                                 <h3>{{ article.title|slice(0,35) }}...</h3>
                                 <p>{{ article.preview|raw}}...</p>
-                                <a href="#">Lire la suite -></a>
-                            {% endif %}
 
+                            {% endif %}
+                            <a href="{{ path('sercom_home_article',{'id':article.articleid}) }}">Lire la suite -></a>
                         </article>
                     {% endfor %}
                  {% else %}
