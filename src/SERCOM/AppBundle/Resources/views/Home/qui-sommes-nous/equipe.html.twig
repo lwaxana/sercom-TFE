@@ -2,21 +2,89 @@
 
 {% block body %}
 
-    <section class="equipe">
+    <section class="activites">
         <div class="container">
-            <h1><span>Membres de l'asbl</span></h1>
-            <div class="content">
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur suscipit rem delectus cupiditate atque excepturi, saepe. Atque consequuntur natus dignissimos obcaecati distinctio voluptatem, quis, cumque velit molestiae corporis culpa nisi perspiciatis in deserunt eum dicta. Accusamus aspernatur magni vel iste at fugit minus reiciendis, tempora eaque optio id, officia odit. Vel ea, veritatis mollitia voluptatibus, voluptatem sapiente ab impedit inventore aliquam fugit quasi accusantium totam, sequi perspiciatis laborum aperiam ipsum magnam cumque minima? Mollitia culpa qui repellendus, fuga libero, quasi architecto beatae vitae aperiam, dolore ea. Eaque aliquid labore atque, consequuntur beatae quis facilis ex neque deleniti itaque. Alias, asperiores ad dolor ipsum inventore excepturi cupiditate saepe et laudantium, facere accusantium ullam assumenda perferendis, adipisci enim voluptates quaerat. Magni eveniet vero laboriosam magnam quasi possimus neque temporibus impedit similique sed eum nam distinctio quae, ipsam tempora, culpa, consequatur quam alias, modi! Adipisci amet sit delectus voluptas odio unde. Cum, tempore.
-                </p>
-            </div>
-            <div class="galerie">
-                <div><div class="tagImg">Président</div></div>
-                <div><div class="tagImg">Vice Président</div></div>
-                <div><div class="tagImg">Animateur</div></div>
-                <div><div class="tagImg">Trésorier</div></div>
-                <div><div class="tagImg">Secrétaire</div></div>
-                <div><div class="tagImg">Vice-Secrétaire</div></div>
+            <h1><span>Activités</span></h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni id est sit, unde tenetur cumque delectus mollitia fugiat at, veniam impedit harum aperiam quam dolorum voluptate commodi voluptatum eaque placeat. Omnis, incidunt explicabo doloremque eveniet, libero enim harum tempore quasi quod quis praesentium doloribus nesciunt animi, ducimus fugit. Incidunt, ratione!</p>
+            <div>
+                <article>
+                    {% if prez is not empty %}
+                        {% if prez.person.picture is not null %}
+                            <img src="{{ asset(prez.person.picture) }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('bundles/AppBundle/images/noimage.png') }}" alt="">
+                        {% endif %}
+                            <h3>Président</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque!</p>
+                    {% else %}
+                            <img src="{{ asset('bundles/AppBundle/images/noimage.png') }}" alt="">
+                            <h3>Président</h3>
+                            <p>Fontion non attribuée</p>
+                    {% endif %}
+                </article>
+                <article>
+                    {% if vp is not empty %}
+                        {% if vp.person.picture is not null %}
+                            <img src="{{ asset(vp.person.picture) }}" alt="">
+                        {% else %}
+                            <h3>Vice-Président</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque!</p>
+                        {% endif %}
+                    {% else %}
+                        <img src="{{ asset('bundles/AppBundle/images/noimage.png') }}" alt="">
+                        <h3>Vice-Président</h3>
+                        <p>Fontion non attribuée</p>
+                    {% endif %}
+                </article>
+                <article>
+                    {% if anim is not empty %}
+                        {% if anim.person.picture is not null %}
+                            <img src="{{ asset(anim.person.picture) }}" alt="">
+                        {% else %}
+                            <h3>Animateur</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque!</p>
+                        {% endif %}
+                    {% else %}
+                        <img src="{{ asset('bundles/AppBundle/images/noimage.png') }}" alt="">
+                        <h3>Animateur</h3>
+                        <p>Fontion non attribuée</p>
+                    {% endif %}
+                </article>
+                <article>
+                    {% if sec is not empty %}
+                        {% if sec.person.picture is not null %}
+                            <img src="{{ asset(sec.person.picture) }}" alt="">
+                        {% else %}
+                            <h3>Secrétaire</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque!</p>
+                        {% endif %}
+                    {% else %}
+                        <img src="{{ asset('bundles/AppBundle/images/noimage.png') }}" alt="">
+                        <h3>Secrétaire</h3>
+                        <p>Fontion non attribuée</p>
+                    {% endif %}
+                </article>
+                <article>
+                    {% if trez is not empty %}
+                        {% if trez.person.picture is not null %}
+                            <img src="{{ asset(trez.person.picture) }}" alt="">
+                        {% else %}
+                            <h3>Trésorier</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque!</p>
+                        {% endif %}
+                    {% else %}
+                        <img src="{{ asset('bundles/AppBundle/images/noimage.png') }}" alt="">
+                        <h3>Trésorier</h3>
+                        <p>Fontion non attribuée</p>
+                    {% endif %}
+                </article>
+                <article>
+                        <img src="{{ asset('bundles/AppBundle/images/final8.jpg') }}" alt="">
+                        <h3>Technicienne de surface</h3>
+                        <p></p>
+
+                </article>
+
             </div>
         </div>
     </section>

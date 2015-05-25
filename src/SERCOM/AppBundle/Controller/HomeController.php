@@ -34,7 +34,28 @@ class HomeController extends Controller{
     }
 
     public function equipeAction(){
-        return $this->render('@SERCOMApp/Home/qui-sommes-nous/equipe.html.twig');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Member');
+        $president = $rep->getByFonction('Président');
+        $vp = $rep->getByFonction("Vice-Président");
+        $anim  = $rep->getByFonction('Animateur');
+        $sec = $rep->getByFonction('Secrétaire');
+        $trez = $rep->getByFonction('Trésorier');
+        if ( !empty($president)){
+            $president = $president[0];
+        }
+        if ( !empty($vp)){
+            $vp = $vp[0];
+        }
+        if ( !empty($anim)){
+            $anim = $anim[0];
+        }
+        if ( !empty($sec)){
+            $sec = $sec[0];
+        }
+        if ( !empty($trez)){
+            $trez = $trez[0];
+        }
+        return $this->render('@SERCOMApp/Home/qui-sommes-nous/equipe.html.twig', array('prez' => $president, 'vp' => $vp, 'anim' => $anim, 'sec' => $sec, 'trez' => $trez ) );
     }
 
     public function fleAction(){

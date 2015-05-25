@@ -94,5 +94,16 @@ class MemberRepository extends EntityRepository{
         return $query2->getQuery()->getResult();
     }
 
+    public function getByFonction($fct){
+        $query2 = $this->_em->createQueryBuilder();
+        $query2 ->select('m')
+            ->from('SERCOMAppBundle:Member','m')
+            ->join('m.asblfunctions','f')
+            ->where('f.fonction LIKE ?1')
+            ->setParameter(1, $fct);
+
+
+        return $query2->getQuery()->getResult();
+    }
 
 }
