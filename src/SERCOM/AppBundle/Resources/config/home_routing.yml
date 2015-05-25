@@ -14,6 +14,7 @@ sercom_home_equipe:
     pattern: /qui-sommes-nous/l-equipe
     defaults: { _controller: SERCOMAppBundle:Home:equipe }
 
+
 sercom_home_activite_fle:
     pattern: /activite/fle
     defaults: { _controller: SERCOMAppBundle:Home:fle }
@@ -37,6 +38,10 @@ sercom_home_activite_dialogue:
 sercom_home_activite_valo:
     pattern: /activite/valorisations
     defaults: { _controller: SERCOMAppBundle:Home:valorisations }
+
+sercom_home_article:
+    pattern: /activite/article/{id}
+    defaults: { _controller: SERCOMAppBundle:Home:article }
 
 sercom_home_partenaire:
     pattern: /partenaires

@@ -43,14 +43,16 @@ class ArticleController extends Controller {
                 $article->setPublish(false);
                 $article->setSubmit(false);
                 $data = $request->get($form->getName());
-                $text = strip_tags(html_entity_decode($data['content']));
+                //$text = strip_tags(html_entity_decode($data['content']));
+                $text = $data['content'];
                 $text = substr($text, 0, 50);
                 $article->setPreview($text);
                 $docs = $article->getDocuments();
-                $nom_article = SpecialChar::removeChar($article->getTitle());
-                $nom_article = SpecialChar::removeSpace($nom_article);
+                //$nom_article = SpecialChar::removeChar($article->getTitle());
+                //$nom_article = SpecialChar::removeSpace($nom_article);
+                $nom_article = sha1(uniqid(mt_rand(), true));
                 $pathpics = $this->get('kernel')->getRootDir() . '/../web/bundles/AppBundle/images/articles/'.$nom_article;
-                if (!file_exists($pathpics)) mkdir($pathpics);
+
                 if ( !empty($docs)){
                     foreach ($docs as $doc) {
                         if ( !empty($doc) && $doc != null ) {
@@ -67,7 +69,6 @@ class ArticleController extends Controller {
                 }
 
                 $patharticle = $this->get('kernel')->getRootDir().'/../src/articles/';
-
                 $file_name = $patharticle.$nom_article.".html";
                 $file = fopen( $file_name, 'a');
                 fputs($file, $data['content']);

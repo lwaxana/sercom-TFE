@@ -1,60 +1,262 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-    <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>-->
-    <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>-->
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!--<script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
-    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/bootstrap.min.css') }}"/>
-    <link rel="stylesheet" href="{{ asset('bundles/AppBundle/css/font-awesome.min.css') }}"/>
-    <script type="text/javascript" src="{{ asset('bundles/AppBundle/js/jquery-1.11.2.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bundles/AppBundle/js/bootstrap.js') }}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    {% block titre %}
+    <title>Bienvenue sur le site du SERCOM</title>
+    {% endblock %}
 
-
-
-    {% block titre %}{% endblock %}
-    {% block style %}{% endblock %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/AppBundle/css/main.css') }} ">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
 </head>
-<body style="margin: 70px;">
-<div class="container-fluid">
 
+<body>
+<header>
+    <div class="container">
+        <nav id='main-nav'>
+            <ul>
+                <li class='active'><a href='{{ path('sercom_home') }}'><span>Accueil</span></a></li>
+                <li class='has-sub'><a href='#'><span>Qui sommes-nous?</span></a>
+                    <ul>
+                        <li><a href='{{ path('sercom_home_projet') }}'><span>Notre projet</span></a></li>
+                        <li><a href='{{ path('sercom_home_motpresident') }}'><span>Mot du président</span></a></li>
+                        <li><a href='{{ path('sercom_home_historique') }}'><span>Historique de l'Asbl</span></a></li>
+                        <li class='last'><a href='{{ path('sercom_home_equipe') }}'><span>L'équipe</span></a></li>
+                    </ul>
+                </li>
+                <li class='has-sub'><a href='#'><span>Activités</span></a>
+                    <ul>
+                        <li><a href='{{ path('sercom_home_activite_fle') }}'><span>FLE</span></a></li>
+                        <li><a href='{{ path('sercom_home_activite_citoyennete') }}'><span>Citoyenneté</span></a></li>
+                        <li><a href='{{ path('sercom_home_activite_remediations') }}'><span>Remédiations</span></a></li>
+                        <li><a href='{{ path('sercom_home_activite_codev') }}'><span>Co-développement</span></a></li>
+                        <li><a href='{{ path('sercom_home_activite_dialogue') }}'><span>Dialogues inter-culturels</span></a></li>
+                        <li class='last'><a href='{{ path('sercom_home_activite_valo') }}'><span>Valorisations</span></a></li>
+                    </ul>
+                </li>
+                <li><a href='{{ path('sercom_home_partenaire') }}'><span>Partenaires</span></a>
+                <li class='has-sub'><a href='#'><span>Login</span></a>
+                    <ul>
+                        <li><a href='{{ path('sercom_members') }}'><span>Membres</span></a></li>
+                        <li><a href='{{ path('teacher_index') }}'><span>Professeurs</span></a></li>
+                        <li class='last'><a href='{{ path('student_index') }}'><span>Etudiants</span></a></li>
+                    </ul>
+                </li>
+                <li><a href='{{ path('sercom_register') }}'><span>S'enregistrer</span></a>
+                <li class='last'><a href='{{ path('sercom_home_contact') }}'><span>Contact</span></a></li>
+            </ul>
+        </nav>
+    </div>
 
-{% block header %}
-    {{ include('SERCOMAppBundle:Home:header.html.twig') }}
-{% endblock %}
+    <section class="banner">
+        <div>
+            <?xml version="1.0" encoding="utf-8"?>
+            <!-- Generator: Adobe Illustrator 18.1.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+            <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+            <svg version="1.1" id="Calque_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 52.8 13.6" enable-background="new 0 0 52.8 13.6" xml:space="preserve">
+			<g>
+                <path fill="#00CC99" d="M9.7,6.8c1.8,0.4,2.7,1.4,2.7,2.3c0,3.6-6.3,4.2-8.9,4.2c-0.7,0-2.9,0-2.9-1c0-0.4,0.6-1.3,0.9-1.6
+					c0.2-0.2,1.3-0.5,1.5-0.5c0.1,0,0.1,0,0.1,0.1c0,0.2-0.2,0.3-0.3,0.3c-0.1,0.1-0.2,0.2-0.3,0.3v0C9,11.1,10.8,9.3,10.8,9
+					c0-0.9-5-1.6-5.9-1.8C4,7,3.1,6.8,3.1,5.7c0-0.6,0.3-1.9,0.6-2.4c0.6-0.9,3.8-2.6,7.8-2.6c0.8,0,1.5,0.1,2.3,0.3
+					c0.4,0.1,0.5,0.2,0.5,0.6c0,1.3-0.4,1.6-1.5,2.1c-0.8,0.3-0.9,0.4-1.6,0.9c-0.1,0.1-0.3,0.2-0.4,0.2c-0.2,0-0.3-0.1-0.3-0.3
+					c0,0,0.3-0.6,1.3-1.3l0,0C6.9,3.2,4.9,4.9,4.9,5.3C4.9,5.5,4.7,5.7,9.7,6.8z"/>
+                <path fill="#00CC99" d="M20,10.3c-1.1,1.3-3.1,3-4.9,3c-1.3,0-1.9-1.2-2-2.4c-0.1-2.4,2.5-4.8,4.9-4.8c0.6,0,1.3,0.1,1.3,0.9
+					c0,0.9-0.9,2.2-4.3,3.3l0,0.4c-0.1,0.7,0.5,0.9,1.1,0.9c1.3,0,2.8-1.3,3.7-2.1L20,10.3z M17.8,7.4c0-0.1-0.1-0.2-0.2-0.2
+					c-0.9,0.2-1.9,1.1-2.4,2.3C16.7,9,17.8,7.7,17.8,7.4z"/>
+                <path fill="#00CC99" d="M21,9.1c-0.6,1-1.4,1.5-2.2,2.2l-0.1-0.8c0.5-0.4,0.8-0.8,1.2-1.3c-0.4,0-0.5-0.2-0.5-0.6
+					c0-1.3,1.8-2.6,2.3-2.6c0.2,0,0.3,0.1,0.3,0.3c0,0.2-0.1,0.3-0.1,0.5c1.7-0.2,2.7-0.4,2.9-0.2c0.3,0.3,0.4,0.6,0.4,1
+					c0,0.6-0.3,0.8-0.8,1.2c-0.5,0.5-1.4,1.3-1.4,2.1c0,0.3,0.3,0.5,0.6,0.5c0.8,0,1.9-1.2,2.5-1.6l0.1,0.7c-0.7,0.8-2.8,2.8-3.8,2.8
+					c-0.8,0-1.2-0.7-1.2-1.4c0-1.2,0.9-2.2,1.7-3l0,0L21,9.1z"/>
+                <path fill="#00CC99" d="M28,9.6c-0.4,0.3-0.7,0.6-0.7,1.1c0,0.4,0.4,1,1.4,1c1.4,0,2.9-1.3,4-2.1l0.2,0.7c-1.1,1.2-3.1,3-4.8,3
+					c-1.4,0-2.1-1.3-2.1-2.6c0-1.5,0.5-2.1,1.7-3c0.8-0.6,2.5-1.6,3.5-1.6c0.6,0,0.8,0.3,0.8,0.8c0,1-1.4,2.4-1.9,2.4
+					c-0.4,0-0.6-0.5-0.6-0.8L28,9.6z"/>
+                <path fill="#00CC99" d="M39.8,10.3c-0.8,1-1.6,1.5-2.9,1.5c-0.8,0.8-1.6,1.4-2.8,1.4c-0.9,0-1.8-0.9-1.9-2.6c0-1.4,0.6-2.3,1.6-3
+					c1-0.8,2.3-1.3,3.4-1.3c0.4,0,1,0.2,1,0.6c0,0.3-0.2,0.4-0.4,0.5c0.5,0.1,0.6,0.5,0.6,1.1c0,0.8-0.4,1.4-0.7,2.1
+					c0.8,0.1,1.3-0.5,1.9-1L39.8,10.3z M34.3,9.5c-0.4,0.4-0.7,1.1-0.7,1.7c0,0.5,0.3,0.7,0.8,0.7c0.6,0,1-0.3,1.4-0.7
+					c-0.1-0.3-0.2-0.5-0.2-0.8c0-0.9,0.8-2.1,0.8-2.1C35.7,8.5,34.9,8.9,34.3,9.5z"/>
+                <path fill="#00CC99" d="M45.7,11.9c-0.4,0.4-1.1,1.1-1.7,1.1c-0.4,0-0.8-0.3-0.8-0.8c0-0.5,0.4-1.4,1.6-3.1c0,0,0.1-0.2,0.1-0.2
+					c0-0.1-0.1-0.1-0.1-0.1c-0.2,0-0.6,0.4-0.7,0.6c-0.9,1-1.9,2.1-2.8,3.1c-0.2,0.2-0.4,0.5-0.8,0.5c-0.9,0-1.1-1.4-1.1-2.1
+					c0-1.8,1.9-4.2,3-4c0.3,0,0.8,0,0.8,0.4c0,0.4-0.5,0.9-0.7,1.2c-0.3,0.4-0.7,0.7-1,1.1c-0.2,0.3-0.5,0.6-0.5,0.9
+					c0,0,0.1,0.2,0.1,0.2c0.1,0,0.3-0.2,0.4-0.3c0.9-0.9,4.1-4.1,5.3-4.1c0.5,0,0.7,0.4,0.7,0.8c0,0.8-1.3,2.3-1.7,3l0,0l4-3.2
+					c0.2-0.1,0.6-0.5,0.8-0.5c0.1,0,0.3,0.4,0.4,0.5c0.1,0.2,0.3,0.5,0.3,0.7c0,0.3-0.4,0.7-0.6,0.9c-1.4,1.5-1.5,1.8-1.5,2.3
+					c0,0.2,0.2,0.5,0.4,0.5c0.4-0.1,0.6-0.1,2.8-1.6l0.1,0.8c-0.8,0.7-3.4,2.8-4.4,2.8c-0.5,0-0.9-0.5-0.9-1c0-0.9,0.9-2.2,1.3-2.9l0,0
+					L45.7,11.9z"/>
+            </g>
+			</svg>
+        </div>
+    </section>
 
-{% block nav %}
-    {{ include('SERCOMAppBundle:Home:nav.html.twig') }}
-{% endblock %}
-
-
-{% block well %}{% endblock %}
-{% block flash %}{% endblock %}
+    <div class="separator"></div>
+</header>
 {% block body %}
+<section class="presentation">
+    <div class="container">
+        <h1>A la une</h1>
 
+        <div class="panoramaSlider">
+
+            <div class="current">
+                <div>
+                    <h3> -1- Lorem ipsum dolor.</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
+                        <br/>
+                        <a href="#">En savoir plus ></a>
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <h3> -2- Lorem ipsum dolor.</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
+                        <br/>
+                        <a href="#">En savoir plus ></a>
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <h3> -3- Lorem ipsum dolor.</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
+                        <br/>
+                        <a href="#">En savoir plus ></a>
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <h3> -4- Lorem ipsum dolor.</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
+                        <br/>
+                        <a href="#">En savoir plus ></a>
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <h3> -5- Lorem ipsum dolor.</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
+                        <br/>
+                        <a href="#">En savoir plus ></a>
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <div>
+                    <h3> -6- Lorem ipsum dolor.</h3>
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
+                        <br/>
+                        <a href="#">En savoir plus ></a>
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <article class="agenda">
+            <h2>Agenda</h1>
+                <div>
+                    <h3>23 avril 2015</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas similique, provident. Consectetur, commodi beatae quidem.</p>
+                </div>
+                <div>
+                    <h3>26 mai 2015</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus expedita soluta quasi.</p>
+                </div>
+        </article>
+    </div>
+
+</section>
 {% endblock %}
-{% block link %}{% endblock %}
-
-{% block footer %}
-    {{ include('@SERCOMApp/Home/footer.html.twig') }}
-{% endblock %}
-</div>
 
 
+<section class="contact">
+    <div class="banner">
+        <h1>Contact</h1>
+    </div>
+    <div class="coordonnees">
+        <p>
+            <span>Adresse</span><br>
+            R2D2 Rue Skywalker<br>
+            6443582 Tattoine
+        </p>
+        <p>
+            <span>Tel</span><br>
+            0476 xx xx xx
+        </p>
+        <p>
+            <span>Mail</span><br>
+            xXXXx@xXXXx.be
+        </p>
+    </div>
+    <div class="horaires">
+        <p>
+            <span>Heures d'ouvertures</span><br>
+            Lun-Ven 8h00 > 18h00
+        </p>
+        <p>
+            <span>Permanences</span><br>
+            Le Mardi de 10h à 15h
+        </p>
+    </div>
+</section>
+
+<footer class="footer-distributed">
+
+    <div class="container">
+        <div class="footer-left">
+            <h3>Sercom</h3>
+            <p class="footer-links">
+                <a href="#">Faq</a>
+                ·
+                <a href="#">Conditions générales</a>
+                ·
+                <a href="#">Gestion des cookies</a>
+                ·
+                <a href="#">Contact</a>
+            </p>
+            <p class="footer-company-name">Copyright &copy; 2015</p>
+        </div>
+
+        <div class="footer-center">
+            <div>
+                <i class="fa fa-map-marker"></i>
+                <p><span>Avenue du Pont Rouge,20</span> Mons, Belgique</p>
+            </div>
+            <div>
+                <i class="fa fa-phone"></i>
+                <p>065/01-01-01</p>
+            </div>
+            <div>
+                <i class="fa fa-envelope"></i>
+                <p><a href="mailto:support@company.com">support@sercom.be</a></p>
+            </div>
+        </div>
+
+        <div class="footer-right">
+            <p class="footer-company-about">
+                About <span class="fontCookie">Sercom</span><br/>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quae, id.
+            </p>
+            <div class="footer-icons">
+                <a href="https://www.facebook.com/pages/Fran%C3%A7ois-pignon/33523847031?fref=ts"><i class="fa fa-facebook"></i></a>
+                <a href="https://twitter.com/gadelmaleh"><i class="fa fa-twitter"></i></a>
+                <a href="https://accounts.google.com/ServiceLogin?service=oz&passive=1209600&continue=https://plus.google.com/?gpsrc%3Dgplp0#identifier"><i class="fa fa-google-plus"></i></a>
+                <a href="https://www.youtube.com/user/NormanFaitDesVideos"><i class="fa fa-youtube-play"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>	<script src="{{ asset('bundles/AppBundle/js/app.min.js') }}"></script>
 </body>
-
-{% block script %}
-<script>
-    $(document).ready(function () {
-        $("#topbar-container").dropdown();
-    });
-    $("body").bind("click", function (e) {
-        $('.dropdown-toggle, .menu').parent("li").removeClass("open");
-    });
-    $(".dropdown-toggle, .menu").click(function (e) {
-        var $li = $(this).parent("li").toggleClass('open');
-        return false;
-    });
-</script>
-{% endblock %}
 </html>

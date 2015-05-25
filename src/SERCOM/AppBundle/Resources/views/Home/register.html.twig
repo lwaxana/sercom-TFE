@@ -5,135 +5,111 @@
 
 {% block body %}
 
-<br/><br/>
+<section class="formulaire">
+    <div class="container">
+        <h1 class="heading"><span>Enregistrez-vous</span></h1>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi asperiores quisquam vitae itaque placeat ipsa.
+        </p>
+        <fieldset>
 
-    <div class="row col-md-3"></div>
-    <div class="row col-md-6">
-            {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
-            {{ form_errors(form) }}
-        <div class="form-group">
-            {{ form_label(form.firstname, "Prénom :", {'label_attr': {'class': 'col-sm-2 control-label', 'require':'true'}}) }}
-            {{ form_errors(form.firstname) }}
-            <div class="col-sm-9">
-            {{ form_widget(form.firstname, {'attr': {'class': 'form-control'}}) }}
+                {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+                {{ form_errors(form) }}
+            <div>
+                {{ form_label(form.firstname, "Prénom :") }}
+                {{ form_errors(form.firstname) }}
+                {{ form_widget(form.firstname) }}
             </div>
-        </div>
-        <div class="form-group">
-            {{ form_label(form.lastname, "Nom :", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-            {{ form_errors(form.lastname) }}
-            <div class="col-sm-9">
-            {{ form_widget(form.lastname, {'attr': {'class': 'form-control'}}) }}
+            <div>
+                {{ form_label(form.lastname, "Nom :") }}
+                {{ form_errors(form.lastname) }}
+                {{ form_widget(form.lastname) }}
             </div>
-        </div>
-        <div id="divemail" class="form-group">
-            {{ form_label(form.email, "Email :", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-            {{ form_errors(form.email) }}
+            <div>
+                {{ form_label(form.email, "Email :") }}
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
+            <div>
+                {{ form_label(form.username, "Login :") }}
+                {{ form_errors(form.username) }}
+                {{ form_widget(form.username) }}<span id="alertlogin"> </span>
+            </div>
+            <div>
+                {{ form_label(form.password.password, "Mot de passe :") }}
+                {{ form_errors(form.password.password) }}
+                {{ form_widget(form.password.password) }}
+            </div>
 
-            <div class="col-sm-9">
-            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-                <span id="alertmail"> </span>
-            </div>
-        </div>
+             <div>
+                 {{ form_label(form.password.confirm, "Confirmation :") }}
+                 {{ form_errors(form.password.confirm) }}
+                 {{ form_widget(form.password.confirm) }}
 
-        <div id="divelogin" class="form-group">
-            {{ form_label(form.username, "Login :", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-            {{ form_errors(form.username) }}
-            <div class="col-sm-9">
-            {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}<span id="alertlogin"> </span>
-            </div>
-        </div>
-        <div class="form-group">
-            {{ form_label(form.password.password, "Mot de passe :", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-            {{ form_errors(form.password.password) }}
-            <div class="col-sm-9">
-            {{ form_widget(form.password.password, {'attr': {'class': 'form-control'}}) }}
-            </div>
-                <br/>
-        </div>
-        <div class="form-group">
-            {{ form_label(form.password.confirm, "Mot de passe :", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
-            {{ form_errors(form.password.confirm) }}
-            <div class="col-sm-9">
-                {{ form_widget(form.password.confirm, {'attr': {'class': 'form-control'}}) }}
-            </div>
-            <br/>
+             </div>
+
+
+
+        <div>
+            {{ form_widget(form.save) }}
         </div>
 
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
 
-        <div class="form-group">
-            <div class="col-sm-4">
-            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary btn-md btn-block'}}) }}
-            </div>
+        </fieldset>
         </div>
-            {{ form_rest(form) }}
-            {{ form_end(form) }}
-    </div>
-    <div class="row col-md-3"></div>
+</section>
 
-    </div>
-
-{% endblock %}
-
-{% block script %}
     <script>
-        $(document).ready(function () {
-            $("#topbar-container").dropdown();
-        });
-        $("body").bind("click", function (e) {
-            $('.dropdown-toggle, .menu').parent("li").removeClass("open");
-        });
-        $(".dropdown-toggle, .menu").click(function (e) {
-            var $li = $(this).parent("li").toggleClass('open');
-            return false;
-        });
 
 
 
         $('#sercom_appbundle_person_inscription_email').focusout(function(){
-                var value = $(this).val();
-                var ajaxsent = 0;
-                if ( value != ""  && ajaxsent == 0){
-                    var url = "{{ path('sercom_register_checkemail', {'email': 'text' })  }}";
-                    url = url.replace("text", value);
-                    ajaxsent = 1;
-                    $.ajax({
-                        type: 'POST',
-                        url: url,
-                        data: 'json',
-                        beforeSend: function(){
-                            var element =  document.getElementById('spin1');
-                            if (typeof(element) != 'undefined' && element != null){
-                                $('#spin1').remove();
-                                $('#alertmail').text("");
-                                $('<i id="spin1" class="fa fa-spinner fa-pulse fa-2x"></i>').appendTo('#divemail');
+            var value = $(this).val();
+            var ajaxsent = 0;
+            if ( value != ""  && ajaxsent == 0){
+                var url = "{{ path('sercom_register_checkemail', {'email': 'text' })  }}";
+                url = url.replace("text", value);
+                ajaxsent = 1;
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: 'json',
+                    beforeSend: function(){
+                        var element =  document.getElementById('spin1');
+                        if (typeof(element) != 'undefined' && element != null){
+                            $('#spin1').remove();
+                            $('#alertmail').text("");
+                            $('<i id="spin1" class="fa fa-spinner fa-pulse fa-2x"></i>').appendTo('#divemail');
 
-                            }
-                            else{
-                                $('<i id="spin1" class="fa fa-spinner fa-pulse fa-2x"></i>').appendTo('#divemail');
-                            }
-
-
-                        },
-                        success: function(data){
-                            if ( data.email == "true"){
-                                $('#spin1').remove();
-                                $('<i id="spin1" class="fa fa-warning fa-2x"></i>').appendTo('#divemail');
-                                $('#alertmail').text("Cet adresse email est déjà utilisée");
-                                $('#alertmail').css({'color':'red'});
-                            }
-                            else{
-                                $('#spin1').remove();
-                                $('<i id="spin1" class="fa fa-check-square fa-2x"></i>').appendTo('#divemail');
-                            }
-
-                        },
-                        error: function(data){
-                            console.log("erreur")
+                        }
+                        else{
+                            $('<i id="spin1" class="fa fa-spinner fa-pulse fa-2x"></i>').appendTo('#divemail');
                         }
 
-                    });
-                    ajaxsent = 0;
-                }
+
+                    },
+                    success: function(data){
+                        if ( data.email == "true"){
+                            $('#spin1').remove();
+                            $('<i id="spin1" class="fa fa-warning fa-2x"></i>').appendTo('#divemail');
+                            $('#alertmail').text("Cet adresse email est déjà utilisée");
+                            $('#alertmail').css({'color':'red'});
+                        }
+                        else{
+                            $('#spin1').remove();
+                            $('<i id="spin1" class="fa fa-check-square fa-2x"></i>').appendTo('#divemail');
+                        }
+
+                    },
+                    error: function(data){
+                        console.log("erreur")
+                    }
+
+                });
+                ajaxsent = 0;
+            }
 
         });
 
@@ -188,3 +164,5 @@
 
     </script>
 {% endblock %}
+
+

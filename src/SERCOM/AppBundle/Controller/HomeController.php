@@ -2,6 +2,7 @@
 
 namespace SERCOM\AppBundle\Controller;
 
+use SERCOM\AppBundle\Entity\SiteArticle;
 use SERCOM\AppBundle\Form\PersonPwdType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use SERCOM\AppBundle\Entity\Person;
@@ -37,7 +38,9 @@ class HomeController extends Controller{
     }
 
     public function fleAction(){
-        return $this->render('@SERCOMApp/Home/activite/fle.html.twig');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $articles = $rep->getBySection("FLE");
+        return $this->render('@SERCOMApp/Home/activite/fle.html.twig', array('articles' => $articles));
     }
 
     public function citoyenneteAction(){
@@ -58,6 +61,14 @@ class HomeController extends Controller{
 
     public function valorisationsAction(){
         return $this->render('@SERCOMApp/Home/activite/valorisations.html.twig');
+    }
+
+    public function articleAction(SiteArticle $article){
+        $rep = $this->getDoctrine()->getRepository('SERCOMAppBundle:ArticleDocument');
+        $doc = $rep->findOneBy(array('article' => $article, 'picture' => false));
+        $docs = $rep->findBy((array('article' => $article, 'picture' => true)));
+        $text = file_get_contents(realpath($doc->getUrl()));
+        return $this->render('@SERCOMApp/Home/activite/article.html.twig', array('text' => $text, 'docs' => $docs, 'article' => $article));
     }
 
     public function partenairesAction(){

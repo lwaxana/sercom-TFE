@@ -1,0 +1,30 @@
+{% extends '@SERCOMApp/Home/base.html.twig' %}
+
+{% block titre %}
+    <title>{{ article.title }}</title>
+{% endblock %}
+
+{% block body %}
+    <section class="article">
+        <div class="container">
+            <h1><span>{{ article.title }}</span></h1>
+            <article>
+                <div class="entete">
+                    <div class="number">{{ article.publishdate|date('d') }}</div>
+                    <div class="year">{{ article.publishdate|date('m-Y') }}</div>
+                </div>
+
+                <div class="content">
+                    <p>
+                        {{ text|raw }}
+                    </p>
+                </div>
+            </article>
+            <div>
+                {% for doc in docs %}
+                    <div> <img src="{{ asset('bundles/AppBundle/')~doc.url }}" /></div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
