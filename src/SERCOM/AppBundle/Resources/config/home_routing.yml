@@ -58,3 +58,4 @@ sercom_lost_pwd:
 sercom_register_newpwd:
     pattern:  /newpassword/{id}/{activ}
     defaults: { _controller: SERCOMAppBundle:Home:newpwd }
+

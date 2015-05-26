@@ -3,6 +3,7 @@
 namespace SERCOM\AppBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use SERCOM\AppBundle\articles\Article;
 
 /**
  * SiteArticleRepository
@@ -21,6 +22,21 @@ class SiteArticleRepository extends EntityRepository{
             ->setParameter(1, $section);
         return $query->getQuery()->getResult();
 
+    }
+
+    public function getLastArticles(){
+        $query = $this->_em->createQueryBuilder()->select('a')
+            ->from('SERCOMAppBundle:SiteArticle','a')
+            ->where('a.publish = 1')
+            ->orderBy('a.publishDate', 'DESC')
+            ->setMaxResults(5);
+        $tab = $query->getQuery()->getResult();
+        $res = array();
+        foreach( $tab as $art){
+            $a = new Article($art);
+            array_push($res,$a);
+        }
+        return $res;
     }
 
 }

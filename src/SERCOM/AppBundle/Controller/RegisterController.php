@@ -42,18 +42,18 @@ class RegisterController extends Controller{
 
                 $message = \Swift_Message::newInstance()
                     ->setSubject("Enregistrement sur le site SERCOM ASBL")
+                    ->setContentType('text/html')
                     ->setFrom('mf.sercom@gmail.com')
                     ->setTo($person->getEmail())
                     ->setBody($this->renderView('SERCOMAppBundle:Email:register.html.twig', array('person' => $person)));
                 $this->get('swiftmailer.mailer.default')->send($message);
-                $message = "L'enregistrement est terminé. Vous allez recevoir un mail dans quelques instants.
-                            Afin de valider votre adresse email, veuillez cliquez dans sur le lien dans l'email.";
+
             }
             catch(\Exception $e){
                 $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
             }
             finally{
-                return $this->render('SERCOMAppBundle:Home:registerdone.html.twig', array('message'=>$message));
+                return $this->render('SERCOMAppBundle:Home:registerdone.html.twig');
             }
         }
         return $this->render('SERCOMAppBundle:Home:register.html.twig', array('form' => $form->createView()));
@@ -77,13 +77,12 @@ class RegisterController extends Controller{
                         $em = $this->getDoctrine()->getManager();
                         $em->persist($person);
                         $em->flush();
-                        $message = "Adresse mail validée. Veuillez chosir le type d'accès :";
                     }
                     catch(\Exception $e){
                         $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
                     }
                     finally{
-                        return $this->render('SERCOMAppBundle:Home:registercheck.html.twig', array('message'=>$message));
+                        return $this->render('SERCOMAppBundle:Home:registercheck.html.twig');
                     }
                 }
                 else {
@@ -190,7 +189,7 @@ class RegisterController extends Controller{
                     $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
                 }
                 finally{
-                    return $this->render('SERCOMAppBundle:Home:registerdone.html.twig', array('message'=>$message));
+                    return $this->render('SERCOMAppBundle:Home:registerdone2.html.twig', array('message'=>$message));
                 }
 
             }

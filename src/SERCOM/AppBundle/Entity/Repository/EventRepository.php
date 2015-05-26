@@ -22,4 +22,13 @@ class EventRepository extends EntityRepository{
             ->setParameter(1, new \DateTime());
         return $query->getResult();
     }
+
+    public function getAgenda(){
+        $query = $this->_em->createQueryBuilder()->select('p')
+            ->from('SERCOMAppBundle:Event','p')
+            ->where('p.validate = 1')
+            ->addOrderBy('p.dateHourEvent', 'DESC')
+            ->setMaxResults(2);
+        return $query->getQuery()->getResult();
+    }
 }

@@ -16,7 +16,7 @@ sercom_register_checkemail:
     pattern: /register/checkemail/{email}
     defaults: { _controller: SERCOMAppBundle:Register:testemail }
     requirements:
-         _method: POST
+         _method: GET
 
 sercom_register_access:
     pattern: /register/checkaccess

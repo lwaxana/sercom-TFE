@@ -2,7 +2,10 @@
 
 namespace SERCOM\AppBundle\Controller;
 
+use SERCOM\AppBundle\agenda\Agenda;
+use SERCOM\AppBundle\Entity\contact\Contact;
 use SERCOM\AppBundle\Entity\SiteArticle;
+use SERCOM\AppBundle\Form\ContactType;
 use SERCOM\AppBundle\Form\PersonPwdType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use SERCOM\AppBundle\Entity\Person;
@@ -14,7 +17,33 @@ use Symfony\Component\Security\Core\Util\StringUtils;
 class HomeController extends Controller{
 
     public function indexAction(){
-        return $this->render('SERCOMAppBundle:Home:index.html.twig');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteArticle');
+        $articles = $rep->getLastArticles();
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:CoursePlanning');
+        $courses = $rep->getLastCourses();
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:Event');
+        $events = $rep->getAgenda();
+        $agenda = array();
+        foreach( $courses as $course){
+            $ag = new Agenda();
+            $ag->setDatehour($course->getDatecours());
+            $ag->setTitle($course->getClasse()->getName());
+            array_push($agenda, $ag);
+        }
+        foreach( $events as $event){
+            $ag = new Agenda();
+            $ag->setDatehour($event->getDatehourevent());
+            $ag->setTitle($event->getName());
+            array_push($agenda, $ag);
+        }
+
+        usort($agenda, array("SERCOM\AppBundle\agenda\Agenda" ,"cmp"));
+        if ( count($agenda) > 2){
+            $agenda = array_slice($agenda, 0, 2);
+        }
+
+
+        return $this->render('SERCOMAppBundle:Home:index.html.twig', array('articles' => $articles, 'agenda' => $agenda));
     }
 
     public function loginAction(){
@@ -65,23 +94,33 @@ class HomeController extends Controller{
     }
 
     public function citoyenneteAction(){
-        return $this->render('@SERCOMApp/Home/activite/ciotyennete.html.twig');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $articles = $rep->getBySection("Citoyenneté");
+        return $this->render('@SERCOMApp/Home/activite/ciotyennete.html.twig', array('articles' => $articles));
     }
 
     public function remediationsAction(){
-        return $this->render('@SERCOMApp/Home/activite/remediation.html.twig');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $articles = $rep->getBySection("Remédiations");
+        return $this->render('@SERCOMApp/Home/activite/remediation.html.twig', array('articles' => $articles));
     }
 
     public function codevAction(){
-        return $this->render('@SERCOMApp/Home/activite/codev.html.twig');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $articles = $rep->getBySection("Co-Développement");
+        return $this->render('@SERCOMApp/Home/activite/codev.html.twig', array('articles' => $articles));
     }
 
     public function dialoguesAction(){
-        return $this->render('@SERCOMApp/Home/activite/dialogues.html.twig');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $articles = $rep->getBySection("Dialogues Inter-culturels");
+        return $this->render('@SERCOMApp/Home/activite/dialogues.html.twig', array('articles' => $articles));
     }
 
     public function valorisationsAction(){
-        return $this->render('@SERCOMApp/Home/activite/valorisations.html.twig');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $articles = $rep->getBySection("Valorisatiobs");
+        return $this->render('@SERCOMApp/Home/activite/valorisations.html.twig' ,array('articles' => $articles));
     }
 
     public function articleAction(SiteArticle $article){
@@ -96,8 +135,21 @@ class HomeController extends Controller{
         return $this->render('@SERCOMApp/Home/partenaires/partenaire.html.twig');
     }
 
-    public function contactAction(){
-        return $this->render('@SERCOMApp/Home/contact/contact.html.twig');
+    public function contactAction(Request $request){
+        $person = new Contact();
+        $form = $this->createForm(new ContactType(), $person);
+        $form->handleRequest($request);
+        if ( $form->isValid()){
+            $message = \Swift_Message::newInstance()
+                ->setSubject("Demande CONTACT SERCOM")
+                ->setContentType('text/html')
+                ->setFrom('mf.sercom@gmail.com')
+                ->setTo("jankowski.philippe@gmail.com")
+                ->setBody($this->renderView('SERCOMAppBundle:Email:contact.html.twig', array('contact' => $person)));
+            $this->get('swiftmailer.mailer.default')->send($message);
+            return $this->render('@SERCOMApp/Home/contact/contactdone.html.twig');
+        }
+        return $this->render('@SERCOMApp/Home/contact/contact.html.twig', array('form' => $form->createView()));
     }
 
     public function newpwdAction(Person $person, $activ, Request $request){
@@ -135,5 +187,11 @@ class HomeController extends Controller{
 
 
     }
+
+    public function cmp($a, $b){
+        return ($a->getDatehour() < $b->getDatehour()) ? -1 : 1;
+    }
+
+
 
 }
