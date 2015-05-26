@@ -25,15 +25,15 @@
                 {{ form_errors(form.lastname) }}
                 {{ form_widget(form.lastname) }}
             </div>
-            <div>
+            <div >
                 {{ form_label(form.email, "Email :") }}
-                {{ form_widget(form.email) }}
+                <div id="divemail">{{ form_widget(form.email) }}<span id="alertmail"> </span></div>
                 {{ form_errors(form.email) }}
             </div>
             <div>
                 {{ form_label(form.username, "Login :") }}
                 {{ form_errors(form.username) }}
-                {{ form_widget(form.username) }}<span id="alertlogin"> </span>
+                <div id="divelogin">{{ form_widget(form.username) }}</div><span id="alertlogin"> </span>
             </div>
             <div>
                 {{ form_label(form.password.password, "Mot de passe :") }}
@@ -61,10 +61,11 @@
         </div>
 </section>
 
+
+{% endblock %}
+
+{% block script %}
     <script>
-
-
-
         $('#sercom_appbundle_person_inscription_email').focusout(function(){
             var value = $(this).val();
             var ajaxsent = 0;
@@ -73,7 +74,7 @@
                 url = url.replace("text", value);
                 ajaxsent = 1;
                 $.ajax({
-                    type: 'POST',
+                    type: 'GET',
                     url: url,
                     data: 'json',
                     beforeSend: function(){
@@ -105,6 +106,7 @@
                     },
                     error: function(data){
                         console.log("erreur")
+                        console.log(data);
                     }
 
                 });

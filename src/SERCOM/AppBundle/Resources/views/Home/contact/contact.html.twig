@@ -12,29 +12,29 @@
 
     <section class="formulaire">
         <div class="container">
-            <form id="contactForm" action="#" method="post">
+           {{ form_start(form) }}
+            {{ form_errors(form) }}
                 <h1 class="heading"><span>Contact us using this form</span></h1>
                 <p> Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget.</p>
                 <fieldset>
                     <div>
-                        <label>Nom / Prénom</label>
-                        <input name="firstname-name" id="firstname-name" type="text" title="Entrez votre nom">
+                        {{ form_label(form.nom) }}
+                        {{ form_widget(form.nom) }}
                     </div>
                     <div>
-                        <label>Email</label>
-                        <input name="email" id="email" type="text" class="form-poshytip" title="Entrez votre adresse email">
+                        {{ form_label(form.email) }}
+                        {{ form_widget(form.email) }}
                     </div>
                     <div>
-                        <textarea name="comments" id="comments" rows="5" cols="20" class="form-poshytip" title="Enter your comments"></textarea>
+                       {{ form_widget(form.message) }}
                     </div>
-                    <!-- send mail configuration -->
-                    <input type="hidden" value="email@yourserver.com" name="to" id="to">
-                    <input type="hidden" value="Enter the subject here" name="subject" id="subject">
-                    <input type="hidden" value="send-mail.php" name="sendMailUrl" id="sendMailUrl">
-                    <!-- ENDS send mail configuration -->
-                    <p><input type="button" value="Send" name="submit" id="submit"> <span id="error" class="warning" style="display: none;">Message</span></p>
+
+                    <p>
+                        {{ form_widget(form.save) }}
+                    </p>
                 </fieldset>
-            </form>
+            {{ form_rest(form)}}
+            {{ form_end(form) }}
         </div>
     </section>
 {% endblock %}

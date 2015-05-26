@@ -91,113 +91,27 @@
     <div class="separator"></div>
 </header>
 {% block body %}
-<section class="presentation">
-    <div class="container">
-        <h1>A la une</h1>
 
-        <div class="panoramaSlider">
-
-            <div class="current">
-                <div>
-                    <h3> -1- Lorem ipsum dolor.</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
-                        <br/>
-                        <a href="#">En savoir plus ></a>
-                    </p>
-                </div>
-            </div>
-
-            <div>
-                <div>
-                    <h3> -2- Lorem ipsum dolor.</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
-                        <br/>
-                        <a href="#">En savoir plus ></a>
-                    </p>
-                </div>
-            </div>
-
-            <div>
-                <div>
-                    <h3> -3- Lorem ipsum dolor.</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
-                        <br/>
-                        <a href="#">En savoir plus ></a>
-                    </p>
-                </div>
-            </div>
-
-            <div>
-                <div>
-                    <h3> -4- Lorem ipsum dolor.</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
-                        <br/>
-                        <a href="#">En savoir plus ></a>
-                    </p>
-                </div>
-            </div>
-
-            <div>
-                <div>
-                    <h3> -5- Lorem ipsum dolor.</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
-                        <br/>
-                        <a href="#">En savoir plus ></a>
-                    </p>
-                </div>
-            </div>
-
-            <div>
-                <div>
-                    <h3> -6- Lorem ipsum dolor.</h3>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quam, nihil.
-                        <br/>
-                        <a href="#">En savoir plus ></a>
-                    </p>
-                </div>
-            </div>
-
-        </div>
-        <article class="agenda">
-            <h2>Agenda</h1>
-                <div>
-                    <h3>23 avril 2015</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptas similique, provident. Consectetur, commodi beatae quidem.</p>
-                </div>
-                <div>
-                    <h3>26 mai 2015</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minus expedita soluta quasi.</p>
-                </div>
-        </article>
-    </div>
-
-</section>
 {% endblock %}
 
 
 <section class="contact">
     <div class="banner">
-        <h1>Contact</h1>
+        <h1></h1>
     </div>
     <div class="coordonnees">
         <p>
             <span>Adresse</span><br>
-            R2D2 Rue Skywalker<br>
-            6443582 Tattoine
+            Rue Leman 33<br>
+            7012 Jemappes
         </p>
         <p>
             <span>Tel</span><br>
-            0476 xx xx xx
+            0476 01 02 03
         </p>
         <p>
             <span>Mail</span><br>
-            xXXXx@xXXXx.be
+            contact@sercom.be
         </p>
     </div>
     <div class="horaires">
@@ -231,8 +145,8 @@
 
         <div class="footer-center">
             <div>
-                <i class="fa fa-map-marker"></i>
-                <p><span>Avenue du Pont Rouge,20</span> Mons, Belgique</p>
+                <a href="https://www.google.be/maps/@50.449064,3.890384,3a,75y,207.33h,82.62t/data=!3m4!1e1!3m2!1sCzG2enl4N29RtIhImyhEqg!2e0!6m1!1e1"><i class="fa fa-map-marker"></i></a>
+                <p><span>Rue Leman 33</span> 7012 Mons, Belgique</p>
             </div>
             <div>
                 <i class="fa fa-phone"></i>
@@ -257,6 +171,10 @@
             </div>
         </div>
     </div>
-</footer>	<script src="{{ asset('bundles/AppBundle/js/app.min.js') }}"></script>
+</footer>
+
+<script src="{{ asset('bundles/AppBundle/js/app.min.js') }}"></script>
+{% block script %}
+{% endblock %}
 </body>
 </html>

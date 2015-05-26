@@ -1,1 +1,47 @@
 {% extends '@SERCOMApp/Home/base.html.twig' %}
+
+{% block titre %}
+    <title>FLE</title>
+{% endblock %}
+
+{% block body %}
+    <section class="activites">
+        <div class="container">
+            <h1><span>Dialogues</span></h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magni id est sit, unde tenetur cumque delectus mollitia fugiat at, veniam impedit harum aperiam quam dolorum voluptate commodi voluptatum eaque placeat. Omnis, incidunt explicabo doloremque eveniet, libero enim harum tempore quasi quod quis praesentium doloribus nesciunt animi, ducimus fugit. Incidunt, ratione!</p>
+            <div>
+                {% if articles is not empty %}
+                    {% for article in articles %}
+                        <article>
+                            {% if article.documents|length > 1 %}
+                                {% set pic = 0 %}
+                                {% for doc in article.documents %}
+                                    {% if doc.picture == 1 and pic == 0 %}
+                                        <img src="{{ asset('bundles/AppBundle/')~doc.url }}" alt="">
+                                        <h3>{{ article.title|slice(0,35) }}...</h3>
+                                        <p>{{ article.preview|raw}} ...</p>
+
+                                        {% set pic = 1 %}
+                                    {% endif %}
+                                {% endfor %}
+
+                            {% else %}
+                                <img src="{{ asset('bundles/AppBundle/images/noimage.png') }}" alt="">
+                                <h3>{{ article.title|slice(0,35) }}...</h3>
+                                <p>{{ article.preview|raw}}...</p>
+
+                            {% endif %}
+                            <a href="{{ path('sercom_home_article',{'id':article.articleid}) }}">Lire la suite -></a>
+                        </article>
+                    {% endfor %}
+                {% else %}
+
+                    <h3> Pas d'articles dans la section</h3>
+
+
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

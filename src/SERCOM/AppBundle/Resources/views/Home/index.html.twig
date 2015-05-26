@@ -4,7 +4,48 @@
     <title>Bienvenue sur le site du SERCOM</title>
 {% endblock %}
 
+{% block body %}
+    <section class="presentation">
+        <div class="container">
+            <h1>A la une</h1>
 
+            <div class="panoramaSlider">
+
+                {% for article in articles %}
+                    <div>
+                        <div>
+                            <h3> {{ article.title|slice(0,50) }} ...</h3>
+                            <p>
+                                {{ article.preview|raw }}...
+                                <br/>
+                                <a href="{{ path('sercom_home_article', {'id' : article.id}) }}">En savoir plus ></a>
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+            <article class="agenda">
+                <h2>Agenda</h1>
+                    {% for a in agenda %}
+                        {% if a is not empty %}
+                            <div>
+                                <h3>{{ a.datehour|date('d-m-Y H:i') }}</h3>
+                                <p>{{ a.title }}.</p>
+                            </div>
+                        {% else %}
+                            <div>
+                                <h3> </h3>
+                                <p>Pas d'évènement prévu</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+
+            </article>
+        </div>
+
+    </section>
+{% endblock %}
 
 
 

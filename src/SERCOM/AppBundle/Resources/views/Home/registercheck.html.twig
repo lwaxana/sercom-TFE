@@ -5,14 +5,33 @@
 {% endblock %}
 
 {% block body %}
-    {{ message }}
+    <section class="motPresident">
+        <div class="container">
+            <h1><span>Adresse mail confirmée</span></h1>
+            <article>
 
-    <form action="{{ path('sercom_register_access') }}" method="post">
-        <label>Acces membre : </label><input type="checkbox" name="member" value="member"/><br/>
-        <label>Access Professeur :</label><input type="checkbox" name="teacher" value="teacher"/>
-        <label>Access Etudiant :</label><input type="checkbox" name="student" value="student"/>
-        <input type="submit" value="Envoyer"/>
-    </form>
+
+                <div class="content">
+                    <p> Veuillez choisir un type d'accès</p>
+
+                    <form action="{{ path('sercom_register_access') }}" method="post">
+                        <fieldset>
+                            <div> <label>Acces membre : </label><input type="checkbox" name="member" value="member"/></div>
+                           <div><label>Access Professeur :</label><input type="checkbox" name="teacher" value="teacher"/></div>
+                            <div><label>Access Etudiant :</label><input type="checkbox" name="student" value="student"/></div>
+                            <div> <input type="submit" value="Envoyer"/></div>
+
+                        </fieldset>
+
+                    </form>
+
+                </div>
+            </article>
+        </div>
+    </section>
+
+
+
 
 
 {% endblock %}
