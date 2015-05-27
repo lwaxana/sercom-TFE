@@ -40,7 +40,9 @@ class CoursePlanningRepository extends EntityRepository{
     public function getLastCourses(){
         $query = $this->_em->createQueryBuilder()->select('p')
             ->from('SERCOMAppBundle:CoursePlanning','p')
-            ->addOrderBy('p.datecours', 'DESC')
+            ->where('p.datecours > ?1')
+            ->addOrderBy('p.datecours', 'ASC')
+            ->setParameter(1, new \DateTime())
             ->setMaxResults(2);
         return $query->getQuery()->getResult();
     }

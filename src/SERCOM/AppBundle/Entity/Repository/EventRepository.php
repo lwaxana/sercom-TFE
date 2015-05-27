@@ -26,8 +26,9 @@ class EventRepository extends EntityRepository{
     public function getAgenda(){
         $query = $this->_em->createQueryBuilder()->select('p')
             ->from('SERCOMAppBundle:Event','p')
-            ->where('p.validate = 1')
-            ->addOrderBy('p.dateHourEvent', 'DESC')
+            ->where('p.validate = 1 and p.dateHourEvent > ?1')
+            ->addOrderBy('p.dateHourEvent', 'ASC')
+            ->setParameter(1, new \DateTime())
             ->setMaxResults(2);
         return $query->getQuery()->getResult();
     }

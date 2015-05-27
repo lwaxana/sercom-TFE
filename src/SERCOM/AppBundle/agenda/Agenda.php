@@ -47,7 +47,7 @@ class Agenda {
     }
 
     public static function cmp($a, $b){
-        return ($a->getDatehour() > $b->getDatehour()) ? -1 : 1;
+        return ($a->getDatehour() < $b->getDatehour()) ? -1 : 1;
     }
 
 } 

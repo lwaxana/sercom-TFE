@@ -88,37 +88,37 @@ class HomeController extends Controller{
     }
 
     public function fleAction(){
-        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteArticle');
         $articles = $rep->getBySection("FLE");
         return $this->render('@SERCOMApp/Home/activite/fle.html.twig', array('articles' => $articles));
     }
 
     public function citoyenneteAction(){
-        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteArticle');
         $articles = $rep->getBySection("Citoyenneté");
         return $this->render('@SERCOMApp/Home/activite/ciotyennete.html.twig', array('articles' => $articles));
     }
 
     public function remediationsAction(){
-        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteArticle');
         $articles = $rep->getBySection("Remédiations");
         return $this->render('@SERCOMApp/Home/activite/remediation.html.twig', array('articles' => $articles));
     }
 
     public function codevAction(){
-        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteArticle');
         $articles = $rep->getBySection("Co-Développement");
         return $this->render('@SERCOMApp/Home/activite/codev.html.twig', array('articles' => $articles));
     }
 
     public function dialoguesAction(){
-        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteArticle');
         $articles = $rep->getBySection("Dialogues Inter-culturels");
         return $this->render('@SERCOMApp/Home/activite/dialogues.html.twig', array('articles' => $articles));
     }
 
     public function valorisationsAction(){
-        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteARticle');
+        $rep = $this->getDoctrine()->getManager()->getRepository('SERCOMAppBundle:SiteArticle');
         $articles = $rep->getBySection("Valorisatiobs");
         return $this->render('@SERCOMApp/Home/activite/valorisations.html.twig' ,array('articles' => $articles));
     }

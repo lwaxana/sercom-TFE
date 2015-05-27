@@ -3,48 +3,81 @@
 {% block titre %}
     <title>Bienvenue sur le site du SERCOM</title>
 {% endblock %}
+{% block style %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/AppBundle/css/slippry.css') }} ">
+        <script src="{{ asset('bundles/AppBundle/js/slippry.min.js') }}"></script>
+{% endblock %}
 
 {% block body %}
     <section class="presentation">
         <div class="container">
             <h1>A la une</h1>
 
-            <div class="panoramaSlider">
 
-                {% for article in articles %}
-                    <div>
-                        <div>
-                            <h3> {{ article.title|slice(0,50) }} ...</h3>
-                            <p>
-                                {{ article.preview|raw }}...
-                                <br/>
-                                <a href="{{ path('sercom_home_article', {'id' : article.id}) }}">En savoir plus ></a>
-                            </p>
-                        </div>
-                    </div>
-                {% endfor %}
+                <ul id="thumbnails">
+                    {% for article in articles %}
+                        <li>
+                            <a href="#slide1">
+                                <img src="{{ asset('bundles/AppBundle/'~article.picture) }}" alt="{{ article.title }} <a href='{{ path('sercom_home_article', {'id' : article.id}) }}'>Lire la suite -></a>">
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                <script>
+                    var thumbs = $('#thumbnails').slippry({
+                        // general elements & wrapper
+                        slippryWrapper: '<div class="slippry_box thumbnails" />',
+                        // options
+                        adaptiveHeight: false,
+                        pager: false,
+                        auto: false,
+                        loop: true,
+                        transition: 'fade',
+                        slideshow: 'auto',
+                        onSlideBefore: function (el, index_old, index_new) {
+                            $('.thumbs a img').removeClass('active');
+                            $('img', jQuery('.thumbs a')[index_new]).addClass('active');
+                        }
+                    });
+
+                </script>
 
             </div>
-            <article class="agenda">
-                <h2>Agenda</h1>
-                    {% for a in agenda %}
-                        {% if a is not empty %}
-                            <div>
-                                <h3>{{ a.datehour|date('d-m-Y H:i') }}</h3>
-                                <p>{{ a.title }}.</p>
-                            </div>
-                        {% else %}
-                            <div>
-                                <h3> </h3>
-                                <p>Pas d'évènement prévu</p>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
 
+            <article class="agenda">
+                <h1>Agenda</h1>
+                {% for a in agenda %}
+                    {% if a is not empty %}
+                        <div>
+                            <h3>{{ a.datehour|date('d-m-Y H:i') }}</h3>
+                            <p>{{ a.title }}.</p>
+                        </div>
+                    {% else %}
+                        <div>
+                            <h3> </h3>
+                            <p>Pas d'évènement prévu</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </article>
         </div>
 
     </section>
+{% endblock %}
+{% block script %}
+    <script>
+
+        $(document).ready(function(){
+
+
+
+
+        });
+        //http://slippry.com/examples/news/
+
+
+    </script>
 {% endblock %}
 
 

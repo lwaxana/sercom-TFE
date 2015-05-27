@@ -21,7 +21,7 @@ class Image {
 
     public function resizeProfile($path, $nompic ){
 
-        $nouvelle_largeur = 200;
+        $nouvelle_largeur = 600;
         $taille = getimagesize($this->file);
         $reduction = ( ($nouvelle_largeur * 100)/$taille[0] );
         $nouvelle_hauteur = (($taille[1]*$reduction)/100);
