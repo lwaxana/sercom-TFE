@@ -10,6 +10,8 @@
 
     <link rel="stylesheet" type="text/css" href="{{ asset('bundles/AppBundle/css/main.css') }} ">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/AppBundle/css/slippry.css') }} ">
+    <script src="{{ asset('bundles/AppBundle/js/slippry.min.js') }}"></script>
     {% block style %}
     {% endblock %}
 </head>
@@ -134,13 +136,13 @@
         <div class="footer-left">
             <h3>Sercom</h3>
             <p class="footer-links">
-                <a href="#">Faq</a>
+                <a href="{{ path('sercom_footer_faq') }}">Faq</a>
                 ·
-                <a href="#">Conditions générales</a>
+                <a href="{{ path('sercom_footer_conditions') }}">Conditions générales</a>
                 ·
-                <a href="#">Gestion des cookies</a>
+                <a href="{{ path('sercom_footer_cookie') }}">Gestion des cookies</a>
                 ·
-                <a href="#">Contact</a>
+                <a href="{{ path('sercom_home_contact') }}">Contact</a>
             </p>
             <p class="footer-company-name">Copyright &copy; 2015</p>
         </div>

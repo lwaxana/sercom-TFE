@@ -50,9 +50,9 @@
                            <div class="panel-body">
                                <div class="col-sm-6">
                                    {% if p.person.picture is not null %}
-                                       <img src="{{ asset( p.person.picture  ) }}"/>
+                                       <img src="{{ asset( p.person.picture  ) }}" width="300" height="300"/>
                                    {% else %}
-                                       <img src="{{ asset('bundles/AppBundle/images/default-user.png') }}"/>
+                                       <img src="{{ asset('bundles/AppBundle/images/default-user.png') }}" />
                                    {% endif %}
                                </div>
 

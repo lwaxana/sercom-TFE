@@ -72,7 +72,7 @@ class AgendaController extends Controller {
                         $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue, modifications non sauvées');
                     }
                     finally{
-                        $this->redirect($this->generateUrl('sercom_members_agenda_choisir', array('id' =>$id)));
+                        return $this->redirect($this->generateUrl('sercom_members_agenda'));
                     }
                 }
 

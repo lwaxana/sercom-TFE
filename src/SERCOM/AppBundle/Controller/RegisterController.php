@@ -28,7 +28,6 @@ class RegisterController extends Controller{
         $form->handleRequest($request);
         if ($form -> isValid() ){
             try{
-                // TEST VALIDATION A FAIRE SI OK RECORD + MSG ELSE RETOUR FORM
                 $person->setActivationcode($this->generateActivationCode());
                 $person->setBan(false);
                 $person->setEmailvalid(false);
@@ -181,7 +180,7 @@ class RegisterController extends Controller{
                             $em->persist($student);
                             $em->flush();
                         }
-                        $message = "Vos choix ont bien été pris en compte. L'administrateur du site activera votre compte et donnera les autorisations necessaires ";
+
 
                     }
                 }
@@ -189,7 +188,7 @@ class RegisterController extends Controller{
                     $this->get('session')->getFlashBag()->add('error', 'Une erreur est survenue');
                 }
                 finally{
-                    return $this->render('SERCOMAppBundle:Home:registerdone2.html.twig', array('message'=>$message));
+                    return $this->render('SERCOMAppBundle:Home:registerdone2.html.twig');
                 }
 
             }

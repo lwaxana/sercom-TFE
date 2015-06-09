@@ -3,10 +3,7 @@
 {% block titre %}
     <title>Bienvenue sur le site du SERCOM</title>
 {% endblock %}
-{% block style %}
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/AppBundle/css/slippry.css') }} ">
-        <script src="{{ asset('bundles/AppBundle/js/slippry.min.js') }}"></script>
-{% endblock %}
+
 
 {% block body %}
     <section class="presentation">
@@ -14,7 +11,7 @@
             <h1>A la une</h1>
 
 
-                <ul id="thumbnails">
+                <ul id="thumbnails" >
                     {% for article in articles %}
                         <li>
                             <a href="#slide1">
@@ -43,23 +40,35 @@
 
                 </script>
 
-            </div>
+
 
             <article class="agenda">
                 <h1>Agenda</h1>
-                {% for a in agenda %}
-                    {% if a is not empty %}
-                        <div>
-                            <h3>{{ a.datehour|date('d-m-Y H:i') }}</h3>
-                            <p>{{ a.title }}.</p>
-                        </div>
-                    {% else %}
-                        <div>
-                            <h3> </h3>
-                            <p>Pas d'évènement prévu</p>
-                        </div>
-                    {% endif %}
-                {% endfor %}
+                {% if agenda is not empty %}
+                    {% for a in agenda %}
+                        {% if a is not empty %}
+                            <div>
+                                <h3>{{ a.datehour|date('d-m-Y H:i') }}</h3>
+                                <p>{{ a.title }}.</p>
+                            </div>
+                        {% else %}
+                            <div>
+                                <h3> </h3>
+                                <p>Pas d'évènement prévu</p>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                <div>
+                    <h3></h3>
+                    <p>Pas d'évènement prévus</p>
+                </div>
+                <div>
+                    <h3></h3>
+                    <p></p>
+                </div>
+
+                {% endif %}
             </article>
         </div>
 

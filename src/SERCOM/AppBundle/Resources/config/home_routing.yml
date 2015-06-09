@@ -59,3 +59,14 @@ sercom_register_newpwd:
     pattern:  /newpassword/{id}/{activ}
     defaults: { _controller: SERCOMAppBundle:Home:newpwd }
 
+sercom_footer_faq:
+    pattern:  /faq
+    defaults: { _controller: SERCOMAppBundle:Home:faq }
+
+sercom_footer_conditions:
+    pattern:  /conditions_generales
+    defaults: { _controller: SERCOMAppBundle:Home:conditions }
+
+sercom_footer_cookie:
+    pattern:  /cookie
+    defaults: { _controller: SERCOMAppBundle:Home:cookie }

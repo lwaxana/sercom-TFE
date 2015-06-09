@@ -49,6 +49,7 @@ class Person implements AdvancedUserInterface, \Serializable
      * @var string
      * @Assert\NotBlank()
      * @Assert\Email(checkHost=true, message="Adresse mail non valide")
+     * @Assert\Length(min = "10", max = "255")
      * @ORM\Column(name="email", type="string", length=255, nullable=false, unique=true)
      */
     private $email;

@@ -24,9 +24,9 @@
 {% block body %}
     <div class="row">
 
-        <div class="col-md-2">
+        <div class="col-md-3">
             {% if member.person.picture is not null %}
-                <img src="{{ asset( member.person.picture  ) }}"/>
+                <img src="{{ asset( member.person.picture  ) }}" width="300" height="300"/>
             {% else %}
                 <img src="{{ asset('bundles/AppBundle/images/default-user.png') }}"/>
             {% endif %}

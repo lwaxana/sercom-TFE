@@ -192,6 +192,16 @@ class HomeController extends Controller{
         return ($a->getDatehour() < $b->getDatehour()) ? -1 : 1;
     }
 
+    public function faqAction(){
+        return $this->render('@SERCOMApp/Home/footer/faq.html.twig');
+    }
 
+    public function conditionsAction(){
+        return $this->render('@SERCOMApp/Home/footer/conditions.html.twig');
+    }
+
+    public function cookieAction(){
+        return $this->render('@SERCOMApp/Home/footer/cookie.html.twig');
+    }
 
 }

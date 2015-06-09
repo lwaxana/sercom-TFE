@@ -149,8 +149,8 @@ class MembersController extends Controller {
                     if ( $person->getPicture() == null ){
                         try{
                             $file->move($path , $nom );
-                            $image = new Image($path2, $ext);
-                            $image->resizeProfile($path, $nom);
+                            //$image = new Image($path2, $ext);
+                            //$image->resizeProfile($path, $nom);
                             $person->setPicture($webpath.$nom);
                         }
                         catch(\Exception $e){
@@ -176,8 +176,8 @@ class MembersController extends Controller {
                         $oldpic = $person->getPicture();
                         try{
                             $file->move($path , $nom );
-                            $image = new Image($path2, $ext);
-                            $image->resizeProfile($path, $nom);
+                            //$image = new Image($path2, $ext);
+                            //$image->resizeProfile($path, $nom);
                             $person->setPicture($webpath.$nom);
                         }
                         catch(\Exception $e){

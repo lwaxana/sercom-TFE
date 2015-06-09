@@ -52,6 +52,7 @@
                 <tbody>
                      {% if persons is not empty %}
                         {% for p in persons %}
+                            <tr>
                             <td>{{ p.person.lastname }}</td>
                             <td>{{ p.person.firstname }}</td>
                             <td>
@@ -66,7 +67,8 @@
                             </td>
                             <td>
                                 <a href="{{ path('sercom_members_listmembres_voir', {'id': p.personid}) }}" title="Voir infos"><i class="fa fa-eye fa-2x"></i></a>
-                            </td>
+
+                            </tr>
                         {% endfor %}
 
                     {% else %}
